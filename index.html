@@ -361,7 +361,7 @@ footer{max-width:1080px;margin:0 auto;padding:0 24px 48px}
 <script>
 const gi = id => document.getElementById(id);
 const R  = n  => "R$ " + Math.round(n).toLocaleString("pt-BR");
-const Pp = n  => n.toFixed(1).replace(".",",") + "% a.a.";
+const Pp = n  => (n*100).toFixed(1).replace(".",",") + "% a.a.";
 const S  = (id,v) => { const e=gi(id); if(e) e.textContent=v; };
 
 // Mascara valor

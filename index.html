@@ -155,6 +155,15 @@ footer{max-width:1080px;margin:0 auto;padding:0 24px 48px}
 .foot-contact{text-align:right;font-size:11px;color:var(--gray);line-height:1.8}
 .foot-contact a{color:var(--green);text-decoration:none;font-weight:600}
 .foot-disc{font-size:9.5px;color:var(--gray-lt);line-height:1.8;border-top:1px solid var(--border);padding-top:12px}
+
+@media print {
+  header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .green-bar, .opt-head, .badge, .lucro-box, .tir-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  button, .inputs-grid > .input-card:last-child { display: none; }
+  body { background: white; }
+  main { padding: 16px; }
+  .compare { grid-template-columns: 1fr 20px 1fr 20px 1fr; }
+}
 </style>
 </head>
 <body>
@@ -336,6 +345,14 @@ footer{max-width:1080px;margin:0 auto;padding:0 24px 48px}
 
 </main>
 
+<div style="max-width:1080px;margin:0 auto;padding:0 24px 24px;display:flex;gap:12px;flex-wrap:wrap;">
+  <button onclick="gerarPDF()" style="display:flex;align-items:center;gap:8px;background:#1F9037;color:#fff;border:none;padding:12px 24px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border-radius:2px;">
+    📄 Gerar PDF da simulação
+  </button>
+  <button onclick="compartilharWhatsApp()" style="display:flex;align-items:center;gap:8px;background:#25D366;color:#fff;border:none;padding:12px 24px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border-radius:2px;">
+    📲 Compartilhar no WhatsApp
+  </button>
+</div>
 <footer>
   <div class="foot-div"></div>
   <div class="foot-row">
@@ -352,6 +369,12 @@ footer{max-width:1080px;margin:0 auto;padding:0 24px 48px}
       Dúvidas ou simulação personalizada?<br>
       <a href="tel:+55">Fale com o corretor</a>
     </div>
+  </div>
+  <div style="background:#FEF9EC;border:1px solid #F5E6B0;border-left:3px solid #E87722;padding:12px 16px;margin-bottom:12px;font-size:11px;color:#92610A;line-height:1.8;">
+    <strong>⚠️ Aviso Legal:</strong> Esta simulação é meramente estimativa e não constitui proposta comercial. 
+    Valores sujeitos à aprovação de crédito, análise de renda e condições bancárias vigentes. 
+    Valores podem sofrer alteração conforme evolução da tabela de preços e índices de correção (INCC/IGPM). 
+    Projeções de valorização são estimativas baseadas em cenário moderado/pessimista e não garantem rentabilidade futura.
   </div>
   <div class="foot-disc">
     Projeção de valorização nominal estimada pela construtora · INCC 6% a.a. (0,5%/mês durante obra 30m) · IGPM+1% pós-entrega (10m) · Selic projetada: 14% (mai-dez/2026) → 12% (2027) → 10,5% (2028) → 9,5% (2029) · IPCA: 4,91% (2026) / 4,00% (2027) / 3,64% (2028) / 3,5% (2029) · IR 15% sobre ganho Selic · ITBI sobre fração ideal do terreno (Mat./Reg. 123.488, terreno R$ 1.200.000 / 22 unidades) · Não inclui IR sobre ganho de capital na venda do imóvel (15% PF) nem corretagem · Incorporação: Prenotação nº A262328-779, Cartório de Registro de Imóveis de Passo Fundo.
@@ -572,6 +595,51 @@ function calc() {
 }
 
 calc();
+
+function gerarPDF() {
+  window.print();
+}
+
+function compartilharWhatsApp() {
+  const val  = parseInt(document.getElementById("vh").value) || 399900;
+  const aa   = parseFloat(document.getElementById("aah").value) || 15;
+
+  const getLucro = id => {
+    const el = document.getElementById(id);
+    return el ? el.textContent : "—";
+  };
+  const getTIR = id => {
+    const el = document.getElementById(id);
+    return el ? el.textContent : "—";
+  };
+
+  const msg = `🏢 *COPAS DO BOSQUE — Simulação de Investimento*
+━━━━━━━━━━━━━━━━━━━━━━
+🏠 Imóvel: *${document.getElementById("vd").value ? "R$ "+document.getElementById("vd").value : "—"}*
+📈 Valorização estimada: *${aa}% a.a.*
+
+*💰 PAGAR DIRETO*
+• Total investido: ${getLucro("d-tot")}
+• Lucro estimado: *${getLucro("d-luc")}*
+• Retorno anualizado: ${getTIR("d-tir")}
+
+*🏦 FINANCIAR PELA CAIXA (Recomendado)*
+• Total investido: ${getLucro("f-tot")}
+• Lucro estimado: *${getLucro("f-luc")}*
+• Retorno anualizado: ${getTIR("f-tir")}
+
+*📊 SELIC / CDI (mesmo período)*
+• Ganho líquido: ${getLucro("s-luc")}
+• Retorno anualizado: ${getTIR("s-tir")}
+
+🔗 Acesse a simulação completa:
+https://simuladorimobiliario.github.io/Simulador-Copas-do-Bosque/
+
+_⚠️ Simulação estimativa sujeita à aprovação de crédito e condições bancárias vigentes. Valores podem sofrer alteração conforme evolução da tabela._`;
+
+  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+}
 </script>
 </body>
 </html>

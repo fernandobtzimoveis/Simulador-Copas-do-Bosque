@@ -454,6 +454,21 @@ function maskMoney(dId, hId) {
 maskMoney("val-d","val-h");
 maskMoney("parc-d","parc-h");
 
+// Flag: corretor editou a parcela manualmente
+var parcEditada = false;
+gi("parc-d").addEventListener("keydown", function(e) {
+  if(e.key !== "Tab") parcEditada = true;
+});
+
+// Marca parcela como editada manualmente pelo corretor
+var parcEditada = false;
+gi("parc-d").addEventListener("keydown", function(e) {
+  if(e.key !== "Backspace") parcEditada = true;
+});
+gi("parc-d").addEventListener("input", function() {
+  parcEditada = true;
+});
+
 // Máscara valorização
 gi("aa-d").addEventListener("keydown", function(e) {
   if(e.key==="Backspace") {
@@ -478,6 +493,13 @@ function calc() {
   const incc   = 0.005;
   const igpm   = 0.007;
   const infl40 = (1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
+
+  // Sugestão de parcela mínima (15% ÷ 40)
+  const parcMin = Math.round(val * 0.15 / 40);
+  if(val > 10000 && !parcEditada) {
+    gi("parc-d").value = parcMin.toLocaleString("pt-BR");
+    gi("parc-h").value = String(parcMin);
+  }
 
   // Cenário tag valorização
   const tag = gi("aa-tag");

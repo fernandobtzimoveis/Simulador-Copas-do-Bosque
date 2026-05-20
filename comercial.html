@@ -36,7 +36,7 @@ main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
 /* INPUTS */
 .inputs-wrap{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--green);padding:24px 28px;margin-bottom:24px}
 .inputs-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--green-dk);font-weight:700;margin-bottom:20px}
-.inputs-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;align-items:start}
+.inputs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
 @media(max-width:700px){.inputs-grid{grid-template-columns:1fr 1fr}}
 .inp-group{display:flex;flex-direction:column;gap:6px}
 .inp-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600}
@@ -204,27 +204,6 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
       </div>
 
       <div class="inp-group">
-        <div class="inp-lbl">Parcela mensal desejada</div>
-        <div class="inp-wrap">
-          <span class="pfx">R$</span>
-          <input type="text" id="parc-d" placeholder="Ex: 2.000" inputmode="numeric" autocomplete="off">
-          <input type="hidden" id="parc-h" value="0">
-        </div>
-        <div class="inp-hint" id="parc-hint">Quanto o cliente quer pagar por mês</div>
-      </div>
-
-      <div class="inp-group">
-        <div class="inp-lbl">Periodicidade dos reforços</div>
-        <div class="inp-wrap">
-          <select id="period">
-            <option value="6" selected>Semestral (6 em 6 meses)</option>
-            <option value="12">Anual (1 vez por ano)</option>
-          </select>
-        </div>
-        <div class="inp-hint" id="period-hint">—</div>
-      </div>
-
-      <div class="inp-group">
         <div class="inp-lbl">Valorização estimada</div>
         <div class="inp-wrap">
           <input type="text" id="aa-d" value="15" inputmode="numeric" autocomplete="off" style="width:55px;text-align:right">
@@ -259,8 +238,22 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
           <p>Sem banco · você paga tudo à construtora</p>
         </div>
         <div class="r"><span class="r-l">Entrada (10%) em 4 parcelas</span><span class="r-v" id="d-ent">—</span></div>
-        <div class="r"><span class="r-l" id="d-men-lbl">Mensais durante a obra</span><span class="r-v" id="d-men">—</span></div>
-        <div class="r" id="d-ref-row"><span class="r-l" id="d-ref-lbl">Reforços</span><span class="r-v" id="d-ref">—</span></div>
+        <div class="r" style="align-items:center">
+          <span class="r-l"><span id="d-men-lbl">— mensais de</span> <span style="font-size:9px;background:#FEF9EC;color:#92610A;padding:1px 5px;border-radius:3px;font-weight:600">corrige INCC</span></span>
+          <span class="r-v" style="display:flex;align-items:center;gap:4px">
+            <span style="font-size:11px;color:var(--gray)">R$</span>
+            <input id="d-parc-edit" type="text" inputmode="numeric" autocomplete="off" onchange="onParcEdit(this)"
+              style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--green);outline:none;width:90px;text-align:right;background:transparent;padding-bottom:2px">
+          </span>
+        </div>
+        <div class="r" style="align-items:center" id="d-ref-row">
+          <span class="r-l"><span id="d-ref-lbl">5 reforços semestrais de</span> <span style="font-size:9px;background:#FEF9EC;color:#92610A;padding:1px 5px;border-radius:3px;font-weight:600">corrige INCC</span></span>
+          <span class="r-v" style="display:flex;align-items:center;gap:4px">
+            <span style="font-size:11px;color:var(--gray)">R$</span>
+            <input id="d-ref-edit" type="text" inputmode="numeric" autocomplete="off" onchange="onRefEdit(this)"
+              style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--orange);outline:none;width:90px;text-align:right;background:transparent;padding-bottom:2px">
+          </span>
+        </div>
         <div class="r"><span class="r-l">30% saldo na entrega</span><span class="r-v" id="d-e30">—</span></div>
         <div class="r" style="background:var(--amber-lt)">
           <span class="r-l" style="color:var(--amber)">ITBI + Registro + Escritura</span>
@@ -410,11 +403,6 @@ function mesesRestantes() {
 const MESES = mesesRestantes();
 S("hdr-meses", MESES);
 
-// Periodicidade → define reforços automaticamente
-gi("period").addEventListener("change", function() {
-  calc();
-});
-
 // TIR Newton-Raphson
 function calcTIR(fluxos) {
   let taxa = 0.01;
@@ -458,7 +446,36 @@ function maskMoney(dId, hId) {
   });
 }
 maskMoney("val-d","val-h");
-maskMoney("parc-d","parc-h");
+gi("nome").addEventListener("input", calc);
+
+// Edição da parcela no card — reforço ajusta automaticamente
+// Variáveis globais para guardar valores dos campos do card
+var _parcMesGlobal = 0;
+var _valorRefGlobal = 0;
+var _valAnterior = 0; // para detectar mudança de valor do imóvel
+
+function onParcEdit(el) {
+  const val2 = parseInt(document.getElementById("val-h").value)||0;
+  const n = parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
+  const novoRef = val2 > 0 ? Math.max(0, Math.round((val2*0.60 - n*40) / 5)) : 0;
+  _parcMesGlobal = n;
+  _valorRefGlobal = novoRef;
+  el.value = n.toLocaleString("pt-BR");
+  const refEl = document.getElementById("d-ref-edit");
+  if(refEl) refEl.value = novoRef.toLocaleString("pt-BR");
+  calc();
+}
+function onRefEdit(el) {
+  const val2 = parseInt(document.getElementById("val-h").value)||0;
+  const n = parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
+  const novParc = val2 > 0 ? Math.max(0, Math.round((val2*0.60 - n*5) / 40)) : 0;
+  _valorRefGlobal = n;
+  _parcMesGlobal = novParc;
+  el.value = n.toLocaleString("pt-BR");
+  const parcEl = document.getElementById("d-parc-edit");
+  if(parcEl) parcEl.value = novParc.toLocaleString("pt-BR");
+  calc();
+}
 
 
 
@@ -482,26 +499,11 @@ gi("aa-d").addEventListener("input", function() {
 
 function calc() {
   const val    = parseInt(gi("val-h").value)||0;
-  const parcMes= parseInt(gi("parc-h").value)||0;
-  const period = parseInt(gi("period").value);
   const aa     = (parseFloat(gi("aa-h").value)||15)/100;
   const incc   = 0.005;
   const igpm   = 0.007;
   const infl40 = (1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
 
-  // Parcela mínima sugerida (15% ÷ 40)
-  const parcMin = val > 10000 ? Math.round(val * 0.15 / 40) : 0;
-  // Atualiza hint da parcela imediatamente ao mudar o valor do imóvel
-  // Atualiza hint da parcela
-  const ph = gi("parc-hint");
-  if(ph && parcMin > 0) {
-    const parcAtualVal = parseInt(gi("parc-h").value)||0;
-    if(parcAtualVal === 0 || parcAtualVal < parcMin) {
-      ph.innerHTML = '<span style="color:var(--red);font-weight:600">Parcela mínima para atingir os 15% em 40 meses: ' + R(parcMin) + '</span>&nbsp;<button onclick="usarParcMin(' + parcMin + ')" style="background:var(--green);color:#fff;border:none;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;margin-left:4px;">Usar esta parcela</button>';
-    } else {
-      ph.innerHTML = '<span style="color:var(--green-dk);font-weight:600">✓ Parcela válida</span>';
-    }
-  }
 
   // Cenário tag valorização
   const tag = gi("aa-tag");
@@ -511,10 +513,9 @@ function calc() {
     else                { tag.textContent="Cenário otimista";   tag.className="cenario-tag otimista"; }
   }
 
-  // Reforços automáticos por periodicidade
-  const qtdRef = period===6 ? 5 : 2;
-  const maxRef = Math.floor(MESES / period);
-  const refReal = Math.min(qtdRef, maxRef);
+  // Reforços fixos: 5 semestrais
+  const refReal = 5;
+  const period  = 6;
 
   // Validações
   const bloq = gi("bloqueio");
@@ -526,50 +527,46 @@ function calc() {
     S("bloqueio-sub","Exemplo: R$ 399.900");
     return;
   }
-  if(parcMes < 1) {
-    bloq.style.display="block"; wrap.style.display="none";
-    S("bloqueio-txt","Digite a parcela mensal desejada pelo cliente");
-    S("bloqueio-sub","Quanto ele consegue pagar por mês durante a obra");
-    return;
+  const base60 = val * 0.60;
+  const base30m = val * 0.30;
+  const base30r = val * 0.30;
+
+  const NPARC = 40; // sempre 40 parcelas mensais (igual financiado)
+  const NREF  = 5;  // sempre 5 reforços semestrais
+
+  // Padrão: 30% em mensais (÷40) e 30% em reforços (÷5)
+  const parcDefault = Math.round(val*0.30 / NPARC);
+  const refDefault  = Math.round(val*0.30 / NREF);
+
+  // Se o valor do imóvel mudou, resetar os valores globais
+  if(val !== _valAnterior) {
+    _parcMesGlobal = parcDefault;
+    _valorRefGlobal = refDefault;
+    _valAnterior = val;
+    // Atualizar os campos visuais
+    const parcEditEl2 = document.getElementById("d-parc-edit");
+    const refEditEl2  = document.getElementById("d-ref-edit");
+    if(parcEditEl2) parcEditEl2.value = parcDefault.toLocaleString("pt-BR");
+    if(refEditEl2)  refEditEl2.value  = refDefault.toLocaleString("pt-BR");
   }
 
-  const base60 = val * 0.60;
-  const totalMensais = parcMes * MESES;
-  const saldoRef = base60 - totalMensais;
+  // Usa variáveis globais (fonte da verdade)
+  const parcMes      = _parcMesGlobal > 0 ? _parcMesGlobal : parcDefault;
+  const valorRefCard = _valorRefGlobal;
+  const totalMensais = parcMes * NPARC;
+  const totalRefCalc = valorRefCard * NREF;
+  const somaBase = totalMensais + totalRefCalc;
 
   // ── Custos de transação ──
   const custosD = val*0.02 + val*0.006 + val*0.007; // ITBI 2% + Registro 0,6% + Escritura 0,7%
   const custosF_total = 545 + val*0.003+1000 + val*0.75*0.00021*30 + val*0.000034*30; // ITBI fração + Reg SFH + MIP + DFI
 
-  if(saldoRef < 0) {
-    const maxParc = Math.floor(base60 / MESES);
-    bloq.style.display="block"; wrap.style.display="none";
-    S("bloqueio-txt","⚠️ Parcela mensal ultrapassa os 60% disponíveis");
-    S("bloqueio-sub","Reduza a parcela para no máximo " + R(maxParc) + "/mês para este imóvel e prazo");
-    return;
-  }
+  const ultrapassou = somaBase > base60 + 100;
+  const saldoRef = base60 - totalMensais;
 
-  // Calcula reforços
-  const valorRef  = refReal > 0 ? saldoRef / refReal : 0;
-  const totalRef  = valorRef * refReal;
-
-  // Datas dos reforços
-  const hoje = new Date();
-  const datasRef = [];
-  const rfMeses = [];
-  for(let i=1; i<=refReal; i++) {
-    rfMeses.push(i*period);
-    const d = new Date(hoje);
-    d.setMonth(d.getMonth() + i*period);
-    datasRef.push(d.toLocaleDateString("pt-BR",{month:"short",year:"2-digit"}));
-  }
-
-  // Hints
-  S("val-hint", "Valor estimado na entrega: " + R(val * Math.pow(1+aa, 40/12)));
-  // parc-hint gerenciado acima com lógica de parcMin
-  S("period-hint", datasRef.length > 0 
-    ? "Datas: " + datasRef.join(" · ") 
-    : "Sem reforços no prazo atual");
+  const valorRef = valorRefCard;
+  const totalRef = valorRef * NREF;
+  const rfMeses = [6,12,18,24,30];
 
   // Valor na entrega mês 40
   const vE = val * Math.pow(1+aa, 40/12);
@@ -577,14 +574,35 @@ function calc() {
   const entrega30 = val * 0.30;
   const entrega30Real = val * 0.30 * Math.pow(1+incc, MESES);
 
+  // Erro no card se ultrapassar 60%
+  const dCardEl = document.querySelector(".opt.direto");
+  if(dCardEl) {
+    let errEl = document.getElementById("d-erro-60");
+    if(ultrapassou) {
+      const excesso = Math.round((somaBase - base60)/base60*100);
+      if(!errEl) {
+        errEl = document.createElement("div");
+        errEl.id = "d-erro-60";
+        errEl.style.cssText = "padding:10px 18px;background:#FEF2F2;border-top:2px solid var(--red);font-size:12px;color:var(--red);font-weight:600;";
+        dCardEl.appendChild(errEl);
+      }
+      errEl.textContent = "⚠️ Soma ultrapassa 60% — Total: " + R(somaBase) + " (" + excesso + "% acima do limite)";
+      errEl.style.display = "block";
+    } else if(errEl) {
+      errEl.style.display = "none";
+    }
+  }
+  S("val-hint", "Valor estimado na entrega: " + R(vE));
   S("sec-info", MESES + " meses de obra · " + refReal + " reforços " + (period===6?"semestrais":"anuais") + " de " + R(valorRef));
 
   // ── DIRETO — cálculo real (com INCC) para lucro e TIR ──
   let totalMensaisReal=0;
   const fluxoD = new Array(41).fill(0);
   fluxoD[0] = -(ent+custosD);
-  for(let m=1; m<=MESES; m++) {
-    const pReal = parcMes * Math.pow(1+incc, m);
+  for(let m=1; m<=40; m++) {
+    // INCC durante obra, IGPM+1% após entrega
+    const corr = m<=MESES ? Math.pow(1+incc,m) : Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
+    const pReal = parcMes * corr;
     totalMensaisReal += pReal;
     fluxoD[m] -= pReal;
     if(rfMeses.includes(m)) fluxoD[m] -= valorRef * Math.pow(1+incc, m);
@@ -602,17 +620,9 @@ function calc() {
   S("d-custos", R(custosD));
   S("f-custos", R(custosF_total));
   S("d-ent",     "4× " + R(ent/4));
-  S("d-men-lbl", MESES + " mensais de " + R(parcMes));
-  S("d-men",     R(totalMensais));
-  if(refReal > 0) {
-    gi("d-ref-row").style.display="";
-    S("d-ref-lbl", refReal + " reforço" + (refReal>1?"s":"") + " · " + datasRef.join(" · "));
-    S("d-ref",     R(valorRef) + " cada");
-  } else {
-    gi("d-ref-row").style.display="none";
-  }
+  S("d-men-lbl", "40 mensais de");
   S("d-e30",  R(entrega30));
-  S("d-tot",  R(ent + custosD + totalMensais + totalRef + entrega30));
+  S("d-tot",  R(ent + custosD + parcMes*40 + valorRef*5 + entrega30));
   S("d-luc",  R(lucD));
   S("d-pct",  "· +" + (lucD/totDReal*100).toFixed(0) + "%");
   S("d-sub",  "Venda estimada " + R(vE) + " · Investido " + R(totDReal));
@@ -655,25 +665,25 @@ function calc() {
   // ── SELIC ──
   let saldoB=0, totAplic=ent+custosD;
   let sEnt=ent+custosD; for(let k=1;k<=40;k++) sEnt*=(1+selicMes(k)); saldoB+=sEnt;
-  for(let m=1; m<=MESES; m++) {
-    const pReal = parcMes*Math.pow(1+incc,m);
-    let pgto = pReal;
+  for(let m=1; m<=40; m++) {
+    const corr = m<=MESES ? Math.pow(1+incc,m) : Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
+    let pgto = parcMes * corr;
     if(rfMeses.includes(m)) pgto += valorRef*Math.pow(1+incc,m);
+    if(m===MESES) pgto += entrega30Real;
     totAplic += pgto;
     let s=pgto; for(let k=m+1;k<=40;k++) s*=(1+selicMes(k)); saldoB+=s;
   }
-  totAplic += entrega30Real;
-  let sE30=entrega30Real; for(let k=MESES+1;k<=40;k++) sE30*=(1+selicMes(k)); saldoB+=sE30;
 
   const ganhoB=saldoB-totAplic, ir=ganhoB*0.15, saldoL=saldoB-ir, ganhoL=saldoL-totAplic;
   const fluxoS=new Array(41).fill(0);
   fluxoS[0]=-(ent+custosD);
-  for(let m=1;m<=MESES;m++) {
-    fluxoS[m] -= parcMes*Math.pow(1+incc,m);
+  for(let m=1;m<=40;m++) {
+    const corr=m<=MESES?Math.pow(1+incc,m):Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
+    fluxoS[m] -= parcMes*corr;
     if(rfMeses.includes(m)) fluxoS[m] -= valorRef*Math.pow(1+incc,m);
+    if(m===MESES) fluxoS[m] -= entrega30Real;
   }
-  fluxoS[MESES] -= entrega30Real;
-  fluxoS[40]    += saldoL;
+  fluxoS[40] += saldoL;
   const tirSm=calcTIR(fluxoS), tirSa=Math.pow(1+tirSm,12)-1, tirSr=(1+tirSa)/(1+infl40)-1;
 
   S("s-fluxo", R(ent + custosD + totalMensais + totalRef + entrega30) + " (mesmo fluxo)");
@@ -819,11 +829,6 @@ Ganho_líquido = (Saldo_bruto − Total_aplicado) × (1 − 0,15)</div>
 })();
 
 // Nome listener
-document.getElementById("nome").addEventListener("input", function() {
-  const sc=document.getElementById("sec-cliente");
-  if(sc) sc.textContent=this.value.trim()?" \u2014 para "+this.value.trim():"";
-});
-
 // Modo apresentacao
 function toggleApres() {
   const body=document.body;
@@ -831,12 +836,6 @@ function toggleApres() {
   const btn=document.getElementById("btn-apres");
   if(btn) btn.textContent=isApres?"\u2715 Sair do Modo Apresenta\u00e7\u00e3o":"\ud83d\udda5\ufe0f Modo Apresenta\u00e7\u00e3o";
   window.scrollTo(0,0);
-}
-
-function usarParcMin(v) {
-  document.getElementById("parc-d").value = Math.round(v).toLocaleString("pt-BR");
-  document.getElementById("parc-h").value = String(Math.round(v));
-  calc();
 }
 
 // Init

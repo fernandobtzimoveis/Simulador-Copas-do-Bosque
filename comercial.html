@@ -262,7 +262,10 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
         <div class="r"><span class="r-l" id="d-men-lbl">Mensais durante a obra</span><span class="r-v" id="d-men">—</span></div>
         <div class="r" id="d-ref-row"><span class="r-l" id="d-ref-lbl">Reforços</span><span class="r-v" id="d-ref">—</span></div>
         <div class="r"><span class="r-l">30% saldo na entrega</span><span class="r-v" id="d-e30">—</span></div>
-        <div class="r ghost"><span>—</span></div>
+        <div class="r" style="background:var(--amber-lt)">
+          <span class="r-l" style="color:var(--amber)">ITBI + Registro + Escritura</span>
+          <span class="r-v" style="color:var(--amber)" id="d-custos">—</span>
+        </div>
         <div class="opt-total">
           <span class="t-lbl">Total investido</span>
           <span class="t-val" id="d-tot">—</span>
@@ -298,7 +301,10 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
           <div class="acomp-note">Começa baixo e cresce conforme a obra avança</div>
         </div>
         <div class="r"><span class="r-l">75% — banco financia e quita na entrega</span><span class="r-v g" id="f-cef">—</span></div>
-        <div class="r ghost"><span>—</span></div>
+        <div class="r" style="background:var(--amber-lt)">
+          <span class="r-l" style="color:var(--amber)">ITBI fração ideal + Registro + Seguros</span>
+          <span class="r-v" style="color:var(--amber)" id="f-custos">—</span>
+        </div>
         <div class="opt-total">
           <span class="t-lbl">Total do seu bolso</span>
           <span class="t-val g" id="f-tot">—</span>
@@ -454,20 +460,9 @@ function maskMoney(dId, hId) {
 maskMoney("val-d","val-h");
 maskMoney("parc-d","parc-h");
 
-// Flag: corretor editou a parcela manualmente
-var parcEditada = false;
-gi("parc-d").addEventListener("keydown", function(e) {
-  if(e.key !== "Tab") parcEditada = true;
-});
 
-// Marca parcela como editada manualmente pelo corretor
-var parcEditada = false;
-gi("parc-d").addEventListener("keydown", function(e) {
-  if(e.key !== "Backspace") parcEditada = true;
-});
-gi("parc-d").addEventListener("input", function() {
-  parcEditada = true;
-});
+
+
 
 // Máscara valorização
 gi("aa-d").addEventListener("keydown", function(e) {
@@ -494,11 +489,18 @@ function calc() {
   const igpm   = 0.007;
   const infl40 = (1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
 
-  // Sugestão de parcela mínima (15% ÷ 40)
-  const parcMin = Math.round(val * 0.15 / 40);
-  if(val > 10000 && !parcEditada) {
-    gi("parc-d").value = parcMin.toLocaleString("pt-BR");
-    gi("parc-h").value = String(parcMin);
+  // Parcela mínima sugerida (15% ÷ 40)
+  const parcMin = val > 10000 ? Math.round(val * 0.15 / 40) : 0;
+  // Atualiza hint da parcela imediatamente ao mudar o valor do imóvel
+  // Atualiza hint da parcela
+  const ph = gi("parc-hint");
+  if(ph && parcMin > 0) {
+    const parcAtualVal = parseInt(gi("parc-h").value)||0;
+    if(parcAtualVal === 0 || parcAtualVal < parcMin) {
+      ph.innerHTML = '<span style="color:var(--red);font-weight:600">Parcela mínima para atingir os 15% em 40 meses: ' + R(parcMin) + '</span>&nbsp;<button onclick="usarParcMin(' + parcMin + ')" style="background:var(--green);color:#fff;border:none;padding:3px 10px;border-radius:3px;font-size:11px;font-weight:700;cursor:pointer;margin-left:4px;">Usar esta parcela</button>';
+    } else {
+      ph.innerHTML = '<span style="color:var(--green-dk);font-weight:600">✓ Parcela válida</span>';
+    }
   }
 
   // Cenário tag valorização
@@ -535,6 +537,10 @@ function calc() {
   const totalMensais = parcMes * MESES;
   const saldoRef = base60 - totalMensais;
 
+  // ── Custos de transação ──
+  const custosD = val*0.02 + val*0.006 + val*0.007; // ITBI 2% + Registro 0,6% + Escritura 0,7%
+  const custosF_total = 545 + val*0.003+1000 + val*0.75*0.00021*30 + val*0.000034*30; // ITBI fração + Reg SFH + MIP + DFI
+
   if(saldoRef < 0) {
     const maxParc = Math.floor(base60 / MESES);
     bloq.style.display="block"; wrap.style.display="none";
@@ -560,9 +566,7 @@ function calc() {
 
   // Hints
   S("val-hint", "Valor estimado na entrega: " + R(val * Math.pow(1+aa, 40/12)));
-  S("parc-hint", refReal > 0 
-    ? refReal + " reforço" + (refReal>1?"s":"") + " de " + R(valorRef) + " · Total: " + R(totalRef)
-    : "Sem reforços — 60% dividido em " + MESES + " mensais");
+  // parc-hint gerenciado acima com lógica de parcMin
   S("period-hint", datasRef.length > 0 
     ? "Datas: " + datasRef.join(" · ") 
     : "Sem reforços no prazo atual");
@@ -578,7 +582,7 @@ function calc() {
   // ── DIRETO — cálculo real (com INCC) para lucro e TIR ──
   let totalMensaisReal=0;
   const fluxoD = new Array(41).fill(0);
-  fluxoD[0] = -ent;
+  fluxoD[0] = -(ent+custosD);
   for(let m=1; m<=MESES; m++) {
     const pReal = parcMes * Math.pow(1+incc, m);
     totalMensaisReal += pReal;
@@ -588,13 +592,15 @@ function calc() {
   fluxoD[MESES] -= entrega30Real;
   fluxoD[40]    += vE;
 
-  const totDReal = ent + totalMensaisReal + (rfMeses.reduce((a,m) => a + valorRef*Math.pow(1+incc,m), 0)) + entrega30Real;
+  const totDReal = ent + custosD + totalMensaisReal + (rfMeses.reduce((a,m) => a + valorRef*Math.pow(1+incc,m), 0)) + entrega30Real;
   const lucD = fluxoD.reduce((a,b)=>a+b, 0);
   const tirDm = calcTIR(fluxoD);
   const tirDa = Math.pow(1+tirDm,12)-1;
   const tirDr = (1+tirDa)/(1+infl40)-1;
 
   // Exibição direto (valores base sem INCC para não assustar)
+  S("d-custos", R(custosD));
+  S("f-custos", R(custosF_total));
   S("d-ent",     "4× " + R(ent/4));
   S("d-men-lbl", MESES + " mensais de " + R(parcMes));
   S("d-men",     R(totalMensais));
@@ -606,7 +612,7 @@ function calc() {
     gi("d-ref-row").style.display="none";
   }
   S("d-e30",  R(entrega30));
-  S("d-tot",  R(ent + totalMensais + totalRef + entrega30));
+  S("d-tot",  R(ent + custosD + totalMensais + totalRef + entrega30));
   S("d-luc",  R(lucD));
   S("d-pct",  "· +" + (lucD/totDReal*100).toFixed(0) + "%");
   S("d-sub",  "Venda estimada " + R(vE) + " · Investido " + R(totDReal));
@@ -618,7 +624,7 @@ function calc() {
   const parcF = (val*0.15)/40;
   let totMF=0;
   const fluxoF = new Array(41).fill(0);
-  fluxoF[0] = -ent;
+  fluxoF[0] = -(ent+custosF_total);
   const incC=(1-0.15)/30; let sC=cef*0.15, ac1=0, ac30=0, totAc=0;
   for(let m=1; m<=40; m++) {
     const corrF = m<=30 ? Math.pow(1+incc,m) : Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
@@ -630,7 +636,7 @@ function calc() {
     }
   }
   fluxoF[40] += vE - cef;
-  const totF = ent + totMF + totAc;
+  const totF = ent + custosF_total + totMF + totAc;
   const lucF = fluxoF.reduce((a,b)=>a+b,0);
   const tirFm=calcTIR(fluxoF), tirFa=Math.pow(1+tirFm,12)-1, tirFr=(1+tirFa)/(1+infl40)-1;
 
@@ -647,8 +653,8 @@ function calc() {
   S("f-real",Pp(tirFr));
 
   // ── SELIC ──
-  let saldoB=0, totAplic=ent;
-  let sEnt=ent; for(let k=1;k<=40;k++) sEnt*=(1+selicMes(k)); saldoB+=sEnt;
+  let saldoB=0, totAplic=ent+custosD;
+  let sEnt=ent+custosD; for(let k=1;k<=40;k++) sEnt*=(1+selicMes(k)); saldoB+=sEnt;
   for(let m=1; m<=MESES; m++) {
     const pReal = parcMes*Math.pow(1+incc,m);
     let pgto = pReal;
@@ -661,7 +667,7 @@ function calc() {
 
   const ganhoB=saldoB-totAplic, ir=ganhoB*0.15, saldoL=saldoB-ir, ganhoL=saldoL-totAplic;
   const fluxoS=new Array(41).fill(0);
-  fluxoS[0]=-ent;
+  fluxoS[0]=-(ent+custosD);
   for(let m=1;m<=MESES;m++) {
     fluxoS[m] -= parcMes*Math.pow(1+incc,m);
     if(rfMeses.includes(m)) fluxoS[m] -= valorRef*Math.pow(1+incc,m);
@@ -670,10 +676,10 @@ function calc() {
   fluxoS[40]    += saldoL;
   const tirSm=calcTIR(fluxoS), tirSa=Math.pow(1+tirSm,12)-1, tirSr=(1+tirSa)/(1+infl40)-1;
 
-  S("s-fluxo", R(ent + totalMensais + totalRef + entrega30) + " (mesmo fluxo)");
+  S("s-fluxo", R(ent + custosD + totalMensais + totalRef + entrega30) + " (mesmo fluxo)");
   S("s-bruto", R(saldoB));
   S("s-ir",    "− " + R(ir));
-  S("s-tot",   R(ent + totalMensais + totalRef + entrega30));
+  S("s-tot",   R(ent + custosD + totalMensais + totalRef + entrega30));
   S("s-luc",   R(ganhoL));
   S("s-pct",   "· +" + (ganhoL/totAplic*100).toFixed(0) + "%");
   S("s-sub",   "Aplicando na Selic por 40 meses · após IR de 15%");
@@ -825,6 +831,12 @@ function toggleApres() {
   const btn=document.getElementById("btn-apres");
   if(btn) btn.textContent=isApres?"\u2715 Sair do Modo Apresenta\u00e7\u00e3o":"\ud83d\udda5\ufe0f Modo Apresenta\u00e7\u00e3o";
   window.scrollTo(0,0);
+}
+
+function usarParcMin(v) {
+  document.getElementById("parc-d").value = Math.round(v).toLocaleString("pt-BR");
+  document.getElementById("parc-h").value = String(Math.round(v));
+  calc();
 }
 
 // Init

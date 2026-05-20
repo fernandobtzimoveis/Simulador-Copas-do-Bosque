@@ -450,8 +450,8 @@ gi("nome").addEventListener("input", calc);
 
 // Edição da parcela no card — reforço ajusta automaticamente
 // Variáveis globais para guardar valores dos campos do card
-var _parcMesGlobal = 0;
-var _valorRefGlobal = 0;
+var _parcMesGlobal = -1; // -1 = nunca editado, 0 = zerado explicitamente
+var _valorRefGlobal = -1;
 var _valAnterior = 0; // para detectar mudança de valor do imóvel
 
 function onParcEdit(el) {
@@ -540,8 +540,8 @@ function calc() {
 
   // Se o valor do imóvel mudou, resetar os valores globais
   if(val !== _valAnterior) {
-    _parcMesGlobal = parcDefault;
-    _valorRefGlobal = refDefault;
+    _parcMesGlobal = -1;
+    _valorRefGlobal = -1;
     _valAnterior = val;
     // Atualizar os campos visuais
     const parcEditEl2 = document.getElementById("d-parc-edit");
@@ -550,9 +550,9 @@ function calc() {
     if(refEditEl2)  refEditEl2.value  = refDefault.toLocaleString("pt-BR");
   }
 
-  // Usa variáveis globais (fonte da verdade)
-  const parcMes      = _parcMesGlobal > 0 ? _parcMesGlobal : parcDefault;
-  const valorRefCard = _valorRefGlobal;
+  // Usa variáveis globais (-1 = nunca editado → usa padrão; 0 = zerado explicitamente → usa 0)
+  const parcMes      = _parcMesGlobal === -1 ? parcDefault : _parcMesGlobal;
+  const valorRefCard = _valorRefGlobal === -1 ? refDefault  : _valorRefGlobal;
   const totalMensais = parcMes * NPARC;
   const totalRefCalc = valorRefCard * NREF;
   const somaBase = totalMensais + totalRefCalc;

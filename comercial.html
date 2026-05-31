@@ -17,9 +17,9 @@
 }
 body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--black);min-height:100vh}
 header{background:var(--white);border-bottom:1px solid var(--border)}
-.hdr{max-width:1100px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.hdr{max-width:1000px;margin:0 auto;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
 .hdr-left{display:flex;flex-direction:column;gap:10px}
-.logo-img{height:130px;width:auto;object-fit:contain}
+.logo-img{height:120px;width:auto;object-fit:contain}
 .meztra-row{display:flex;align-items:center;gap:6px}
 .mz-by{font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gray-lt)}
 .mz-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--black);letter-spacing:-0.5px;line-height:1}
@@ -30,108 +30,155 @@ header{background:var(--white);border-bottom:1px solid var(--border)}
 .hdr-badge .bv{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:700;color:var(--green-dk);margin-top:4px;line-height:1}
 .hdr-badge .bs{font-size:11px;color:var(--green-dk);margin-top:4px}
 .green-bar{height:4px;background:var(--green)}
-
-main{max-width:1100px;margin:0 auto;padding:28px 24px 60px}
-
-/* INPUTS */
+.obra-bar{max-width:1000px;margin:0 auto;padding:8px 24px;background:var(--white);border-bottom:1px solid var(--border)}
+.obra-track-wrap{display:flex;align-items:center;gap:12px}
+.obra-label{font-size:10px;color:var(--gray);white-space:nowrap;font-weight:600}
+.obra-track{flex:1;height:6px;background:var(--border);border-radius:10px;overflow:hidden}
+.obra-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--green),var(--green-dk))}
+.obra-pct{font-size:10px;color:var(--green-dk);font-weight:700;white-space:nowrap}
+main{max-width:1000px;margin:0 auto;padding:24px 24px 60px}
 .inputs-wrap{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--green);padding:24px 28px;margin-bottom:24px}
-.inputs-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--green-dk);font-weight:700;margin-bottom:20px}
-.inputs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:start}
-@media(max-width:700px){.inputs-grid{grid-template-columns:1fr 1fr}}
+.inputs-title{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--green-dk);font-weight:700;margin-bottom:16px}
+.inputs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+@media(max-width:600px){.inputs-grid{grid-template-columns:1fr}}
 .inp-group{display:flex;flex-direction:column;gap:6px}
 .inp-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600}
 .inp-wrap{display:flex;align-items:baseline;gap:3px;border-bottom:2px solid var(--green);padding-bottom:4px}
 .inp-wrap .pfx{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--gray-lt)}
-.inp-wrap input{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:700;color:var(--black);background:transparent;border:none;outline:none;width:100%;min-width:0;line-height:1}
-.inp-wrap input::placeholder{color:var(--gray-lt);font-weight:300}
+.inp-wrap input[type=text]{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:700;color:var(--black);background:transparent;border:none;outline:none;width:100%;min-width:0;line-height:1}
+.inp-wrap input[type=text]::placeholder{color:var(--gray-lt);font-weight:300}
 .inp-wrap .sfx{font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--gray-lt);white-space:nowrap}
-.inp-wrap select{font-family:'Barlow',sans-serif;font-size:18px;font-weight:600;color:var(--black);background:transparent;border:none;outline:none;width:100%;cursor:pointer}
-.inp-hint{font-size:11px;color:var(--gray);line-height:1.5;min-height:28px}
-.inp-hint.ok{color:var(--green-dk);font-weight:600}
-.inp-hint.warn{color:var(--red);font-weight:600}
-.cenario-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-bottom:4px}
+.inp-hint{font-size:11px;color:var(--gray);line-height:1.5;min-height:20px}
+.cenario-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
 .cenario-tag.moderado{background:var(--green-lt);color:var(--green-dk)}
 .cenario-tag.pessimista{background:#FEF2F2;color:var(--red)}
 .cenario-tag.otimista{background:#EFF6FF;color:#2563EB}
-
-/* BLOQUEIO */
-.bloqueio{background:#FFF8F0;border:2px solid var(--amber-bd);border-radius:4px;padding:24px;margin-bottom:20px;text-align:center}
-.bloqueio .bi{font-size:36px;margin-bottom:10px}
-.bloqueio .bt{font-size:16px;font-weight:700;color:var(--amber);margin-bottom:6px}
-.bloqueio .bs{font-size:13px;color:var(--gray-dk)}
-
-/* SEC */
-.sec-title{font-size:9px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
-
+.bloqueio{background:#FFF8F0;border:2px solid var(--amber-bd);border-radius:4px;padding:32px;margin-bottom:20px;text-align:center}
+.bloqueio .bi{font-size:40px;margin-bottom:12px}
+.bloqueio .bt{font-size:18px;font-weight:700;color:var(--amber);margin-bottom:8px}
+.bloqueio .bs{font-size:14px;color:var(--gray-dk)}
+/* TABS */
+.tabs-nav{display:flex;border-bottom:2px solid var(--border);margin-bottom:24px}
+.tab-btn{flex:1;padding:14px 8px;font-family:'Barlow',sans-serif;font-size:13px;font-weight:600;color:var(--gray);background:var(--white);border:none;border-bottom:3px solid transparent;cursor:pointer;transition:all .2s;text-align:center;margin-bottom:-2px}
+.tab-btn:hover{color:var(--black);background:var(--green-lt)}
+.tab-btn.active{color:var(--green-dk);border-bottom-color:var(--green);background:var(--white)}
+.tab-btn .tab-num{display:block;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
+.tab-btn.active .tab-num{color:var(--green-dk)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+/* CARD SINGLE */
+.card-single{background:var(--white);border:1px solid var(--border);border-top:4px solid var(--border);overflow:hidden;margin-bottom:16px}
+.card-single.direto{border-top-color:var(--gray-dk)}
+.card-single.financiado{border-color:var(--green);border-top-color:var(--green)}
+.card-single.selic{border-top-color:var(--slate)}
+.cs-head{padding:20px 28px 18px;border-bottom:1px solid var(--border)}
+.card-single.financiado .cs-head{background:var(--green-lt);border-bottom-color:var(--green-mid)}
+.card-single.selic .cs-head{background:var(--slate-lt);border-bottom-color:var(--slate-bd)}
+.cs-head .badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;margin-bottom:8px}
+.badge.g{background:var(--green);color:#fff}
+.badge.s{background:var(--slate);color:#fff}
+.cs-head h2{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:700;letter-spacing:1px;color:var(--black);text-transform:uppercase;margin-bottom:4px}
+.cs-head p{font-size:13px;color:var(--gray)}
+.cr{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;border-bottom:1px solid var(--border);gap:16px}
+.card-single.financiado .cr{border-bottom-color:var(--green-mid)}
+.card-single.selic .cr{border-bottom-color:var(--slate-bd)}
+.cr-l{font-size:13px;color:var(--gray);line-height:1.4;flex:1}
+.cr-v{font-size:16px;font-weight:700;color:var(--black);white-space:nowrap;text-align:right}
+.cr-v.g{color:var(--green-dk)} .cr-v.r{color:var(--red)} .cr-v.s{color:var(--slate)}
+.cr.custo{background:var(--amber-lt)}
+.cr.custo .cr-l{color:var(--amber)}
+.cr.custo .cr-v{color:var(--amber)}
+.cr-edit{display:flex;align-items:center;gap:6px}
+.cr-edit .epfx{font-size:14px;color:var(--gray-lt)}
+.cr-edit input{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--green);outline:none;width:150px;text-align:right;background:transparent;padding-bottom:2px}
+.cr-edit input.ref-inp{border-bottom-color:var(--orange)}
+.cs-acomp{padding:14px 28px 16px;border-bottom:1px solid var(--green-mid);background:var(--green-lt)}
+.cs-acomp .al{font-size:11px;font-weight:700;color:var(--green-dk);margin-bottom:8px}
+.track{height:6px;background:var(--green-mid);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.track-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--green),var(--green-dk));border-radius:10px}
+.acomp-range{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--black)}
+.acomp-note{font-size:11px;color:var(--gray);margin-top:4px}
+.cs-total{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;background:var(--bg);border-top:2px solid var(--border)}
+.card-single.financiado .cs-total{background:var(--green-lt);border-top-color:var(--green-mid)}
+.card-single.selic .cs-total{background:var(--slate-lt);border-top-color:var(--slate-bd)}
+.cs-total .tl{font-size:12px;font-weight:700;color:var(--black);text-transform:uppercase;letter-spacing:1px}
+.cs-total .tv{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:700;color:var(--black)}
+.cs-total .tv.g{color:var(--green-dk)} .cs-total .tv.s{color:var(--slate)}
+.cs-lucro{padding:28px}
+.card-single.financiado .cs-lucro{background:var(--green-lt)}
+.card-single.selic .cs-lucro{background:var(--slate-lt)}
+.cs-lucro .ll{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:8px}
+.cs-lucro .lv{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:700;color:var(--green-dk);line-height:1;margin-bottom:6px}
+.card-single.financiado .cs-lucro .lv{font-size:88px}
+.card-single.selic .cs-lucro .lv{color:var(--slate);font-size:56px}
+.cs-lucro .lpct{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:600;color:var(--green-dk);opacity:.7;margin-left:12px}
+.card-single.selic .cs-lucro .lpct{color:var(--slate)}
+.cs-lucro .lvs{font-size:14px;font-weight:700;padding:8px 14px;border-radius:4px;display:inline-block;margin-top:8px}
+.cs-lucro .lvs.melhor{background:var(--green-lt);color:var(--green-dk)}
+.cs-lucro .lvs.pior{background:var(--slate-lt);color:var(--slate)}
+.cs-lucro .lsub{font-size:15px;color:var(--gray-dk);margin-top:12px;line-height:1.7;font-weight:500}
+.cs-tec{padding:12px 28px;font-size:11px;color:var(--gray);border-top:1px solid var(--border);line-height:1.7}
+.cs-tec span{color:var(--gray-dk);font-weight:600}
+.card-single.financiado .cs-tec{background:var(--green-lt);border-top-color:var(--green-mid)}
+.card-single.selic .cs-tec{background:var(--slate-lt);border-top-color:var(--slate-bd)}
+.cs-nota{padding:8px 28px;font-size:10px;color:var(--gray-lt);background:var(--bg);border-top:1px solid var(--border)}
+.card-single.financiado .cs-nota{background:var(--green-lt);border-top-color:var(--green-mid)}
 /* COMPARE */
-.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
-@media(max-width:800px){.compare{grid-template-columns:1fr}}
+.compare{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:760px){.compare{grid-template-columns:1fr}}
 .opt{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
 .opt.direto{border-top-color:var(--gray-dk)}
 .opt.financiado{border-color:var(--green);border-top-color:var(--green)}
 .opt.selic{border-top-color:var(--slate)}
-.opt-head{padding:16px 18px 14px;border-bottom:1px solid var(--border)}
+.opt-head{padding:14px 16px 12px;border-bottom:1px solid var(--border)}
 .opt.financiado .opt-head{background:var(--green-lt);border-bottom-color:var(--green-mid)}
 .opt.selic .opt-head{background:var(--slate-lt);border-bottom-color:var(--slate-bd)}
-.badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;margin-bottom:6px}
-.badge.g{background:var(--green);color:#fff}
-.badge.s{background:var(--slate);color:#fff}
-.opt-head h2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;letter-spacing:1px;color:var(--black);text-transform:uppercase;margin-bottom:3px}
-.opt-head p{font-size:11px;color:var(--gray);line-height:1.4}
-.r{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px}
+.opt-head h3{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;letter-spacing:1px;color:var(--black);text-transform:uppercase;margin-bottom:2px}
+.opt-head p{font-size:10px;color:var(--gray)}
+.r{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 16px;border-bottom:1px solid var(--border);gap:8px}
 .opt.financiado .r{border-bottom-color:var(--green-mid)}
 .opt.selic .r{border-bottom-color:var(--slate-bd)}
-.r-l{font-size:12px;color:var(--gray);line-height:1.4;flex:1}
-.r-v{font-size:13px;font-weight:700;color:var(--black);white-space:nowrap;text-align:right}
-.r-v.g{color:var(--green-dk)}
-.r-v.r{color:var(--red)}
-.r-v.s{color:var(--slate)}
-.r.ghost{opacity:0;pointer-events:none;border-bottom-color:transparent}
-.acomp{padding:11px 18px 13px;border-bottom:1px solid var(--green-mid);background:var(--green-lt)}
-.acomp-lbl{font-size:10px;font-weight:700;color:var(--green-dk);margin-bottom:7px}
-.track{height:5px;background:var(--green-mid);border-radius:10px;margin-bottom:6px;overflow:hidden}
-.track-fill{height:100%;width:100%;background:linear-gradient(90deg,var(--green),var(--green-dk));border-radius:10px}
-.acomp-range{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--black)}
-.acomp-note{font-size:10px;color:var(--gray);margin-top:3px}
-.opt-total{padding:13px 18px;background:var(--bg);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.r-l{font-size:11px;color:var(--gray);line-height:1.3;flex:1}
+.r-v{font-size:12px;font-weight:700;color:var(--black);white-space:nowrap;text-align:right}
+.r-v.g{color:var(--green-dk)} .r-v.r{color:var(--red)} .r-v.s{color:var(--slate)}
+.incc-tag{font-size:9px;background:var(--amber-lt);color:var(--amber);padding:1px 4px;border-radius:3px;font-weight:600;margin-left:2px}
+.opt-acomp{padding:10px 16px 12px;border-bottom:1px solid var(--green-mid);background:var(--green-lt)}
+.opt-acomp .al{font-size:10px;font-weight:700;color:var(--green-dk);margin-bottom:6px}
+.opt-total{padding:12px 16px;background:var(--bg);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;margin-top:auto}
 .opt.financiado .opt-total{background:var(--green-lt);border-top-color:var(--green-mid)}
 .opt.selic .opt-total{background:var(--slate-lt);border-top-color:var(--slate-bd)}
-.t-lbl{font-size:11px;font-weight:700;color:var(--black);text-transform:uppercase;letter-spacing:0.5px}
-.t-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--black)}
+.t-lbl{font-size:10px;font-weight:700;color:var(--black);text-transform:uppercase;letter-spacing:0.5px}
+.t-val{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--black)}
 .t-val.g{color:var(--green-dk)} .t-val.s{color:var(--slate)}
-
-/* LUCRO */
-.lucro-box{padding:18px;border-top:3px solid var(--border);margin-top:auto;background:var(--white)}
-.opt.financiado .lucro-box{background:var(--green-lt);border-top-color:var(--green)}
-.opt.selic .lucro-box{background:var(--slate-lt);border-top-color:var(--slate)}
-.lucro-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:6px}
-.lucro-main{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
-.lucro-val{font-family:'Barlow Condensed',sans-serif;font-size:42px;font-weight:700;color:var(--green-dk);line-height:1}
-.opt.financiado .lucro-val{font-size:46px}
-.opt.selic .lucro-val{color:var(--slate);font-size:36px}
-.lucro-pct{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:600;color:var(--green-dk);opacity:.7}
-.opt.selic .lucro-pct{color:var(--slate)}
-.lucro-selic-comp{font-size:12px;font-weight:700;margin-top:4px;padding:6px 10px;border-radius:3px;display:inline-block}
-.lucro-selic-comp.melhor{background:var(--green-lt);color:var(--green-dk)}
-.lucro-selic-comp.pior{background:var(--slate-lt);color:var(--slate)}
-.lucro-sub{font-size:11px;color:var(--gray);margin-top:6px;line-height:1.5}
-.card-tec{padding:9px 18px;font-size:10px;color:var(--gray);border-top:1px solid var(--border);line-height:1.6}
-.opt.financiado .card-tec{background:var(--green-lt);border-top-color:var(--green-mid)}
-.opt.selic .card-tec{background:var(--slate-lt);border-top-color:var(--slate-bd)}
-.card-tec span{color:var(--gray-dk);font-weight:600}
-
+.opt-lucro{padding:16px;border-top:2px solid var(--border)}
+.opt.direto .opt-lucro{border-top-color:var(--gray-dk)}
+.opt.financiado .opt-lucro{background:var(--green-lt);border-top-color:var(--green)}
+.opt.selic .opt-lucro{background:var(--slate-lt);border-top-color:var(--slate)}
+.opt-lucro .ll{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:5px}
+.opt-lucro .lv{font-family:'Barlow Condensed',sans-serif;font-size:36px;font-weight:700;color:var(--green-dk);line-height:1}
+.opt.selic .opt-lucro .lv{color:var(--slate)}
+.opt-lucro .lvs{font-size:11px;font-weight:700;padding:4px 8px;border-radius:3px;margin-top:6px;display:inline-block}
+.opt-lucro .lvs.melhor{background:var(--green-lt);color:var(--green-dk)}
+.opt-lucro .lvs.pior{background:var(--slate-lt);color:var(--slate)}
+.opt-tec{padding:8px 16px;font-size:10px;color:var(--gray);border-top:1px solid var(--border);line-height:1.6}
+.opt.financiado .opt-tec{background:var(--green-lt);border-top-color:var(--green-mid)}
+.opt.selic .opt-tec{background:var(--slate-lt);border-top-color:var(--slate-bd)}
+/* CASCADE */
+.cascade-hidden{display:none!important}
+.cr.cascade-hidden{display:none!important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.cascade-show{animation:fadeIn .25s ease}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--green);color:#fff;border-radius:50%;font-size:11px;font-weight:700;margin-right:6px;flex-shrink:0;vertical-align:middle}
+.step-hint{font-size:11px;color:var(--gray);font-style:italic;margin-left:4px}
 /* BOTÕES */
-.btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
-.btn{display:flex;align-items:center;gap:8px;padding:13px 22px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;border-radius:2px;transition:opacity .2s;text-decoration:none}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.btn{display:flex;align-items:center;gap:8px;padding:13px 20px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;border-radius:2px;transition:opacity .2s;text-decoration:none;white-space:nowrap}
 .btn:hover{opacity:.85}
-.btn.pdf{background:var(--green-dk);color:#fff}
-.btn.whats{background:#25D366;color:#fff}
-.btn.corretor{background:var(--orange);color:#fff}
-.btn.metod{background:var(--white);color:var(--slate);border:1px solid var(--slate-bd)}
+.btn-pdf{background:var(--gray-dk);color:#fff}
+.btn-whats{background:#25D366;color:#fff}
+.btn-metod{background:var(--white);color:var(--slate);border:1px solid var(--slate-bd)}
 .aviso{background:var(--amber-lt);border:1px solid var(--amber-bd);border-left:3px solid var(--orange);padding:12px 16px;font-size:11px;color:var(--amber);line-height:1.8;margin-bottom:14px}
-
-footer{max-width:1100px;margin:0 auto;padding:0 24px 40px}
+footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
 .foot-div{height:1px;background:var(--border);margin-bottom:14px}
 .foot-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:10px}
 .foot-brand .fb-name{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:5px;color:var(--black);text-transform:uppercase}
@@ -141,21 +188,14 @@ footer{max-width:1100px;margin:0 auto;padding:0 24px 40px}
 .foot-meztra .mn{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--black);letter-spacing:-0.5px;line-height:1}
 .foot-meztra .me{display:inline-block;background:var(--orange);color:#fff;font-size:9px;font-weight:700;padding:1px 3px;margin:0 1px;line-height:1.5;border-radius:2px}
 .foot-meztra .ms{font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--gray-lt)}
-.foot-contact{text-align:right;font-size:11px;color:var(--gray);line-height:1.8}
-.foot-contact a{color:var(--green);text-decoration:none;font-weight:600}
 .foot-disc{font-size:9px;color:var(--gray-lt);line-height:1.8;border-top:1px solid var(--border);padding-top:10px}
-
 @media print{
-  .btns{display:none!important}
+  .btns,.obra-bar,.tabs-nav{display:none!important}
   body{background:white}
-  .compare{grid-template-columns:1fr 1fr 1fr}
-  .opt,.inputs-wrap,.opt-head,.lucro-box,.acomp,.opt-total{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tab-pane{display:block!important}
+  .cascade-hidden{display:flex!important}
+  .card-single,.opt,.cs-head,.cs-lucro,.cs-total,.opt-lucro,.opt-head,.opt-total,.opt-acomp,.cs-acomp{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
-
-/* MODO APRESENTACAO */
-body.apres .inputs-wrap,body.apres .btn-metod,body.apres .aviso,body.apres .card-tec,body.apres footer{display:none!important}
-body.apres .lucro-val{font-size:52px!important}
-body.apres .opt.financiado .lucro-val{font-size:58px!important}
 </style>
 </head>
 <body>
@@ -179,20 +219,26 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
   <div class="green-bar"></div>
 </header>
 
-<main>
+<div class="obra-bar">
+  <div class="obra-track-wrap">
+    <span class="obra-label">Progresso da obra</span>
+    <div class="obra-track"><div class="obra-fill" id="obra-fill" style="width:0%"></div></div>
+    <span class="obra-pct" id="obra-pct">0%</span>
+  </div>
+</div>
 
+<main>
   <div class="inputs-wrap">
     <div class="inputs-title">📋 Dados do cliente</div>
     <div class="inputs-grid">
-
       <div class="inp-group">
         <div class="inp-lbl">Nome do cliente</div>
         <div class="inp-wrap">
-          <input type="text" id="nome" placeholder="Ex: João Silva" autocomplete="off" style="font-family:'Barlow',sans-serif;font-size:20px;font-weight:600;border:none;outline:none;width:100%;background:transparent">
+          <input type="text" id="nome" placeholder="Ex: João Silva" autocomplete="off"
+            style="font-family:'Barlow',sans-serif;font-size:22px;font-weight:600;border:none;outline:none;width:100%;background:transparent">
         </div>
         <div class="inp-hint">Aparece na simulação e no WhatsApp</div>
       </div>
-
       <div class="inp-group">
         <div class="inp-lbl">Valor do imóvel</div>
         <div class="inp-wrap">
@@ -202,7 +248,6 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
         </div>
         <div class="inp-hint" id="val-hint">Informe o valor do apartamento</div>
       </div>
-
       <div class="inp-group">
         <div class="inp-lbl">Valorização estimada</div>
         <div class="inp-wrap">
@@ -210,163 +255,277 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
           <input type="hidden" id="aa-h" value="15">
           <span class="sfx">% a.a.</span>
         </div>
-        <div class="inp-hint" id="aa-hint">
-          <span class="cenario-tag moderado" id="aa-tag">Cenário moderado</span>
-        </div>
+        <div class="inp-hint"><span class="cenario-tag moderado" id="aa-tag">Cenário moderado</span></div>
       </div>
-
     </div>
   </div>
 
-  <!-- BLOQUEIO -->
   <div class="bloqueio" id="bloqueio">
     <div class="bi">📊</div>
-    <div class="bt" id="bloqueio-txt">Preencha o valor do imóvel e a parcela mensal</div>
-    <div class="bs" id="bloqueio-sub">A simulação aparecerá automaticamente</div>
+    <div class="bt" id="bloqueio-txt">Digite o valor do imóvel para começar</div>
+    <div class="bs" id="bloqueio-sub">A simulação aparece automaticamente</div>
   </div>
 
   <div id="resultado-wrap" style="display:none">
 
-    <div class="sec-title">Simulação <span id="sec-cliente" style="color:var(--green-dk);font-weight:700;font-style:italic;font-size:13px;letter-spacing:0"></span> · <span id="sec-info" style="color:var(--green-dk);font-weight:700;letter-spacing:0"></span></div>
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      SIMULAÇÃO
+      <span style="width:1px;height:12px;background:var(--border)"></span>
+      <span id="sec-info" style="color:var(--green-dk);font-weight:700;letter-spacing:0;font-size:12px;text-transform:none"></span>
+      <span id="sec-cliente" style="color:var(--green-dk);font-weight:700;font-style:italic;font-size:13px;letter-spacing:0;text-transform:none"></span>
+    </div>
 
-    <div class="compare">
+    <!-- 3 ABAS -->
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="showTab(0)">
+        <span class="tab-num">1</span>Financiar Caixa
+      </button>
+      <button class="tab-btn" onclick="showTab(1)">
+        <span class="tab-num">2</span>Pagar Direto
+      </button>
+      <button class="tab-btn" onclick="showTab(2)">
+        <span class="tab-num">3</span>Comparativo
+      </button>
+    </div>
 
-      <!-- DIRETO -->
-      <div class="opt direto">
-        <div class="opt-head">
-          <h2>Pagar Direto</h2>
-          <p>Sem banco · você paga tudo à construtora</p>
-        </div>
-        <div class="r"><span class="r-l">Entrada (10%) em 4 parcelas</span><span class="r-v" id="d-ent">—</span></div>
-        <div class="r" style="align-items:center">
-          <span class="r-l"><span id="d-men-lbl">— mensais de</span> <span style="font-size:9px;background:#FEF9EC;color:#92610A;padding:1px 5px;border-radius:3px;font-weight:600">corrige INCC</span></span>
-          <span class="r-v" style="display:flex;align-items:center;gap:4px">
-            <span style="font-size:11px;color:var(--gray)">R$</span>
-            <input id="d-parc-edit" type="text" inputmode="numeric" autocomplete="off" onchange="onParcEdit(this)"
-              style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--green);outline:none;width:90px;text-align:right;background:transparent;padding-bottom:2px">
-          </span>
-        </div>
-        <div class="r" style="align-items:center" id="d-ref-row">
-          <span class="r-l"><span id="d-ref-lbl">5 reforços semestrais de</span> <span style="font-size:9px;background:#FEF9EC;color:#92610A;padding:1px 5px;border-radius:3px;font-weight:600">corrige INCC</span></span>
-          <span class="r-v" style="display:flex;align-items:center;gap:4px">
-            <span style="font-size:11px;color:var(--gray)">R$</span>
-            <input id="d-ref-edit" type="text" inputmode="numeric" autocomplete="off" onchange="onRefEdit(this)"
-              style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--orange);outline:none;width:90px;text-align:right;background:transparent;padding-bottom:2px">
-          </span>
-        </div>
-        <div class="r"><span class="r-l">30% saldo na entrega</span><span class="r-v" id="d-e30">—</span></div>
-        <div class="r" style="background:var(--amber-lt)">
-          <span class="r-l" style="color:var(--amber)">ITBI + Registro + Escritura</span>
-          <span class="r-v" style="color:var(--amber)" id="d-custos">—</span>
-        </div>
-        <div class="opt-total">
-          <span class="t-lbl">Total investido</span>
-          <span class="t-val" id="d-tot">—</span>
-        </div>
-        <div style="padding:6px 18px;font-size:9px;color:var(--gray-lt);line-height:1.5;background:var(--bg);border-bottom:1px solid var(--border);">
-          * Valores base sem correção. Parcelas serão corrigidas pelo INCC durante a obra e IGPM+1% após a entrega.
-        </div>
-        <div class="lucro-box">
-          <div class="lucro-lbl">Lucro estimado na venda</div>
-          <div class="lucro-main">
-            <span class="lucro-val" id="d-luc">—</span>
-            <span class="lucro-pct" id="d-pct">—</span>
-          </div>
-          <div class="lucro-selic-comp melhor" id="d-vs">—</div>
-          <div class="lucro-sub" id="d-sub">—</div>
-        </div>
-        <div class="card-tec"><span>TIR:</span> <span id="d-tir">—</span> &nbsp;·&nbsp; <span>Retorno real:</span> <span id="d-real">—</span></div>
-      </div>
-
-      <!-- FINANCIADO -->
-      <div class="opt financiado">
-        <div class="opt-head">
+    <!-- ABA 1: FINANCIADO -->
+    <div class="tab-pane active" id="tab-0">
+      <div class="card-single financiado">
+        <div class="cs-head">
           <div class="badge g">⭐ Recomendado</div>
-          <h2>Financiar pela Caixa</h2>
-          <p>Menor desembolso · banco cobre 75%</p>
+          <h2>Financiar pela Caixa Econômica</h2>
+          <p>Menor desembolso · banco cobre 75% · entrada fixa 10%</p>
         </div>
-        <div class="r"><span class="r-l">Entrada (10%) em 4 parcelas</span><span class="r-v" id="f-ent">—</span></div>
-        <div class="r"><span class="r-l">Mensais construtora (15% em 40x)</span><span class="r-v" id="f-men">—</span></div>
-        <div class="acomp">
-          <div class="acomp-lbl">Acompanhamento de obra — Caixa</div>
+        <div class="cr"><span class="cr-l">Entrada (10%) em 4 parcelas</span><span class="cr-v" id="f-ent">—</span></div>
+        <div class="cr" style="align-items:center">
+          <span class="cr-l">
+            40 mensais à construtora <span class="incc-tag">corrige INCC</span><br>
+            <span style="font-size:11px;color:var(--gray-lt)" id="f-banco-label">15% construtora · 75% banco</span>
+          </span>
+          <span class="cr-edit" style="flex-direction:column;align-items:flex-end;gap:2px">
+            <span style="display:flex;align-items:center;gap:6px">
+              <span class="epfx">R$</span>
+              <input id="f-parc-edit" type="text" inputmode="numeric" onchange="onParcFinEdit(this)"
+                style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--green);outline:none;width:120px;text-align:right;background:transparent;padding-bottom:2px">
+            </span>
+            <span id="f-parc-sug" style="font-size:11px;color:var(--gray-lt)"></span>
+          </span>
+        </div>
+        <div id="f-parc-erro" style="display:none;padding:8px 28px;background:#FEF2F2;color:var(--red);font-size:12px;font-weight:600;border-bottom:1px solid #FECACA;"></div>
+        <div class="cs-acomp">
+          <div class="al">Acompanhamento de obra — Caixa (juros sobre saldo liberado progressivamente)</div>
           <div class="track"><div class="track-fill"></div></div>
           <div class="acomp-range"><span id="f-ac1">—</span><span id="f-ac2">—</span></div>
-          <div class="acomp-note">Começa baixo e cresce conforme a obra avança</div>
+          <div class="acomp-note">Começa baixo e cresce conforme a obra avança · 15%→100%</div>
         </div>
-        <div class="r"><span class="r-l">75% — banco financia e quita na entrega</span><span class="r-v g" id="f-cef">—</span></div>
-        <div class="r" style="background:var(--amber-lt)">
-          <span class="r-l" style="color:var(--amber)">ITBI fração ideal + Registro + Seguros</span>
-          <span class="r-v" style="color:var(--amber)" id="f-custos">—</span>
+        <div class="cr"><span class="cr-l" id="f-banco-pct">75% — banco financia e quita na entrega</span><span class="cr-v g" id="f-cef">—</span></div>
+        <div class="cr custo"><span class="cr-l">ITBI fração ideal + Registro SFH + Avaliação</span><span class="cr-v" id="f-cus1">—</span></div>
+        <div class="cr custo"><span class="cr-l">Seguros MIP + DFI (30 meses de obra)</span><span class="cr-v" id="f-cus2">—</span></div>
+        <div class="cs-total">
+          <span class="tl">Total do seu bolso</span>
+          <span class="tv g" id="f-tot">—</span>
         </div>
-        <div class="opt-total">
-          <span class="t-lbl">Total do seu bolso</span>
-          <span class="t-val g" id="f-tot">—</span>
+        <div class="cs-nota">* Inclui ITBI sobre fração ideal do terreno (R$ 54.545 = R$ 1.200.000 ÷ 22 unidades)</div>
+        <div class="cs-lucro">
+          <div class="ll">Lucro estimado na venda</div>
+          <div><span class="lv" id="f-luc">—</span><span class="lpct" id="f-pct">—</span></div>
+          <div class="lvs melhor" id="f-vs">—</div>
+          <div class="lsub" id="f-sub">—</div>
         </div>
-        <div class="lucro-box">
-          <div class="lucro-lbl">Lucro estimado na venda</div>
-          <div class="lucro-main">
-            <span class="lucro-val" id="f-luc">—</span>
-            <span class="lucro-pct" id="f-pct">—</span>
-          </div>
-          <div class="lucro-selic-comp melhor" id="f-vs">—</div>
-          <div class="lucro-sub" id="f-sub">—</div>
+        <div class="cs-tec">
+          <span>TIR:</span> <span id="f-tir">—</span> &nbsp;·&nbsp; <span>Retorno real:</span> <span id="f-real">—</span><br>
+          * TIR calculada sobre capital próprio. Parcela maior = menos alavancagem = TIR menor, mas lucro absoluto maior.
         </div>
-        <div class="card-tec"><span>TIR:</span> <span id="f-tir">—</span> &nbsp;·&nbsp; <span>Retorno real:</span> <span id="f-real">—</span><br>* Calculado sobre capital próprio investido (banco financia 75%)</div>
       </div>
-
-      <!-- SELIC -->
-      <div class="opt selic">
-        <div class="opt-head">
-          <div class="badge s">Comparativo</div>
-          <h2>Selic / CDI <span style="font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;color:var(--gray);letter-spacing:0;text-transform:none;">· aportes iguais ao direto</span></h2>
-          <p>E se aplicasse o mesmo dinheiro na renda fixa?</p>
-        </div>
-        <div class="r"><span class="r-l">Mesmo fluxo do cenário direto na Selic</span><span class="r-v s" id="s-fluxo">—</span></div>
-        <div class="r"><span class="r-l">Selic projetada (Focus/BCB mai/2026)</span><span class="r-v">14%→12%→10,5%→9,5%</span></div>
-        <div class="r"><span class="r-l">Saldo bruto acumulado</span><span class="r-v" id="s-bruto">—</span></div>
-        <div class="r"><span class="r-l">Imposto de Renda (15% sobre ganho)</span><span class="r-v r" id="s-ir">—</span></div>
-        <div class="r"><span class="r-l">Sem ITBI · Sem escritura · Sem registro</span><span class="r-v g">R$ 0</span></div>
-        <div class="opt-total">
-          <span class="t-lbl">Total aplicado</span>
-          <span class="t-val s" id="s-tot">—</span>
-        </div>
-        <div class="lucro-box">
-          <div class="lucro-lbl">Ganho líquido (após IR)</div>
-          <div class="lucro-main">
-            <span class="lucro-val" id="s-luc">—</span>
-            <span class="lucro-pct" id="s-pct">—</span>
-          </div>
-          <div class="lucro-selic-comp pior" id="s-comp">📊 Base de comparação</div>
-          <div class="lucro-sub" id="s-sub">—</div>
-        </div>
-        <div class="card-tec"><span>TIR:</span> <span id="s-tir">—</span> &nbsp;·&nbsp; <span>Retorno real:</span> <span id="s-real">—</span></div>
-      </div>
-
     </div>
 
-    <div style="font-size:10px;color:var(--gray);margin-bottom:16px;padding:8px 12px;background:var(--white);border:1px solid var(--border);">
-      * Valores sujeitos à correção mensal pelo INCC durante a obra. Exibidos aqui com base no valor atual do índice (0,5%/mês).
+    <div class="tab-pane" id="tab-1">
+      <div class="card-single direto">
+        <div class="cs-head">
+          <h2>Pagar Direto à Construtora</h2>
+          <p>Sem banco · preencha campo a campo</p>
+        </div>
+
+        <!-- PASSO 1: ENTRADA -->
+        <div class="cr" id="row-ent" style="align-items:center">
+          <span class="cr-l">
+            <span class="step-num">1</span>
+            Entrada em 4 parcelas
+            <span class="step-hint">mínimo 10%</span>
+          </span>
+          <span class="cr-edit" style="gap:4px">
+            <input id="d-ent-pct" type="text" inputmode="numeric" onchange="onEntEdit(this)" placeholder="10"
+              style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--black);border:none;border-bottom:2px solid var(--green);outline:none;width:50px;text-align:right;background:transparent;padding-bottom:2px">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--gray-lt)">%</span>
+            <span style="font-size:13px;color:var(--gray);margin-left:8px">=</span>
+            <span class="cr-v" id="d-ent" style="margin-left:4px">—</span>
+          </span>
+        </div>
+        <div id="d-ent-erro" style="display:none;padding:8px 28px;background:#FEF2F2;color:var(--red);font-size:12px;font-weight:600;border-bottom:1px solid #FECACA;"></div>
+
+        <!-- PASSO 2: PARCELA -->
+        <div class="cr" id="row-parc" style="align-items:center">
+          <span class="cr-l">
+            <span class="step-num">2</span>
+            40 mensais de <span class="incc-tag">corrige INCC</span>
+            <span class="step-hint" id="parc-disponivel"></span>
+          </span>
+          <span class="cr-edit" style="flex-direction:column;align-items:flex-end;gap:2px">
+            <span style="display:flex;align-items:center;gap:6px">
+              <span class="epfx">R$</span>
+              <input id="d-parc-edit" type="text" inputmode="numeric" onchange="onParcEdit(this)" placeholder="Digite a parcela">
+            </span>
+            <span id="d-parc-sug" style="font-size:11px;color:var(--gray-lt)"></span>
+          </span>
+        </div>
+        <div id="d-parc-erro" style="display:none;padding:8px 28px;background:#FEF2F2;color:var(--red);font-size:12px;font-weight:600;border-bottom:1px solid #FECACA;"></div>
+
+        <!-- PASSO 3: REFORÇOS -->
+        <div class="cr" id="row-ref" style="align-items:center">
+          <span class="cr-l">
+            <span class="step-num">3</span>
+            5 reforços semestrais <span class="incc-tag">corrige INCC</span>
+          </span>
+          <span class="cr-edit" style="flex-direction:column;align-items:flex-end;gap:2px">
+            <span style="display:flex;align-items:center;gap:6px">
+              <span class="epfx">R$</span>
+              <input id="d-ref-edit" type="text" inputmode="numeric" onchange="onRefEdit(this)" class="ref-inp" placeholder="Calculado auto">
+            </span>
+            <span id="d-ref-sug" style="font-size:11px;color:var(--gray-lt)"></span>
+          </span>
+        </div>
+
+        <!-- PASSO 4: SALDO ENTREGA -->
+        <div class="cr" id="row-saldo">
+          <span class="cr-l">
+            <span class="step-num">4</span>
+            <span id="d-e30-lbl">Saldo na entrega</span>
+            <span class="incc-tag">corrige INCC</span>
+          </span>
+          <span class="cr-v" id="d-e30">—</span>
+        </div>
+
+        <!-- CUSTOS -->
+        <div class="cr custo" id="row-custos">
+          <span class="cr-l">ITBI (2%) + Registro (0,6%) + Escritura (0,7%)</span>
+          <span class="cr-v" id="d-custos">—</span>
+        </div>
+
+        <div class="cs-total" id="row-total">
+          <span class="tl">Total investido</span>
+          <span class="tv" id="d-tot">—</span>
+        </div>
+        <div class="cs-nota" id="row-nota">* Valores base sem correção. Parcelas serão corrigidas pelo INCC durante a obra e IGPM+1% após a entrega.</div>
+        <div id="d-erro-wrap"></div>
+        <div class="cs-lucro" id="row-lucro">
+          <div class="ll">Lucro estimado na venda</div>
+          <div><span class="lv" id="d-luc">—</span><span class="lpct" id="d-pct">—</span></div>
+          <div class="lvs melhor" id="d-vs">—</div>
+          <div class="lsub" id="d-sub">—</div>
+        </div>
+        <div class="cs-tec" id="row-tec">
+          <span>TIR:</span> <span id="d-tir">—</span> &nbsp;·&nbsp; <span>Retorno real:</span> <span id="d-real">—</span>
+        </div>
+      </div>
     </div>
 
-    <div class="aviso">
+    <!-- ABA 3: COMPARATIVO -->
+
+    <div class="tab-pane" id="tab-2">
+      <div class="compare">
+
+        <!-- DIRETO COMPACTO -->
+        <div class="opt direto">
+          <div class="opt-head">
+            <h3>Pagar Direto</h3>
+            <p>Sem banco · 40 parcelas + reforços</p>
+          </div>
+          <div class="r"><span class="r-l">Entrada</span><span class="r-v" id="c-d-ent">—</span></div>
+          <div class="r"><span class="r-l">40 mensais de <span class="incc-tag">INCC</span></span><span class="r-v" id="c-d-parc">—</span></div>
+          <div class="r"><span class="r-l">5 reforços de <span class="incc-tag">INCC</span></span><span class="r-v" id="c-d-ref">—</span></div>
+          <div class="r"><span class="r-l"><span id="c-d-e30-lbl">Saldo entrega</span> <span class="incc-tag">INCC</span></span><span class="r-v" id="c-d-e30">—</span></div>
+          <div class="r" style="background:var(--amber-lt)"><span class="r-l" style="color:var(--amber)">Custos (ITBI+Reg+Esc)</span><span class="r-v" style="color:var(--amber)" id="c-d-cus">—</span></div>
+          <div class="opt-total">
+            <span class="t-lbl">Total investido</span>
+            <span class="t-val" id="c-d-tot">—</span>
+          </div>
+          <div class="opt-lucro">
+            <div class="ll">Lucro estimado</div>
+            <div class="lv" id="c-d-luc">—</div>
+            <div class="lvs melhor" id="c-d-vs">—</div>
+          </div>
+          <div class="opt-tec"><span>TIR:</span> <span id="c-d-tir">—</span> · <span>Real:</span> <span id="c-d-real">—</span></div>
+        </div>
+
+        <!-- FINANCIADO COMPACTO -->
+        <div class="opt financiado">
+          <div class="opt-head">
+            <div class="badge g" style="font-size:8px;padding:2px 7px;margin-bottom:4px">⭐ Recomendado</div>
+            <h3>Financiar Caixa</h3>
+            <p>Banco cobre 75%</p>
+          </div>
+          <div class="r"><span class="r-l">Entrada (10%)</span><span class="r-v" id="c-f-ent">—</span></div>
+          <div class="r"><span class="r-l">Mensais 40× <span class="incc-tag">INCC</span></span><span class="r-v" id="c-f-men">—</span></div>
+          <div class="opt-acomp">
+            <div class="al">Acomp. obra — Caixa</div>
+            <div class="track" style="height:4px"><div class="track-fill"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700"><span id="c-f-ac1">—</span><span id="c-f-ac2">—</span></div>
+          </div>
+          <div class="r"><span class="r-l">75% banco quita entrega</span><span class="r-v g" id="c-f-cef">—</span></div>
+          <div class="r" style="background:var(--amber-lt)"><span class="r-l" style="color:var(--amber)">Custos</span><span class="r-v" style="color:var(--amber);font-size:10px" id="c-f-cus">—</span></div>
+          <div class="opt-total">
+            <span class="t-lbl">Total do bolso</span>
+            <span class="t-val g" id="c-f-tot">—</span>
+          </div>
+          <div class="opt-lucro">
+            <div class="ll">Lucro estimado</div>
+            <div class="lv" id="c-f-luc">—</div>
+            <div class="lvs melhor" id="c-f-vs">—</div>
+          </div>
+          <div class="opt-tec"><span>TIR:</span> <span id="c-f-tir">—</span> · <span>Real:</span> <span id="c-f-real">—</span></div>
+        </div>
+
+        <!-- SELIC COMPACTO -->
+        <div class="opt selic">
+          <div class="opt-head">
+            <div class="badge s" style="font-size:8px;padding:2px 7px;margin-bottom:4px">Comparativo</div>
+            <h3>Selic / CDI</h3>
+            <p>Mesmo fluxo do direto na renda fixa</p>
+          </div>
+          <div class="r"><span class="r-l">Total aplicado</span><span class="r-v s" id="c-s-tot">—</span></div>
+          <div class="r"><span class="r-l">Saldo bruto acumulado</span><span class="r-v" id="c-s-bruto">—</span></div>
+          <div class="r"><span class="r-l">IR 15% sobre o ganho</span><span class="r-v r" id="c-s-ir">—</span></div>
+          <div class="opt-total">
+            <span class="t-lbl">Total aplicado</span>
+            <span class="t-val s" id="c-s-tot2">—</span>
+          </div>
+          <div class="opt-lucro">
+            <div class="ll">Ganho líquido (após IR)</div>
+            <div class="lv" id="c-s-luc">—</div>
+            <div class="lvs pior">📊 Base de comparação</div>
+          </div>
+          <div class="opt-tec"><span>TIR:</span> <span id="c-s-tir">—</span> · <span>Real:</span> <span id="c-s-real">—</span></div>
+        </div>
+
+      </div>
+    </div>
+
+        <div class="aviso" style="margin-top:16px">
       <strong>⚠️ Aviso Legal:</strong> Simulação estimativa, sujeita à aprovação de crédito, análise de renda e condições bancárias vigentes.
       Valores podem sofrer alteração conforme evolução da tabela de preços e índices de correção (INCC/IGPM).
       Projeções de valorização são estimativas e não garantem rentabilidade futura.
     </div>
 
     <div class="btns">
-      <button id="btn-apres" style="display:flex;align-items:center;gap:8px;padding:13px 20px;font-family:'Barlow',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;border-radius:2px;background:#1F9037;color:#fff;" onclick="toggleApres()">🖥️ Modo Apresentação</button>
-      <button class="btn pdf" onclick="window.print()">📄 Gerar PDF</button>
-      <button class="btn whats" onclick="enviarWhats()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.559 4.122 1.532 5.855L.073 23.927a.75.75 0 00.918.981l6.318-1.927A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.708 9.708 0 01-5.031-1.404l-.36-.214-3.733 1.138 1.179-3.617-.235-.373A9.717 9.717 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      <button class="btn btn-pdf" onclick="window.print()">📄 Gerar PDF</button>
+      <button class="btn btn-whats" onclick="enviarWhats()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="white" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.559 4.122 1.532 5.855L.073 23.927a.75.75 0 00.918.981l6.318-1.927A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.708 9.708 0 01-5.031-1.404l-.36-.214-3.733 1.138 1.179-3.617-.235-.373A9.717 9.717 0 012.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
         Prospectar cliente
       </button>
-      
-      <button class="btn metod" onclick="verMetodologia()">ℹ️ Como calculamos</button>
+      <button class="btn btn-metod" onclick="verMetodologia()">ℹ️ Como calculamos</button>
     </div>
 
   </div>
-
 </main>
 
 <footer>
@@ -381,10 +540,9 @@ body.apres .opt.financiado .lucro-val{font-size:58px!important}
         <span class="ms">Construtora e Incorporadora</span>
       </div>
     </div>
-    
   </div>
   <div class="foot-disc">
-    Simulação estimativa · INCC fixo 0,5%/mês (6% a.a.) durante a obra · IGPM+1%/mês pós-entrega (meses 31+) · Valorização nominal estimada pela construtora · Selic projetada Focus/BCB mai/2026: 14%(mai-dez/26)→12%(2027)→10,5%(2028)→9,5%(2029) · IR 15% sobre ganho Selic · Não inclui ITBI, corretagem nem IR sobre ganho de capital · Incorporação: Mat./Reg. 123.488, Prenotação nº A262328-779, Cartório de Registro de Imóveis de Passo Fundo.
+    Simulação estimativa · INCC fixo 0,5%/mês (6% a.a.) durante a obra · IGPM+1%/mês pós-entrega · Valorização nominal estimada pela construtora · Selic projetada Focus/BCB mai/2026 · IR 15% sobre ganho Selic · ITBI sobre fração ideal do terreno (Mat./Reg. 123.488) · Não inclui IR sobre ganho de capital na venda do imóvel nem corretagem · Incorporação: Prenotação nº A262328-779, Cartório de Registro de Imóveis de Passo Fundo.
   </div>
 </footer>
 
@@ -393,93 +551,58 @@ const gi  = id => document.getElementById(id);
 const R   = n  => "R$ " + Math.round(n).toLocaleString("pt-BR");
 const Pp  = n  => (n*100).toFixed(1).replace(".",",") + "% a.a.";
 const S   = (id,v) => { const e=gi(id); if(e) e.textContent=v; };
+const show = id => { const e=gi(id); if(e) e.classList.remove("cascade-hidden"); };
+const hide = id => { const e=gi(id); if(e) e.classList.add("cascade-hidden"); };
 
-// Meses restantes até jan/2029 — atualiza automaticamente
+// ── Meses restantes ──
 function mesesRestantes() {
-  const hoje    = new Date();
-  const entrega = new Date(2029, 0, 1);
-  return Math.max(1, Math.round((entrega - hoje) / (1000*60*60*24*30.44)));
+  const hoje=new Date(), entrega=new Date(2029,0,1);
+  return Math.max(1, Math.round((entrega-hoje)/(1000*60*60*24*30.44)));
 }
 const MESES = mesesRestantes();
 S("hdr-meses", MESES);
 
-// TIR Newton-Raphson
-function calcTIR(fluxos) {
-  let taxa = 0.01;
-  for(let i=0; i<2000; i++) {
-    let vpl=0, dvpl=0;
-    for(let t=0; t<fluxos.length; t++) {
-      const pv = Math.pow(1+taxa,t);
-      vpl  += fluxos[t]/pv;
-      dvpl -= t*fluxos[t]/(pv*(1+taxa));
-    }
-    if(Math.abs(dvpl)<1e-15) break;
-    const nova = taxa - vpl/dvpl;
-    if(Math.abs(nova-taxa)<1e-12) { taxa=nova; break; }
-    taxa = nova;
-  }
-  return taxa;
+// ── Barra de progresso da obra ──
+(function() {
+  const inicio=new Date(2026,0,1), fim=new Date(2029,0,1), hoje=new Date();
+  const pct=Math.min(100,Math.max(0,Math.round((hoje-inicio)/(fim-inicio)*100)));
+  const fill=gi("obra-fill"), pctEl=gi("obra-pct");
+  if(fill) fill.style.width=pct+"%";
+  if(pctEl) pctEl.textContent=pct+"% concluída";
+})();
+
+// ── Variáveis globais ──
+var _parcMesGlobal = -1;
+var _valorRefGlobal = -1;
+var _entPctGlobal = -1;
+var _parcFinGlobal = -1; // -1 = nunca editado (usa padrão 15%/40)
+var _valAnterior = 0;
+
+// ── Tabs ──
+function showTab(n) {
+  document.querySelectorAll('.tab-pane').forEach((p,i) => p.classList.toggle('active', i===n));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===n));
 }
 
-function selicMes(m) {
-  if(m<=8)  return Math.pow(1+0.140,1/12)-1;
-  if(m<=20) return Math.pow(1+0.120,1/12)-1;
-  if(m<=32) return Math.pow(1+0.105,1/12)-1;
-  return          Math.pow(1+0.095,1/12)-1;
-}
-
-// Máscaras
+// ── Máscaras ──
 function maskMoney(dId, hId) {
   const d=gi(dId), h=gi(hId);
+  if(!d) return;
   d.addEventListener("keydown", e => {
     if(e.key==="Backspace") {
       e.preventDefault();
       const v=d.value.replace(/[^0-9]/g,"").slice(0,-1);
       d.value=v?parseInt(v).toLocaleString("pt-BR"):"";
-      h.value=v||"0"; calc();
+      if(h) h.value=v||"0"; calc();
     }
   });
   d.addEventListener("input", () => {
     const v=d.value.replace(/[^0-9]/g,"");
-    if(!v){d.value="";h.value="0";calc();return;}
-    const n=parseInt(v); d.value=n.toLocaleString("pt-BR"); h.value=String(n); calc();
+    if(!v){d.value="";if(h)h.value="0";calc();return;}
+    const n=parseInt(v); d.value=n.toLocaleString("pt-BR"); if(h) h.value=String(n); calc();
   });
 }
 maskMoney("val-d","val-h");
-gi("nome").addEventListener("input", calc);
-
-// Edição da parcela no card — reforço ajusta automaticamente
-// Variáveis globais para guardar valores dos campos do card
-var _parcMesGlobal = -1; // -1 = nunca editado, 0 = zerado explicitamente
-var _valorRefGlobal = -1;
-var _valAnterior = 0; // para detectar mudança de valor do imóvel
-
-function onParcEdit(el) {
-  const val2 = parseInt(document.getElementById("val-h").value)||0;
-  const n = parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
-  const novoRef = val2 > 0 ? Math.max(0, Math.round((val2*0.60 - n*40) / 5)) : 0;
-  _parcMesGlobal = n;
-  _valorRefGlobal = novoRef;
-  el.value = n.toLocaleString("pt-BR");
-  const refEl = document.getElementById("d-ref-edit");
-  if(refEl) refEl.value = novoRef.toLocaleString("pt-BR");
-  calc();
-}
-function onRefEdit(el) {
-  const val2 = parseInt(document.getElementById("val-h").value)||0;
-  const n = parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
-  const novParc = val2 > 0 ? Math.max(0, Math.round((val2*0.60 - n*5) / 40)) : 0;
-  _valorRefGlobal = n;
-  _parcMesGlobal = novParc;
-  el.value = n.toLocaleString("pt-BR");
-  const parcEl = document.getElementById("d-parc-edit");
-  if(parcEl) parcEl.value = novParc.toLocaleString("pt-BR");
-  calc();
-}
-
-
-
-
 
 // Máscara valorização
 gi("aa-d").addEventListener("keydown", function(e) {
@@ -497,240 +620,389 @@ gi("aa-d").addEventListener("input", function() {
   this.value=String(n); gi("aa-h").value=String(n); calc();
 });
 
+gi("nome").addEventListener("input", calc);
+
+// ── TIR Newton-Raphson ──
+function calcTIR(fluxos) {
+  let taxa=0.01;
+  for(let i=0;i<2000;i++){
+    let vpl=0,dvpl=0;
+    for(let t=0;t<fluxos.length;t++){
+      const pv=Math.pow(1+taxa,t);
+      vpl+=fluxos[t]/pv; dvpl-=t*fluxos[t]/(pv*(1+taxa));
+    }
+    if(Math.abs(dvpl)<1e-15) break;
+    const nova=taxa-vpl/dvpl;
+    if(Math.abs(nova-taxa)<1e-12){taxa=nova;break;}
+    taxa=nova;
+  }
+  return taxa;
+}
+
+function selicMes(m) {
+  if(m<=8)  return Math.pow(1+0.140,1/12)-1;
+  if(m<=20) return Math.pow(1+0.120,1/12)-1;
+  if(m<=32) return Math.pow(1+0.105,1/12)-1;
+  return          Math.pow(1+0.095,1/12)-1;
+}
+
+// ── Handlers de edição no card direto ──
+function onParcFinEdit(el) {
+  const n = parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
+  el.value = n.toLocaleString("pt-BR");
+  _parcFinGlobal = n;
+  calc();
+}
+
+function onEntEdit(el) {
+  const raw=el.value.replace(/[^0-9]/g,"");
+  const n=raw?Math.min(parseInt(raw),100):10;
+  el.value=n;
+  _entPctGlobal=n/100;
+  _parcMesGlobal=-1; _valorRefGlobal=-1;
+  const pe=gi("d-parc-edit"), re=gi("d-ref-edit");
+  if(pe) pe.value=""; if(re) re.value="";
+  calc();
+}
+
+function onParcEdit(el) {
+  const n=parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
+  el.value=n.toLocaleString("pt-BR");
+  const val2=parseInt(gi("val-h").value)||0;
+  const entP=_entPctGlobal>0?_entPctGlobal:0.10;
+  const disp=Math.max(0,val2*(1-entP-0.30));
+  const parcMax=Math.floor(disp/40);
+
+  // Aviso se parcela excede o disponível
+  const errEl=gi("d-parc-erro");
+  if(n>parcMax && parcMax>0) {
+    if(errEl){errEl.textContent="⚠️ Parcela máxima para fechar essa simulação: R$ "+parcMax.toLocaleString("pt-BR")+"/mês";errEl.style.display="block";}
+    // Usa o máximo permitido no cálculo
+    _parcMesGlobal=parcMax;
+  } else {
+    if(errEl) errEl.style.display="none";
+    _parcMesGlobal=n;
+  }
+  const novoRef=Math.max(0,Math.round((disp-_parcMesGlobal*40)/5));
+  _valorRefGlobal=novoRef;
+  const re=gi("d-ref-edit");
+  if(re) re.value=novoRef.toLocaleString("pt-BR");
+  calc();
+}
+
+function onRefEdit(el) {
+  const n=parseInt(el.value.replace(/\./g,"").replace(/[^0-9]/g,""))||0;
+  el.value=n.toLocaleString("pt-BR");
+  _valorRefGlobal=n;
+  const val2=parseInt(gi("val-h").value)||0;
+  const entP=_entPctGlobal>0?_entPctGlobal:0.10;
+  const disp=Math.max(0,val2*(1-entP-0.30));
+  const novParc=Math.max(0,Math.round((disp-n*5)/40));
+  _parcMesGlobal=novParc;
+  const pe=gi("d-parc-edit");
+  if(pe) pe.value=novParc.toLocaleString("pt-BR");
+  calc();
+}
+
+// ── CALC PRINCIPAL ──
 function calc() {
-  const val    = parseInt(gi("val-h").value)||0;
-  const aa     = (parseFloat(gi("aa-h").value)||15)/100;
-  const incc   = 0.005;
-  const igpm   = 0.007;
-  const infl40 = (1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
+  const val  = parseInt(gi("val-h").value)||0;
+  const aa   = (parseFloat(gi("aa-h").value)||15)/100;
+  const nome = gi("nome")?gi("nome").value.trim():"";
+  const incc = 0.005, igpm=0.007;
+  const infl40=(1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
 
-
-  // Cenário tag valorização
-  const tag = gi("aa-tag");
+  // Cenário tag
+  const tag=gi("aa-tag");
   if(tag) {
-    if(aa < 0.10)       { tag.textContent="Cenário pessimista"; tag.className="cenario-tag pessimista"; }
-    else if(aa <= 0.15) { tag.textContent="Cenário moderado";   tag.className="cenario-tag moderado"; }
-    else                { tag.textContent="Cenário otimista";   tag.className="cenario-tag otimista"; }
+    if(aa<0.10){tag.textContent="Cenário pessimista";tag.className="cenario-tag pessimista";}
+    else if(aa<=0.15){tag.textContent="Cenário moderado";tag.className="cenario-tag moderado";}
+    else{tag.textContent="Cenário otimista";tag.className="cenario-tag otimista";}
   }
 
-  // Reforços fixos: 5 semestrais
-  const refReal = 5;
-  const period  = 6;
+  // Nome
+  const sc=gi("sec-cliente");
+  if(sc) sc.textContent=nome?" — para "+nome:"";
 
-  // Validações
-  const bloq = gi("bloqueio");
-  const wrap = gi("resultado-wrap");
+  const bloq=gi("bloqueio"), wrap=gi("resultado-wrap");
 
-  if(val < 10000) {
-    bloq.style.display="block"; wrap.style.display="none";
+  if(val<10000) {
+    if(bloq) bloq.style.display="block";
+    if(wrap) wrap.style.display="none";
     S("bloqueio-txt","Digite o valor do imóvel para começar");
-    S("bloqueio-sub","Exemplo: R$ 399.900");
-    return;
-  }
-  const base60 = val * 0.60;
-  const base30m = val * 0.30;
-  const base30r = val * 0.30;
-
-  const NPARC = 40; // sempre 40 parcelas mensais (igual financiado)
-  const NREF  = 5;  // sempre 5 reforços semestrais
-
-  // Padrão: 30% em mensais (÷40) e 30% em reforços (÷5)
-  const parcDefault = Math.round(val*0.30 / NPARC);
-  const refDefault  = Math.round(val*0.30 / NREF);
-
-  // Se o valor do imóvel mudou, resetar os valores globais
-  if(val !== _valAnterior) {
-    _parcMesGlobal = -1;
-    _valorRefGlobal = -1;
-    _valAnterior = val;
-    // Atualizar os campos visuais
-    const parcEditEl2 = document.getElementById("d-parc-edit");
-    const refEditEl2  = document.getElementById("d-ref-edit");
-    if(parcEditEl2) parcEditEl2.value = parcDefault.toLocaleString("pt-BR");
-    if(refEditEl2)  refEditEl2.value  = refDefault.toLocaleString("pt-BR");
+    S("bloqueio-sub","Exemplo: R$ 399.900"); return;
   }
 
-  // Usa variáveis globais (-1 = nunca editado → usa padrão; 0 = zerado explicitamente → usa 0)
-  const parcMes      = _parcMesGlobal === -1 ? parcDefault : _parcMesGlobal;
-  const valorRefCard = _valorRefGlobal === -1 ? refDefault  : _valorRefGlobal;
-  const totalMensais = parcMes * NPARC;
-  const totalRefCalc = valorRefCard * NREF;
-  const somaBase = totalMensais + totalRefCalc;
+  // ── Parâmetros do direto ──
+  const NPARC=40, NREF=5;
+  const rfMeses=[6,12,18,24,30];
+  const entPct=_entPctGlobal>0?_entPctGlobal:0.10;
+  const ent=Math.round(val*entPct);
 
-  // ── Custos de transação ──
-  const custosD = val*0.02 + val*0.006 + val*0.007; // ITBI 2% + Registro 0,6% + Escritura 0,7%
-  const custosF_total = 545 + val*0.003+1000 + val*0.75*0.00021*30 + val*0.000034*30; // ITBI fração + Reg SFH + MIP + DFI
+  // Atualiza campo visual de entrada
+  const entPctEl=gi("d-ent-pct");
+  if(entPctEl && _entPctGlobal===-1) entPctEl.value="10";
 
-  const ultrapassou = somaBase > base60 + 100;
-  const saldoRef = base60 - totalMensais;
+  // Aviso entrada < 10%
+  const entErroEl=gi("d-ent-erro");
+  if(entPct<0.099) {
+    if(entErroEl){entErroEl.textContent="⚠️ Entrada mínima é 10% · mínimo "+R(val*0.10);entErroEl.style.display="block";}
+  } else {
+    if(entErroEl) entErroEl.style.display="none";
+  }
 
-  const valorRef = valorRefCard;
-  const totalRef = valorRef * NREF;
-  const rfMeses = [6,12,18,24,30];
+  // Saldo disponível para durante a obra (máx 30% na entrega)
+  const dispTotal=Math.max(0,val*(1-entPct-0.30));
+  const parcDefault=Math.round(dispTotal*0.50/NPARC);
+  const refDefault =Math.round(dispTotal*0.50/NREF);
 
-  // Valor na entrega mês 40
-  const vE = val * Math.pow(1+aa, 40/12);
-  const ent = val * 0.10;
-  const entrega30 = val * 0.30;
-  const entrega30Real = val * 0.30 * Math.pow(1+incc, MESES);
+  // Reset ao mudar imóvel
+  if(val!==_valAnterior) {
+    _parcMesGlobal=-1; _valorRefGlobal=-1; _entPctGlobal=-1; _parcFinGlobal=-1;
+    _valAnterior=val;
+    const pe=gi("d-parc-edit"), re=gi("d-ref-edit"), ep=gi("d-ent-pct");
+    if(pe) pe.value=""; if(re) re.value=""; if(ep) ep.value="10";
+  }
 
-  // Erro no card se ultrapassar 60%
-  const dCardEl = document.querySelector(".opt.direto");
-  if(dCardEl) {
-    let errEl = document.getElementById("d-erro-60");
+  // Pré-preencher campos do direto se nunca editados
+  if(_parcMesGlobal===-1) {
+    _parcMesGlobal = parcDefault;
+    const pe=gi("d-parc-edit"); if(pe) pe.value=parcDefault.toLocaleString("pt-BR");
+  }
+  if(_valorRefGlobal===-1) {
+    _valorRefGlobal = refDefault;
+    const re=gi("d-ref-edit"); if(re) re.value=refDefault.toLocaleString("pt-BR");
+  }
+  const parcMes     = _parcMesGlobal;
+  const valorRefCard= _valorRefGlobal;
+
+  // Saldo entrega
+  const totalMensais=parcMes*NPARC, totalRefBase=valorRefCard*NREF;
+  const somaBase=totalMensais+totalRefBase;
+  const saldoEntregaPct=Math.max(0, 1-entPct-somaBase/val);
+  const saldoEntregaVal=Math.round(val*saldoEntregaPct);
+  const entrega30Real=saldoEntregaVal*Math.pow(1+incc,MESES);
+  const entrega30=saldoEntregaVal; // base para exibição
+
+  // Custos
+  const custosD=val*0.02+val*0.006+val*0.007;
+  const custosF_total=545+val*0.003+1000+val*0.75*0.00021*30+val*0.000034*30;
+  const itbiF=545, regF=Math.round(val*0.003+1000), mipDfi=Math.round(val*0.75*0.00021*30+val*0.000034*30);
+
+  // Alerta saldo > 30%
+  const ultrapassou=saldoEntregaPct>0.31;
+  const errWrap=gi("d-erro-wrap");
+  if(errWrap) {
+    let errEl=gi("d-erro-60");
     if(ultrapassou) {
-      const excesso = Math.round((somaBase - base60)/base60*100);
-      if(!errEl) {
-        errEl = document.createElement("div");
-        errEl.id = "d-erro-60";
-        errEl.style.cssText = "padding:10px 18px;background:#FEF2F2;border-top:2px solid var(--red);font-size:12px;color:var(--red);font-weight:600;";
-        dCardEl.appendChild(errEl);
-      }
-      errEl.textContent = "⚠️ Soma ultrapassa 60% — Total: " + R(somaBase) + " (" + excesso + "% acima do limite)";
-      errEl.style.display = "block";
-    } else if(errEl) {
-      errEl.style.display = "none";
-    }
+      if(!errEl){errEl=document.createElement("div");errEl.id="d-erro-60";
+        errEl.style.cssText="padding:10px 18px;background:#FEF2F2;border-top:2px solid var(--red);font-size:12px;color:var(--red);font-weight:600;";
+        errWrap.appendChild(errEl);}
+      errEl.textContent="⚠️ Saldo na entrega ultrapassa 30% ("+Math.round(saldoEntregaPct*100)+"%) — Aumente as parcelas ou a entrada";
+      errEl.style.display="block";
+    } else if(errEl) errEl.style.display="none";
   }
-  S("val-hint", "Valor estimado na entrega: " + R(vE));
-  S("sec-info", MESES + " meses de obra · " + refReal + " reforços " + (period===6?"semestrais":"anuais") + " de " + R(valorRef));
 
-  // ── DIRETO — cálculo real (com INCC) para lucro e TIR ──
+  // Valor mês 40
+  const vE=val*Math.pow(1+aa,40/12);
+  S("val-hint","Valor estimado na entrega: "+R(vE));
+
+  // ── Sugestões ──
+  const sugP=Math.round(dispTotal*0.50/NPARC), sugR=Math.round(dispTotal*0.50/NREF);
+  const spEl=gi("d-parc-sug"), srEl2=gi("d-ref-sug");
+  if(spEl) spEl.textContent=sugP>0?"sugestão: R$ "+sugP.toLocaleString("pt-BR"):"";
+  if(srEl2) srEl2.textContent=sugR>0?"sugestão: R$ "+sugR.toLocaleString("pt-BR"):"";
+
+  // Hint disponível
+  const ph=gi("parc-disponivel");
+  if(ph) ph.textContent="disponível: R$ "+Math.max(0,dispTotal).toLocaleString("pt-BR");
+
+  // Todas as rows do direto sempre visíveis (pré-preenchido)
+
+  // ── Fluxo DIRETO ──
   let totalMensaisReal=0;
-  const fluxoD = new Array(41).fill(0);
-  fluxoD[0] = -(ent+custosD);
-  for(let m=1; m<=40; m++) {
-    // INCC durante obra, IGPM+1% após entrega
-    const corr = m<=MESES ? Math.pow(1+incc,m) : Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
-    const pReal = parcMes * corr;
-    totalMensaisReal += pReal;
-    fluxoD[m] -= pReal;
-    if(rfMeses.includes(m)) fluxoD[m] -= valorRef * Math.pow(1+incc, m);
+  const fluxoD=new Array(41).fill(0);
+  fluxoD[0]=-(ent+custosD);
+  for(let m=1;m<=40;m++){
+    const corr=m<=MESES?Math.pow(1+incc,m):Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
+    const pR=parcMes*corr; totalMensaisReal+=pR; fluxoD[m]-=pR;
+    if(rfMeses.includes(m)) fluxoD[m]-=valorRefCard*Math.pow(1+incc,m);
   }
-  fluxoD[MESES] -= entrega30Real;
-  fluxoD[40]    += vE;
+  fluxoD[MESES]-=entrega30Real;
+  fluxoD[40]+=vE;
+  const totDReal=ent+custosD+totalMensaisReal+(rfMeses.reduce((a,m)=>a+valorRefCard*Math.pow(1+incc,m),0))+entrega30Real;
+  const lucD=fluxoD.reduce((a,b)=>a+b,0);
+  const tirDm=calcTIR(fluxoD), tirDa=Math.pow(1+tirDm,12)-1, tirDr=(1+tirDa)/(1+infl40)-1;
 
-  const totDReal = ent + custosD + totalMensaisReal + (rfMeses.reduce((a,m) => a + valorRef*Math.pow(1+incc,m), 0)) + entrega30Real;
-  const lucD = fluxoD.reduce((a,b)=>a+b, 0);
-  const tirDm = calcTIR(fluxoD);
-  const tirDa = Math.pow(1+tirDm,12)-1;
-  const tirDr = (1+tirDa)/(1+infl40)-1;
-
-  // Exibição direto (valores base sem INCC para não assustar)
+  // Displays direto
+  S("d-ent",    R(ent)+" · 4× "+R(ent/4));
+  S("d-men-lbl","40 mensais de");
+  S("d-e30-lbl",Math.round(saldoEntregaPct*100)+"% saldo na entrega ");
+  S("d-e30",    R(entrega30));
   S("d-custos", R(custosD));
-  S("f-custos", R(custosF_total));
-  S("d-ent",     "4× " + R(ent/4));
-  S("d-men-lbl", "40 mensais de");
-  S("d-e30",  R(entrega30));
-  S("d-tot",  R(ent + custosD + parcMes*40 + valorRef*5 + entrega30));
-  S("d-luc",  R(lucD));
-  S("d-pct",  "· +" + (lucD/totDReal*100).toFixed(0) + "%");
-  S("d-sub",  "Venda estimada " + R(vE) + " · Investido " + R(totDReal));
-  S("d-tir",  Pp(tirDa));
-  S("d-real", Pp(tirDr));
+  S("d-tot",    R(ent+custosD+totalMensais+totalRefBase+entrega30));
+  S("d-luc",    R(lucD));
+  S("d-pct",    "· +"+Math.round(lucD/totDReal*100)+"%");
+  S("d-sub",    "Venda estimada "+R(vE)+" · Investido "+R(totDReal));
+  S("d-tir",    Pp(tirDa));
+  S("d-real",   Pp(tirDr));
 
-  // ── FINANCIADO ──
-  const cef   = val * 0.75;
-  const parcF = (val*0.15)/40;
-  let totMF=0;
-  const fluxoF = new Array(41).fill(0);
-  fluxoF[0] = -(ent+custosF_total);
-  const incC=(1-0.15)/30; let sC=cef*0.15, ac1=0, ac30=0, totAc=0;
-  for(let m=1; m<=40; m++) {
-    const corrF = m<=30 ? Math.pow(1+incc,m) : Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
-    const pF = parcF * corrF;
-    totMF += pF; fluxoF[m] -= pF;
-    if(m<=30) {
-      const j=sC*0.008; if(m===1)ac1=j; if(m===30)ac30=j; totAc+=j;
-      fluxoF[m]-=j; sC=cef*Math.min(0.15+incC*m,1);
+  // ── Fluxo FINANCIADO ──
+  const entF = val * 0.10;
+  const parcFmin = Math.round(val*0.15/40); // mínimo: banco 75%
+  const parcFmax = Math.round(val*0.70/40); // máximo: banco 20%
+  const parcFsug = parcFmin; // sugestão padrão
+
+  // Preenche campo com sugestão se nunca editado ou se imóvel mudou
+  const parcFinEl = gi("f-parc-edit");
+  if(parcFinEl) {
+    if(_parcFinGlobal === -1) {
+      parcFinEl.value = parcFsug.toLocaleString("pt-BR");
+    }
+    // Valida limites e mostra aviso
+    const parcFinErroEl = gi("f-parc-erro");
+    const parcFinAtual = _parcFinGlobal === -1 ? parcFsug : _parcFinGlobal;
+    const constPct = parcFinAtual * 40 / val;
+    const bancoPct = 0.90 - constPct;
+    if(parcFinAtual < parcFmin) {
+      if(parcFinErroEl) { parcFinErroEl.textContent="⚠️ Parcela abaixo do mínimo · banco ultrapassaria 75% · mínimo "+R(parcFmin)+"/mês"; parcFinErroEl.style.display="block"; }
+    } else if(bancoPct < 0.20 - 0.001) {
+      if(parcFinErroEl) { parcFinErroEl.textContent="⚠️ Parcela muito alta · banco ficaria abaixo de 20% · máximo "+R(parcFmax)+"/mês"; parcFinErroEl.style.display="block"; }
+    } else {
+      if(parcFinErroEl) parcFinErroEl.style.display="none";
     }
   }
-  fluxoF[40] += vE - cef;
-  const totF = ent + custosF_total + totMF + totAc;
-  const lucF = fluxoF.reduce((a,b)=>a+b,0);
+
+  const parcFin = Math.max(parcFmin, Math.min(parcFmax, _parcFinGlobal === -1 ? parcFsug : _parcFinGlobal));
+  const construtoraPct = parcFin * 40 / val;
+  const bancoPct = Math.max(0.20, 0.90 - construtoraPct);
+  const cef = Math.round(val * bancoPct);
+
+  let totMF=0,totAc=0,ac1=0,ac30=0;
+  const incC=(1-0.15)/30; let sC=cef*0.15;
+  const fluxoF=new Array(41).fill(0);
+  fluxoF[0]=-(entF+custosF_total);
+  for(let m=1;m<=40;m++){
+    const corrF=m<=30?Math.pow(1+incc,m):Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
+    const pF=parcFin*corrF; totMF+=pF; fluxoF[m]-=pF;
+    if(m<=30){const j=sC*0.008;if(m===1)ac1=j;if(m===30)ac30=j;totAc+=j;fluxoF[m]-=j;sC=cef*Math.min(0.15+incC*m,1);}
+  }
+  fluxoF[40]+=vE-cef;
+  const totF=entF+custosF_total+totMF+totAc;
+  const lucF=fluxoF.reduce((a,b)=>a+b,0);
   const tirFm=calcTIR(fluxoF), tirFa=Math.pow(1+tirFm,12)-1, tirFr=(1+tirFa)/(1+infl40)-1;
 
-  S("f-ent", "4× " + R(ent/4));
-  S("f-men", "~" + R(parcF) + "/mês");
-  S("f-ac1", "~" + R(ac1) + "/mês");
-  S("f-ac2", "até ~" + R(ac30) + "/mês");
-  S("f-cef", R(cef));
-  S("f-tot", R(totF));
-  S("f-luc", R(lucF));
-  S("f-pct", "· +" + (lucF/totF*100).toFixed(0) + "%");
-  S("f-sub", "Venda estimada " + R(vE) + " · Do bolso " + R(totF) + " + banco " + R(cef));
-  S("f-tir", Pp(tirFa));
-  S("f-real",Pp(tirFr));
+  // Displays financiado
+  S("f-ent",    R(entF)+" · 4× "+R(entF/4));
+  S("f-banco-pct", Math.round(bancoPct*100)+"% — banco financia e quita na entrega");
+  S("f-ac1",  "~"+R(ac1)+"/mês");
+  S("f-ac2",  "até ~"+R(ac30)+"/mês");
+  S("f-cef",  R(cef));
+  S("f-cus1", R(itbiF+regF));
+  S("f-cus2", R(mipDfi));
+  S("f-tot",  R(totF));
+  S("f-luc",  R(lucF));
+  S("f-pct",  "· +"+Math.round(lucF/totF*100)+"%");
+  S("f-sub",  "Venda estimada "+R(vE)+" · Do bolso "+R(totF)+" + banco "+R(cef));
+  S("f-tir",  Pp(tirFa));
+  S("f-real", Pp(tirFr));
+  // Sugestão e hint
+  S("f-parc-sug", "mín: "+R(parcFmin)+" · máx: "+R(parcFmax));
+  S("f-banco-label", Math.round(bancoPct*100)+"% banco · "+Math.round(construtoraPct*100)+"% construtora");
 
-  // ── SELIC ──
+  // ── Fluxo SELIC ──
   let saldoB=0, totAplic=ent+custosD;
   let sEnt=ent+custosD; for(let k=1;k<=40;k++) sEnt*=(1+selicMes(k)); saldoB+=sEnt;
-  for(let m=1; m<=40; m++) {
-    const corr = m<=MESES ? Math.pow(1+incc,m) : Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
-    let pgto = parcMes * corr;
-    if(rfMeses.includes(m)) pgto += valorRef*Math.pow(1+incc,m);
-    if(m===MESES) pgto += entrega30Real;
-    totAplic += pgto;
+  for(let m=1;m<=40;m++){
+    const corr=m<=MESES?Math.pow(1+incc,m):Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
+    let pgto=parcMes*corr;
+    if(rfMeses.includes(m)) pgto+=valorRefCard*Math.pow(1+incc,m);
+    if(m===MESES) pgto+=entrega30Real;
+    totAplic+=pgto;
     let s=pgto; for(let k=m+1;k<=40;k++) s*=(1+selicMes(k)); saldoB+=s;
   }
-
   const ganhoB=saldoB-totAplic, ir=ganhoB*0.15, saldoL=saldoB-ir, ganhoL=saldoL-totAplic;
   const fluxoS=new Array(41).fill(0);
   fluxoS[0]=-(ent+custosD);
-  for(let m=1;m<=40;m++) {
+  for(let m=1;m<=40;m++){
     const corr=m<=MESES?Math.pow(1+incc,m):Math.pow(1+incc,MESES)*Math.pow(1+igpm,m-MESES);
-    fluxoS[m] -= parcMes*corr;
-    if(rfMeses.includes(m)) fluxoS[m] -= valorRef*Math.pow(1+incc,m);
-    if(m===MESES) fluxoS[m] -= entrega30Real;
+    fluxoS[m]-=parcMes*corr;
+    if(rfMeses.includes(m)) fluxoS[m]-=valorRefCard*Math.pow(1+incc,m);
+    if(m===MESES) fluxoS[m]-=entrega30Real;
   }
-  fluxoS[40] += saldoL;
+  fluxoS[40]+=saldoL;
   const tirSm=calcTIR(fluxoS), tirSa=Math.pow(1+tirSm,12)-1, tirSr=(1+tirSa)/(1+infl40)-1;
-
-  S("s-fluxo", R(ent + custosD + totalMensais + totalRef + entrega30) + " (mesmo fluxo)");
-  S("s-bruto", R(saldoB));
-  S("s-ir",    "− " + R(ir));
-  S("s-tot",   R(ent + custosD + totalMensais + totalRef + entrega30));
-  S("s-luc",   R(ganhoL));
-  S("s-pct",   "· +" + (ganhoL/totAplic*100).toFixed(0) + "%");
-  S("s-sub",   "Aplicando na Selic por 40 meses · após IR de 15%");
-  S("s-tir",   Pp(tirSa));
   const srEl=gi("s-real");
-  if(srEl) { srEl.textContent=Pp(tirSr); srEl.style.color=tirSr<0?"var(--red)":"var(--slate)"; }
+  if(srEl){srEl.textContent=Pp(tirSr);srEl.style.color=tirSr<0?"var(--red)":"var(--slate)";}
 
-  // Comparativo vs Selic
-  const vezesDireto = lucD > 0 && ganhoL > 0 ? (lucD/ganhoL).toFixed(1) : "—";
-  const vezesFinanc = lucF > 0 && ganhoL > 0 ? (lucF/ganhoL).toFixed(1) : "—";
-  S("d-vs", "🏆 " + vezesDireto + "× mais que a Selic/CDI");
-  S("f-vs", "🏆 " + vezesFinanc + "× mais que a Selic/CDI");
+  const totSelicBase=ent+custosD+totalMensais+totalRefBase+entrega30;
 
-  bloq.style.display="none";
-  wrap.style.display="block";
+  // vs Selic
+  const vezesDireto=(lucD/ganhoL).toFixed(1), vezesFinanc=(lucF/ganhoL).toFixed(1);
+  S("d-vs","🏆 "+vezesDireto+"× mais que a Selic/CDI");
+  S("f-vs","🏆 "+vezesFinanc+"× mais que a Selic/CDI");
+
+  // Info
+  S("sec-info", MESES+" meses de obra");
+
+  if(bloq) bloq.style.display="none";
+  if(wrap) wrap.style.display="block";
+  // Alimentar comparativo direto (sem depender de IDs de aba CDI)
+  updateComparativo({
+    lucD:R(lucD), pctD:"· +"+Math.round(lucD/totDReal*100)+"%", vsD:vezesDireto+"× mais que a Selic",
+    tirD:Pp(tirDa), realD:Pp(tirDr), entD:R(ent)+" · 4× "+R(ent/4),
+    parcD:gi("d-parc-edit")?gi("d-parc-edit").value:"—",
+    refD:gi("d-ref-edit")?gi("d-ref-edit").value:"—",
+    e30D:R(entrega30), cusD:R(custosD), totD:R(ent+custosD+totalMensais+totalRefBase+entrega30),
+    lucF:R(lucF), pctF:"· +"+Math.round(lucF/totF*100)+"%", vsF:vezesFinanc+"× mais que a Selic",
+    tirF:Pp(tirFa), realF:Pp(tirFr), entF:R(val*0.10)+" · 4× "+R(val*0.10/4),
+    menF:"~"+R(parcFin)+"/mês ("+Math.round(construtoraPct*100)+"%)", ac1F:"~"+R(ac1)+"/mês", ac2F:"até ~"+R(ac30)+"/mês",
+    cefF:R(cef), cusF:"ITBI+Reg: "+R(itbiF+regF)+" · Seguros: "+R(mipDfi), totF:R(totF),
+    totS:R(ent+custosD+totalMensais+totalRefBase+entrega30),
+    brutoS:R(saldoB), irS:"− "+R(ir), lucS:R(ganhoL),
+    tirS:Pp(tirSa), realS:Pp(tirSr)
+  });
+}
+
+// ── Comparativo ──
+function updateComparativo(d) {
+  const set=(id,v)=>{const e=gi(id);if(e)e.textContent=v;};
+  // Direto
+  set("c-d-ent", d.entD); set("c-d-parc", d.parcD+" /mês");
+  set("c-d-ref", d.refD+" cada"); set("c-d-e30", d.e30D);
+  set("c-d-cus", d.cusD); set("c-d-tot", d.totD);
+  set("c-d-luc", d.lucD); set("c-d-vs", "🏆 "+d.vsD);
+  set("c-d-tir", d.tirD); set("c-d-real", d.realD);
+  // Financiado
+  set("c-f-ent", d.entF); set("c-f-men", d.menF);
+  set("c-f-ac1", d.ac1F); set("c-f-ac2", d.ac2F);
+  set("c-f-cef", d.cefF); set("c-f-cus", d.cusF);
+  set("c-f-tot", d.totF); set("c-f-luc", d.lucF);
+  set("c-f-vs", "🏆 "+d.vsF); set("c-f-tir", d.tirF); set("c-f-real", d.realF);
+  // Selic
+  set("c-s-tot", d.totS); set("c-s-tot2", d.totS);
+  set("c-s-bruto", d.brutoS); set("c-s-ir", d.irS);
+  set("c-s-luc", d.lucS); set("c-s-tir", d.tirS); set("c-s-real", d.realS);
 }
 
 function enviarWhats() {
-  const val=parseInt(document.getElementById("val-h").value)||0;
-  const nome=document.getElementById("nome")?document.getElementById("nome").value.trim():"";
-  const saudacao=nome?"Ol\u00e1 "+nome+"! ":"Ol\u00e1! ";
-  const g=id=>document.getElementById(id)?document.getElementById(id).textContent:"\u2014";
-  const vE=g("val-hint").split(": ")[1]||"\u2014";
-  const lucD=g("d-luc"), lucF=g("f-luc"), ganhoS=g("s-luc");
-  const totF=g("f-tot"), cef=g("f-cef");
-  const vsD=g("d-vs").split("\u00d7")[0].replace("\ud83c\udfc6 ","").trim();
-  const vsF=g("f-vs").split("\u00d7")[0].replace("\ud83c\udfc6 ","").trim();
-
-  const msg=saudacao+"preparei uma simula\u00e7\u00e3o de investimento no *Copas do Bosque* para voc\u00ea.\n\n"
-    +"Im\u00f3vel: *R$ "+val.toLocaleString("pt-BR")+"* \u00b7 Entrega em *"+MESES+" meses* (jan/2029)\n"
-    +"Valor estimado na entrega: *"+vE+"*\n\n"
-    +"*Pagando direto \u00e0 construtora:*\n"
-    +"Lucro estimado: *"+lucD+"*\n"
-    +"Isso \u00e9 *"+vsD+"\u00d7 mais* do que renderia na Selic\n\n"
+  const val=parseInt(gi("val-h").value)||0;
+  const nome=gi("nome")?gi("nome").value.trim():"";
+  const saudacao=nome?"Olá "+nome+"! ":"Olá! ";
+  const g=id=>gi(id)?gi(id).textContent:"—";
+  // Pegar ganho Selic do comparativo (alimentado direto pelo calc)
+  const ganhoSelic=gi("c-s-luc")?gi("c-s-luc").textContent:"—";
+  const msg=saudacao+"preparei uma simulação de investimento no *Copas do Bosque* para você.\n\n"
+    +"Imóvel: *R$ "+val.toLocaleString("pt-BR")+"* · Entrega em *"+MESES+" meses* (jan/2029)\n"
+    +"Valor estimado na entrega: *"+g("val-hint").split(": ")[1]+"*\n\n"
     +"*Financiando pela Caixa (recomendado):*\n"
-    +"Lucro estimado: *"+lucF+"*\n"
-    +"Com apenas *"+totF+"* do seu bolso \u2014 o banco cobre o restante\n"
-    +"Isso \u00e9 *"+vsF+"\u00d7 mais* do que renderia na Selic\n\n"
-    +"Para compara\u00e7\u00e3o: aplicando na Selic voc\u00ea teria apenas *"+ganhoS+"* no mesmo per\u00edodo.\n\n"
+    +"Lucro estimado: *"+g("f-luc")+"*\n"
+    +"Com apenas *"+g("f-tot")+"* do seu bolso — o banco cobre o restante\n\n"
+    +"*Pagando direto à construtora:*\n"
+    +"Lucro estimado: *"+g("d-luc")+"*\n"
+    +"Isso é *"+g("d-vs").split("×")[0].replace("🏆 ","").trim()+"× mais* do que renderia na Selic\n\n"
+    +"Para comparação: aplicando na Selic você teria apenas *"+ganhoSelic+"* no mesmo período.\n\n"
     +"Quer conversar sobre essa oportunidade?";
-
   window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
 }
 
@@ -749,98 +1021,38 @@ th{background:#F3F4F6;padding:7px 10px;text-align:left;font-size:11px;letter-spa
 td{padding:7px 10px;border-bottom:1px solid #E5E7EB}
 .aviso{background:#FEF9EC;border-left:3px solid #E87722;padding:12px 16px;margin-top:24px;font-size:12px;color:#92610A}
 button{margin-top:24px;background:#1F9037;color:#fff;border:none;padding:12px 24px;font-size:14px;cursor:pointer;border-radius:2px;font-family:'Segoe UI',sans-serif;font-weight:600}
-
-/* MODO APRESENTACAO */
-body.apres .inputs-wrap,body.apres .btn-metod,body.apres .aviso,body.apres .card-tec,body.apres footer{display:none!important}
-body.apres .lucro-val{font-size:52px!important}
-body.apres .opt.financiado .lucro-val{font-size:58px!important}
 </style></head><body>
-<h1>📐 Metodologia de Cálculo</h1>
-
-<h2>1. Premissas e Taxas</h2>
-<table>
-<tr><th>Parâmetro</th><th>Valor</th><th>Fonte</th></tr>
-<tr><td>Valorização do imóvel</td><td>15% a.a. nominal (ajustável)</td><td>Estimativa Meztra (moderada/pessimista)</td></tr>
-<tr><td>INCC (obra — meses 1 a 30)</td><td>0,5%/mês = 6% a.a.</td><td>Média FGV INCC-RS</td></tr>
-<tr><td>IGPM+1% (pós-entrega — meses 31+)</td><td>0,7%/mês ≈ 8,4% a.a.</td><td>Índice contratual pós-obra</td></tr>
-<tr><td>Acomp. obra Caixa</td><td>0,8%/mês sobre saldo liberado</td><td>9,6% a.a. — taxa contratual Caixa</td></tr>
-<tr><td>Selic mai-dez/2026</td><td>14% a.a. → 1,0993%/mês</td><td>Focus/BCB 11/mai/2026</td></tr>
-<tr><td>Selic 2027</td><td>12% a.a. → 0,9489%/mês</td><td>Focus/BCB 11/mai/2026</td></tr>
-<tr><td>Selic 2028</td><td>10,5% a.a. → 0,8364%/mês</td><td>Focus/BCB 11/mai/2026</td></tr>
-<tr><td>Selic 2029</td><td>9,5% a.a. → 0,7582%/mês</td><td>Focus/BCB 11/mai/2026</td></tr>
-<tr><td>IPCA acumulado 40m</td><td>~13,9%</td><td>Focus: 4,91%/4,00%/3,64%/3,5%</td></tr>
-<tr><td>IR sobre Selic</td><td>15%</td><td>Tabela regressiva — prazo >24 meses</td></tr>
-<tr><td>Prazo total análise</td><td>40 meses</td><td>Meses de obra + 10m pós-entrega</td></tr>
+<h1>Metodologia de Cálculo — Copas do Bosque</h1>
+<h2>Taxas e Parâmetros</h2>
+<table><tr><th>Parâmetro</th><th>Valor</th><th>Fonte</th></tr>
+<tr><td>INCC (obra)</td><td>0,5%/mês = 6% a.a.</td><td>FGV INCC-RS</td></tr>
+<tr><td>IGPM+1% (pós-entrega)</td><td>0,7%/mês ≈ 8,4% a.a.</td><td>Contratual</td></tr>
+<tr><td>Selic 2026</td><td>14% a.a.</td><td>Focus/BCB mai/2026</td></tr>
+<tr><td>Selic 2027</td><td>12% a.a.</td><td>Focus/BCB mai/2026</td></tr>
+<tr><td>Selic 2028</td><td>10,5% a.a.</td><td>Focus/BCB mai/2026</td></tr>
+<tr><td>Selic 2029</td><td>9,5% a.a.</td><td>Focus/BCB mai/2026</td></tr>
+<tr><td>IR sobre Selic</td><td>15%</td><td>Prazo > 24 meses</td></tr>
+<tr><td>IPCA acumulado 40m</td><td>~13,9%</td><td>Focus mai/2026</td></tr>
 </table>
-
-<h2>2. Valor do Imóvel na Entrega (Mês 40)</h2>
-<div class="formula">V₄₀ = V₀ × (1 + i)^(40/12)
-Exemplo: 399.900 × (1,15)^3,333 = R$ 637.203</div>
-
-<h2>3. Estrutura de Pagamento — Direto</h2>
-<p><strong>Entrada (10%):</strong> 4 parcelas iguais na assinatura, sem correção.</p>
-<p><strong>Mensais (saldo de 60% menos reforços):</strong> Dividido em N meses de obra. Corrigidas pelo INCC:</p>
-<div class="formula">Parcela_m = Parcela_base × (1 + 0,005)^m    [m = 1 até N_obra]</div>
-<p><strong>Reforços:</strong> Saldo restante dos 60% dividido igualmente, corrigido pelo INCC:</p>
-<div class="formula">Reforço_unitário = (60%×V₀ − Parcela_base×N_obra) / N_reforços
-Reforço_m = Reforço_unitário × (1 + 0,005)^m</div>
-<p><strong>30% na entrega:</strong> Corrigido pelo INCC durante os meses de obra:</p>
-<div class="formula">Saldo_entrega = 30% × V₀ × (1 + 0,005)^N_obra</div>
-
-<h2>4. Estrutura de Pagamento — Financiado Caixa</h2>
-<p><strong>Mensais construtora (15% em 40x):</strong> INCC nos 30 meses de obra, IGPM+1% nos 10 meses seguintes:</p>
-<div class="formula">Parcela_F_m = (15%×V₀/40) × (1+0,005)^m           [m ≤ 30]
-Parcela_F_m = (15%×V₀/40) × (1+0,005)^30 × (1+0,007)^(m-30)  [m > 30]</div>
-<p><strong>Acompanhamento de obra (Caixa):</strong> Caixa libera crédito progressivamente de 15% a 100% do saldo financiado:</p>
-<div class="formula">Saldo_lib_m = 75%×V₀ × min(0,15 + 0,85/30 × m,  1,0)
-Juros_acomp_m = Saldo_lib_(m-1) × 0,008</div>
-
-<h2>5. Taxa Interna de Retorno (TIR)</h2>
-<p>A TIR resolve o problema de PMTs diferentes entre os cenários — ela considera o timing exato de cada pagamento e zera o VPL do fluxo completo:</p>
-<div class="formula">VPL = Σ [FC_t / (1 + TIR)^t] = 0    [t = 0 até 40]
-
+<h2>TIR — Taxa Interna de Retorno</h2>
+<p>Calculada pelo método Newton-Raphson (2.000 iterações, tolerância 10⁻¹²). Considera o timing exato de cada pagamento.</p>
+<div class="formula">VPL = Σ [FC_t / (1 + TIR)^t] = 0
 TIR_anual = (1 + TIR_mensal)^12 − 1
-
 Retorno_real = (1 + TIR_anual) / (1 + IPCA_anualizado) − 1</div>
-<p>Calculada por Newton-Raphson (2.000 iterações, tolerância 10⁻¹²).</p>
-
-<h2>6. Cenário Selic — Metodologia</h2>
-<p>Mesmo fluxo do direto aplicado na Selic mês a mês. Cada pagamento rende até o mês 40:</p>
-<div class="formula">Saldo_bruto = Σ [|FC_m| × Π(1 + Selic_k)  para k = m+1 até 40]
-Ganho_líquido = (Saldo_bruto − Total_aplicado) × (1 − 0,15)</div>
-
-<h2>7. O que NÃO está incluído</h2>
-<p>ITBI · Custos de cartório (registro, escritura) · Corretagem na compra/venda (6%) · IR sobre ganho de capital na venda (15% PF) · Custos bancários (MIP, DFI, avaliação da Caixa) · IPTU e condomínio</p>
-
-<div class="aviso"><strong>⚠️</strong> Simulação baseada em projeções de mercado. Valorização imobiliária, INCC, IGPM e Selic são variáveis sujeitas a oscilações. Aprovação de crédito sujeita à análise da Caixa Econômica Federal.</div>
-<button onclick="window.print()">📄 Imprimir / Salvar PDF</button>
+<h2>Cenário Selic</h2>
+<p>Mesmo fluxo real do direto aplicado na Selic mês a mês. Cada parcela rende até o mês 40. IR de 15% sobre o ganho total.</p>
+<div class="aviso">Simulação estimativa. Valorização, INCC, IGPM e Selic são variáveis de mercado sujeitas a oscilações.</div>
+<button onclick="window.print()">Imprimir / Salvar PDF</button>
 </body></html>`);
   w.document.close();
 }
 
-// Obra progress bar
-(function() {
-  const inicio=new Date(2026,0,1), fim=new Date(2029,0,1), hoje=new Date();
-  const pct=Math.min(100,Math.max(0,Math.round((hoje-inicio)/(fim-inicio)*100)));
-  const fill=document.getElementById("obra-fill");
-  const pctEl=document.getElementById("obra-pct");
-  if(fill) fill.style.width=pct+"%";
-  if(pctEl) pctEl.textContent=pct+"% conclu\u00edda";
-})();
-
-// Nome listener
-// Modo apresentacao
-function toggleApres() {
-  const body=document.body;
-  const isApres=body.classList.toggle("apres");
-  const btn=document.getElementById("btn-apres");
-  if(btn) btn.textContent=isApres?"\u2715 Sair do Modo Apresenta\u00e7\u00e3o":"\ud83d\udda5\ufe0f Modo Apresenta\u00e7\u00e3o";
-  window.scrollTo(0,0);
-}
-
-// Init
+// ── Init ──
 document.getElementById("bloqueio").style.display="block";
 gi("resultado-wrap").style.display="none";
+
+
+
 </script>
 </body>
 </html>

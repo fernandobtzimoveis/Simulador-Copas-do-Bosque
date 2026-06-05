@@ -63,6 +63,8 @@ main{max-width:1000px;margin:0 auto;padding:24px 24px 60px}
 .tab-btn:hover{color:var(--black);background:var(--green-lt)}
 .tab-btn.active{color:var(--green-dk);border-bottom-color:var(--green);background:var(--white)}
 .tab-btn .tab-num{display:block;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px}
+#btn-resumo .tab-num{font-size:20px;color:var(--green-dk)}
+#btn-resumo.active{background:var(--green-lt)}
 .tab-btn.active .tab-num{color:var(--green-dk)}
 .tab-pane{display:none}
 .tab-pane.active{display:block}
@@ -277,19 +279,84 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
 
     <!-- 3 ABAS -->
     <div class="tabs-nav">
-      <button class="tab-btn active" onclick="showTab(0)">
-        <span class="tab-num">1</span>Financiar Caixa
+      <button class="tab-btn active" onclick="showTab(0)" id="btn-resumo">
+        <span class="tab-num">★</span>Resumo
       </button>
       <button class="tab-btn" onclick="showTab(1)">
-        <span class="tab-num">2</span>Pagar Direto
+        <span class="tab-num">1</span>Simular Financiamento Caixa
       </button>
       <button class="tab-btn" onclick="showTab(2)">
-        <span class="tab-num">3</span>Comparativo
+        <span class="tab-num">2</span>Simular Pagamento Direto
+      </button>
+      <button class="tab-btn" onclick="showTab(3)">
+        <span class="tab-num">3</span>Comparativo com a Selic
       </button>
     </div>
 
-    <!-- ABA 1: FINANCIADO -->
+    <!-- ABA 0: RESUMO — APRESENTAÇÃO -->
     <div class="tab-pane active" id="tab-0">
+      <div style="max-width:800px;margin:0 auto;padding:8px 0 32px;display:flex;flex-direction:column;gap:16px">
+
+        <!-- BLOCO 1: VALORIZAÇÃO -->
+        <div style="background:var(--white);border:1px solid var(--border);border-top:4px solid var(--green);padding:28px 36px">
+          <div style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:20px">Projeção de valorização do imóvel</div>
+          <div style="display:flex;align-items:center;gap:32px;flex-wrap:wrap">
+            <div style="flex:1;min-width:160px">
+              <div style="font-size:12px;color:var(--gray-lt);margin-bottom:4px">Valor hoje</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--black);line-height:1" id="r-val-hoje">—</div>
+            </div>
+            <div style="font-size:40px;color:var(--green);font-weight:300">→</div>
+            <div style="flex:2;min-width:200px">
+              <div style="font-size:12px;color:var(--gray-lt);margin-bottom:2px">Valor estimado de revenda · Em 40 meses <span id="r-aa-tag" style="font-weight:700;color:var(--green-dk)"></span></div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:72px;font-weight:700;color:var(--green-dk);line-height:1" id="r-val-40">—</div>
+              <div style="font-size:13px;color:var(--gray);margin-top:8px">Valorização de <strong id="r-ganho-pct">—</strong> sobre o valor atual</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCO 2: FINANCIADO + SELIC -->
+        <div style="background:var(--white);border:2px solid var(--green);border-top:5px solid var(--green);padding:28px 36px">
+
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+            <span style="background:var(--green);color:#fff;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 10px;text-transform:uppercase">⭐ Recomendado</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--black);letter-spacing:1px;text-transform:uppercase">Financiar pela Caixa</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px">
+
+            <div style="border-right:1px solid var(--border);padding-right:24px">
+              <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:8px">Investimento próprio</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--black);line-height:1" id="r-f-tot">—</div>
+              <div style="font-size:11px;color:var(--gray);margin-top:6px">banco cobre o restante (75%)</div>
+            </div>
+
+            <div style="border-right:1px solid var(--border);padding-right:24px">
+              <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:8px">Lucro estimado na venda</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--green-dk);line-height:1" id="r-f-luc">—</div>
+              <div style="font-size:13px;font-weight:700;margin-top:6px" id="r-f-vs">—</div>
+            </div>
+
+            <div style="background:var(--slate-lt);padding:16px;border-radius:4px">
+              <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:8px">Se aplicasse na Selic</div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:44px;font-weight:700;color:var(--slate);line-height:1" id="r-s-luc">—</div>
+              <div style="font-size:11px;color:var(--gray);margin-top:6px">mesmo valor · após IR de 15%</div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- NOTA FINAL -->
+        <div style="text-align:center;font-size:11px;color:var(--gray-lt);line-height:1.8">
+          Entrega em <strong id="r-meses">—</strong> meses · Janeiro de 2029 · Valorização estimada pela construtora ·
+          Simulação estimativa sujeita a variação
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ABA 1: FINANCIADO -->
+    <div class="tab-pane" id="tab-1">
       <div class="card-single financiado">
         <div class="cs-head">
           <div class="badge g">⭐ Recomendado</div>
@@ -322,7 +389,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
         <div class="cr custo"><span class="cr-l">ITBI fração ideal + Registro SFH + Avaliação</span><span class="cr-v" id="f-cus1">—</span></div>
         <div class="cr custo"><span class="cr-l">Seguros MIP + DFI (30 meses de obra)</span><span class="cr-v" id="f-cus2">—</span></div>
         <div class="cs-total">
-          <span class="tl">Total do seu bolso</span>
+          <span class="tl">Total investimento próprio</span>
           <span class="tv g" id="f-tot">—</span>
         </div>
         <div class="cs-nota">* Inclui ITBI sobre fração ideal do terreno (R$ 54.545 = R$ 1.200.000 ÷ 22 unidades)</div>
@@ -339,7 +406,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
       </div>
     </div>
 
-    <div class="tab-pane" id="tab-1">
+    <div class="tab-pane" id="tab-2">
       <div class="card-single direto">
         <div class="cs-head">
           <h2>Pagar Direto à Construtora</h2>
@@ -431,7 +498,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
 
     <!-- ABA 3: COMPARATIVO -->
 
-    <div class="tab-pane" id="tab-2">
+    <div class="tab-pane" id="tab-3">
       <div class="compare">
 
         <!-- DIRETO COMPACTO -->
@@ -474,7 +541,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
           <div class="r"><span class="r-l">75% banco quita entrega</span><span class="r-v g" id="c-f-cef">—</span></div>
           <div class="r" style="background:var(--amber-lt)"><span class="r-l" style="color:var(--amber)">Custos</span><span class="r-v" style="color:var(--amber);font-size:10px" id="c-f-cus">—</span></div>
           <div class="opt-total">
-            <span class="t-lbl">Total do bolso</span>
+            <span class="t-lbl">Total investimento próprio</span>
             <span class="t-val g" id="c-f-tot">—</span>
           </div>
           <div class="opt-lucro">
@@ -937,10 +1004,47 @@ function calc() {
 
   const totSelicBase=ent+custosD+totalMensais+totalRefBase+entrega30;
 
-  // vs Selic
-  const vezesDireto=(lucD/ganhoL).toFixed(1), vezesFinanc=(lucF/ganhoL).toFixed(1);
-  S("d-vs","🏆 "+vezesDireto+"× mais que a Selic/CDI");
-  S("f-vs","🏆 "+vezesFinanc+"× mais que a Selic/CDI");
+  // vs Selic — mensagem dinâmica conforme o resultado
+  const vezesDireto = lucD/ganhoL;
+  const vezesFinanc = lucF/ganhoL;
+
+  function msgVsSelic(vezes, lucro) {
+    const pct = Math.round((vezes - 1) * 100);
+    if(lucro <= 0)   return "⚠️ Prejuízo nesse cenário de valorização";
+    if(pct >= 0)     return "🏆 "+pct+"% acima da Selic/CDI";
+    return "⚠️ "+Math.abs(pct)+"% abaixo da Selic nesse cenário";
+  }
+
+  S("d-vs", msgVsSelic(vezesDireto, lucD));
+  S("f-vs", msgVsSelic(vezesFinanc, lucF));
+
+  // Cor dinâmica no d-vs e f-vs
+  ["d-vs","f-vs"].forEach(id => {
+    const el=gi(id); if(!el) return;
+    const t=el.textContent;
+    if(t.startsWith("🏆"))      { el.style.background="var(--green-lt)"; el.style.color="var(--green-dk)"; }
+    else if(t.startsWith("≈"))  { el.style.background="var(--slate-lt)"; el.style.color="var(--slate)"; }
+    else                        { el.style.background="#FEF2F2"; el.style.color="var(--red)"; }
+  });
+
+  // ── Aba Resumo ──
+  S("r-val-hoje",  R(val));
+  S("r-val-40",    R(vE));
+  S("r-aa-tag",    "("+Math.round(aa*100)+"% a.a.)");
+  S("r-ganho-pct", Math.round((vE/val-1)*100)+"% ("+R(vE-val)+")");
+  S("r-f-tot",     R(totF));
+  S("r-f-luc",     R(lucF));
+  S("r-f-vs",      msgVsSelic(vezesFinanc, lucF));
+  S("r-s-luc",     R(ganhoL));
+  S("r-meses",     MESES);
+
+  // Cor dinâmica no r-f-vs
+  const rfvsEl=gi("r-f-vs"); if(rfvsEl) {
+    const t=rfvsEl.textContent;
+    if(t.startsWith("🏆"))      rfvsEl.style.color="var(--green-dk)";
+    else if(t.startsWith("≈"))  rfvsEl.style.color="var(--slate)";
+    else                        rfvsEl.style.color="var(--red)";
+  }
 
   // Info
   S("sec-info", MESES+" meses de obra");
@@ -997,7 +1101,7 @@ function enviarWhats() {
     +"Valor estimado na entrega: *"+g("val-hint").split(": ")[1]+"*\n\n"
     +"*Financiando pela Caixa (recomendado):*\n"
     +"Lucro estimado: *"+g("f-luc")+"*\n"
-    +"Com apenas *"+g("f-tot")+"* do seu bolso — o banco cobre o restante\n\n"
+    +"Com apenas *"+g("f-tot")+"* investimento próprio — o banco cobre o restante\n\n"
     +"*Pagando direto à construtora:*\n"
     +"Lucro estimado: *"+g("d-luc")+"*\n"
     +"Isso é *"+g("d-vs").split("×")[0].replace("🏆 ","").trim()+"× mais* do que renderia na Selic\n\n"

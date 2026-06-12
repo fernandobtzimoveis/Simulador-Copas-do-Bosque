@@ -1053,12 +1053,12 @@ function calc() {
   if(wrap) wrap.style.display="block";
   // Alimentar comparativo direto (sem depender de IDs de aba CDI)
   updateComparativo({
-    lucD:R(lucD), pctD:"· +"+Math.round(lucD/totDReal*100)+"%", vsD:vezesDireto+"× mais que a Selic",
+    lucD:R(lucD), pctD:"· +"+Math.round(lucD/totDReal*100)+"%", vsD:msgVsSelic(vezesDireto, lucD),
     tirD:Pp(tirDa), realD:Pp(tirDr), entD:R(ent)+" · 4× "+R(ent/4),
     parcD:gi("d-parc-edit")?gi("d-parc-edit").value:"—",
     refD:gi("d-ref-edit")?gi("d-ref-edit").value:"—",
     e30D:R(entrega30), cusD:R(custosD), totD:R(ent+custosD+totalMensais+totalRefBase+entrega30),
-    lucF:R(lucF), pctF:"· +"+Math.round(lucF/totF*100)+"%", vsF:vezesFinanc+"× mais que a Selic",
+    lucF:R(lucF), pctF:"· +"+Math.round(lucF/totF*100)+"%", vsF:msgVsSelic(vezesFinanc, lucF),
     tirF:Pp(tirFa), realF:Pp(tirFr), entF:R(val*0.10)+" · 4× "+R(val*0.10/4),
     menF:"~"+R(parcFin)+"/mês ("+Math.round(construtoraPct*100)+"%)", ac1F:"~"+R(ac1)+"/mês", ac2F:"até ~"+R(ac30)+"/mês",
     cefF:R(cef), cusF:"ITBI+Reg: "+R(itbiF+regF)+" · Seguros: "+R(mipDfi), totF:R(totF),
@@ -1075,14 +1075,14 @@ function updateComparativo(d) {
   set("c-d-ent", d.entD); set("c-d-parc", d.parcD+" /mês");
   set("c-d-ref", d.refD+" cada"); set("c-d-e30", d.e30D);
   set("c-d-cus", d.cusD); set("c-d-tot", d.totD);
-  set("c-d-luc", d.lucD); set("c-d-vs", "🏆 "+d.vsD);
+  set("c-d-luc", d.lucD); set("c-d-vs", d.vsD);
   set("c-d-tir", d.tirD); set("c-d-real", d.realD);
   // Financiado
   set("c-f-ent", d.entF); set("c-f-men", d.menF);
   set("c-f-ac1", d.ac1F); set("c-f-ac2", d.ac2F);
   set("c-f-cef", d.cefF); set("c-f-cus", d.cusF);
   set("c-f-tot", d.totF); set("c-f-luc", d.lucF);
-  set("c-f-vs", "🏆 "+d.vsF); set("c-f-tir", d.tirF); set("c-f-real", d.realF);
+  set("c-f-vs", d.vsF); set("c-f-tir", d.tirF); set("c-f-real", d.realF);
   // Selic
   set("c-s-tot", d.totS); set("c-s-tot2", d.totS);
   set("c-s-bruto", d.brutoS); set("c-s-ir", d.irS);

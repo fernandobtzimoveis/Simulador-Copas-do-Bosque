@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Comercial · Copas do Bosque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#131110;
+    --surface:#1C1A17;
+    --surface-2:#242019;
+    --border:#36312A;
+    --text:#F2EEE7;
+    --text-dim:#A89F92;
+    --terracotta:#C8662F;
+    --terracotta-soft:rgba(200,102,47,0.16);
+    --green:#7FA66B;
+    --green-soft:rgba(127,166,107,0.16);
+    --amber:#C9A227;
+    --amber-soft:rgba(201,162,39,0.16);
+    --red:#C0463A;
+    --red-soft:rgba(192,70,58,0.16);
+    --blue:#7C92A6;
+    --blue-soft:rgba(124,146,166,0.16);
+    --gray:#7A746A;
+    --gray-soft:rgba(122,116,106,0.16);
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 20px 80px;}
+
+  /* ---------- header ---------- */
+  .tick{display:inline-block;width:22px;height:6px;background:var(--terracotta);border-radius:2px;vertical-align:middle;margin-right:10px;}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);font-weight:600;display:flex;align-items:center;margin-bottom:14px;}
+  .title{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0 0 6px;letter-spacing:-0.01em;}
+  .subtitle{color:var(--text-dim);font-size:14px;margin:0 0 28px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;}
+  .kpis-3{grid-template-columns:repeat(3,1fr);}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+  .kpi .num{font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--terracotta);line-height:1;}
+  .kpi .label{font-size:12px;color:var(--text-dim);margin-top:6px;}
+  .kpi .pct{font-size:12px;color:var(--green);font-weight:700;margin-top:2px;}
+
+  .kpi-group-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);font-weight:700;margin:22px 0 10px;}
+  .kpi-group-label:first-of-type{margin-top:6px;}
+
+  /* ---- TABS ---- */
+  .tabs-nav{display:flex;gap:4px;margin:28px 0 0;border-bottom:1px solid var(--border);}
+  .tab-btn{
+    background:none;border:none;border-bottom:3px solid transparent;
+    color:var(--text-dim);font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;
+    padding:10px 20px;cursor:pointer;letter-spacing:.02em;transition:color .15s,border-color .15s;
+    margin-bottom:-1px;
+  }
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--terracotta);border-bottom-color:var(--terracotta);}
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;}
+
+  /* ---------- sections ---------- */
+  .section{margin-bottom:54px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+  .section-title{display:flex;align-items:center;font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:-0.01em;}
+  .section-note{font-size:12.5px;color:var(--text-dim);}
+
+  .table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;min-width:760px;}
+  th{
+    text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--text-dim);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle;white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  tr.highlight td{background:var(--terracotta-soft);}
+  tr.highlight td:first-child{box-shadow:inset 3px 0 0 var(--terracotta);}
+  tbody tr:hover td{background:var(--surface-2);}
+  tr.highlight:hover td{background:var(--terracotta-soft);}
+
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.02em;}
+  .badge-green{background:var(--green-soft);color:var(--green);}
+  .badge-red{background:var(--red-soft);color:var(--red);}
+  .badge-amber{background:var(--amber-soft);color:var(--amber);}
+  .badge-blue{background:var(--blue-soft);color:var(--blue);}
+  .badge-terracotta{background:var(--terracotta-soft);color:var(--terracotta);}
+  .badge-gray{background:var(--gray-soft);color:var(--gray);}
+
+  input, select{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:6px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:13px;width:100%;
+  }
+  textarea{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:6px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:13px;
+    width:100%;min-width:200px;resize:vertical;line-height:1.4;
+  }
+  input[type=number]{width:58px;text-align:right;}
+  input[type=date]{width:128px;}
+  input.name-input{min-width:120px;font-weight:600;}
+  input.acao-input{min-width:130px;}
+  input:focus, select:focus, textarea:focus, button:focus-visible{outline:2px solid var(--terracotta);outline-offset:1px;}
+
+  .btn{
+    background:var(--terracotta);color:#1A1410;border:none;border-radius:7px;
+    padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+    transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.1);}
+  .btn-ghost{
+    background:transparent;color:var(--text-dim);border:1px solid var(--border);
+    border-radius:7px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+    transition:border-color .15s ease,color .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--terracotta);color:var(--text);}
+  .del-btn{
+    background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;line-height:1;
+    padding:2px 6px;border-radius:5px;transition:color .15s ease,background .15s ease;
+  }
+  .del-btn:hover{color:var(--red);background:var(--red-soft);}
+
+  .toolbar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+
+  .panel{
+    background:var(--surface-2);border:1px dashed var(--border);border-radius:var(--radius);
+    padding:16px;margin-top:14px;display:none;
+  }
+  .panel.open{display:block;}
+  .panel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px;}
+  .panel-field label{display:block;font-size:11.5px;color:var(--text-dim);margin-bottom:4px;}
+  .panel-field input{width:100%;}
+  .panel-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap;}
+
+  .spark{display:block;}
+  .summary-line{font-size:13px;color:var(--text-dim);margin-top:12px;line-height:1.6;}
+  .summary-line b{color:var(--text);font-weight:700;}
+  .summary-line .pos{color:var(--green);font-weight:700;}
+  .summary-line .neg{color:var(--terracotta);font-weight:700;}
+
+  @media(max-width:640px){
+    .kpis, .kpis-3{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow"><span class="tick"></span>MEZTRA · ACELERAÇÃO COMERCIAL</div>
+  <h1 class="title">Painel Copas do Bosque</h1>
+  <p class="subtitle" id="lastUpdated">Carregando...</p>
+
+  <div class="kpi-group-label">Visão financeira</div>
+  <div class="kpis" id="kpiFinanceiro"></div>
+
+  <div class="kpi-group-label">Copas do Bosque · apresentações → reservas → propostas → vendas</div>
+  <div class="kpis" id="kpiFunilCopas"></div>
+
+  <div class="kpi-group-label">Avulsos e Planta · visitas → reservas → propostas → vendas</div>
+  <div class="kpis" id="kpiFunilAvulsos"></div>
+
+  <div class="kpis kpis-3" style="margin-top:10px;" id="kpiFunilExtra"></div>
+
+  <div class="kpi-group-label">Vendas por frente</div>
+  <div class="kpis kpis-3" id="kpiFrentes"></div>
+
+  <!-- ===================== TABS ===================== -->
+  <div class="tabs-nav">
+    <button class="tab-btn active" data-tab="comercial">Comercial</button>
+    <button class="tab-btn" data-tab="inventario">Inventário</button>
+    <button class="tab-btn" data-tab="parceiros">Parceiros</button>
+    <button class="tab-btn" data-tab="mercado">Mercado</button>
+  </div>
+
+  <!-- TAB: COMERCIAL -->
+  <div class="tab-pane active" id="tab-comercial">
+
+    <!-- APRESENTAÇÕES COPAS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Apresentações · Copas do Bosque</div>
+        <div class="section-note">Cada linha é um contato comercial do empreendimento — imobiliária, situação e evolução</div>
+      </div>
+      <div class="table-scroll">
+        <table id="apresentacoesTable">
+          <thead>
+            <tr>
+              <th>Nº</th><th>Data</th><th>Dias</th><th>Imobiliária / corretor</th><th>Situação</th><th>Observação</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="apresentacoesBody"></tbody>
+        </table>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="addApresentacaoRow">+ Nova apresentação</button>
+        <button class="btn-ghost" id="importarVisitasCopas">↑ Importar do controle de visitas</button>
+      </div>
+    </div>
+
+    <!-- CONTROLE DE VISITAS E PROPOSTAS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Controle de visitas e propostas</div>
+        <div class="section-note">Avulsos e planta — visitas, sondagens e propostas. Copas: usar a seção acima</div>
+      </div>
+      <div class="table-scroll">
+        <table id="visitasTable">
+          <thead>
+            <tr>
+              <th>Nº</th><th>Data</th><th>Dias</th><th>Tipo</th><th>Imóvel</th><th>Imobiliária / corretor</th><th>Situação</th><th>Observação</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="visitasBody"></tbody>
+        </table>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="addVisitaRow">+ Nova visita / proposta</button>
+      </div>
+    </div>
+
+  </div><!-- /tab-comercial -->
+
+  <!-- TAB: INVENTÁRIO -->
+  <div class="tab-pane" id="tab-inventario">
+
+    <!-- UNIDADES COPAS -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Unidades · Copas do Bosque</div>
+        <div class="section-note" id="copasNote">Inventário de unidades — marque como Reservado ou Vendido quando fechar</div>
+      </div>
+      <div class="table-scroll">
+        <table id="copasTable">
+          <thead>
+            <tr>
+              <th>Nº</th><th>Unidade</th><th>Tipologia</th><th>Área (m²)</th><th>Valor</th><th>Suíte</th><th>Status</th><th>Imobiliária / corretor</th><th>Detalhe</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="copasBody"></tbody>
+        </table>
+      </div>
+      <p class="summary-line" id="copasSummary"></p>
+      <div class="toolbar">
+        <button class="btn" id="addCopasRow">+ Nova unidade</button>
+      </div>
+    </div>
+
+    <!-- PORTFÓLIO AVULSOS E PLANTA -->
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Portfólio · avulsos e planta</div>
+        <div class="section-note">Imóveis alugados para venda e casas vendidas na planta</div>
+      </div>
+      <div class="table-scroll">
+        <table id="avulsosTable">
+          <thead>
+            <tr>
+              <th>Nº</th><th>Tipo</th><th>Unidade</th><th>Edifício</th><th>Valor</th><th>Locado por</th><th>Status</th><th>Imobiliária / corretor</th><th>Obs</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="avulsosBody"></tbody>
+        </table>
+      </div>
+      <p class="summary-line" id="avulsosSummary"></p>
+      <div class="toolbar">
+        <button class="btn" id="addAvulsoRow">+ Novo imóvel</button>
+      </div>
+    </div>
+
+  </div><!-- /tab-inventario -->
+
+  <!-- TAB: PARCEIROS -->
+  <div class="tab-pane" id="tab-parceiros">
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Funil de imobiliárias parceiras</div>
+        <div class="section-note">Status calculado pelo tempo desde a apresentação e pelo resultado já gerado</div>
+      </div>
+      <div class="table-scroll">
+        <table id="funilTable">
+          <thead>
+            <tr>
+              <th>Nº</th><th>Imobiliária</th><th>Tipo</th><th>Apresentação</th><th>Dias</th><th>Status</th><th>Ação comercial</th><th>Detalhe</th><th>Reserva</th><th>Proposta</th><th>Venda</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="funilBody"></tbody>
+        </table>
+      </div>
+      <div class="toolbar">
+        <button class="btn" id="addFunilRow">+ Nova imobiliária</button>
+      </div>
+    </div>
+
+  </div><!-- /tab-parceiros -->
+
+  <!-- TAB: MERCADO -->
+  <div class="tab-pane" id="tab-mercado">
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-title"><span class="tick"></span>Estoque concorrente, acompanhamento quinzenal</div>
+        <div class="section-note" id="estoqueNote"></div>
+      </div>
+      <div class="table-scroll">
+        <table id="estoqueTable">
+          <thead>
+            <tr>
+              <th>Empreendimento</th><th>Tendência</th><th>Estoque atual</th><th>Vendido (un)</th><th>% vendido</th>
+            </tr>
+          </thead>
+          <tbody id="estoqueBody"></tbody>
+        </table>
+      </div>
+      <p class="summary-line" id="summaryLine"></p>
+      <div class="toolbar">
+        <button class="btn" id="toggleNewUpdate">+ Registrar nova atualização</button>
+        <button class="btn-ghost" id="toggleNewProject">+ Novo empreendimento</button>
+      </div>
+      <div class="panel" id="newUpdatePanel">
+        <div class="panel-row">
+          <div class="panel-field">
+            <label>Data da atualização</label>
+            <input type="date" id="newUpdateDate">
+          </div>
+        </div>
+        <div class="panel-grid" id="newUpdateGrid"></div>
+        <button class="btn" id="saveNewUpdate">Salvar atualização</button>
+      </div>
+      <div class="panel" id="newProjectPanel">
+        <div class="panel-row">
+          <div class="panel-field">
+            <label>Nome do empreendimento</label>
+            <input type="text" id="newProjectName" placeholder="Ex: Bosque Real">
+          </div>
+          <div class="panel-field">
+            <label>Estoque atual</label>
+            <input type="number" id="newProjectStock" min="0">
+          </div>
+          <button class="btn" id="saveNewProject">Adicionar</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /tab-mercado -->
+
+
+</div>
+
+<script>
+const STORAGE_KEYS = { funil: 'funil-imobiliarias', estoque: 'estoque-history', avulsos: 'avulsos-portfolio', visitas: 'visitas-imoveis', copas: 'copas-unidades', apresentacoesCopas: 'apresentacoes-copas' };
+
+const ACAO_OPTIONS = ['Verba tráfego','Comissão 6%','Bônus por adesão','Agendado','Tentando agendar','Canal próprio','Outro'];
+
+const DEFAULT_FUNIL = [
+  { id:1, nome:'Zanata',         tipo:'Parceiro', data:'2026-05-06', acaoTipo:'Verba tráfego',     detalhe:'',         reserva:3, proposta:1, venda:1 },
+  { id:2, nome:'Alex',           tipo:'Parceiro', data:'2026-05-11', acaoTipo:'Bônus por adesão',  detalhe:'R$ 5.000', reserva:0, proposta:0, venda:0 },
+  { id:3, nome:'Melisnk',        tipo:'Parceiro', data:'2026-05-13', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:4, nome:'Verdi',          tipo:'Parceiro', data:'2026-06-11', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:5, nome:'Ariotti',        tipo:'Parceiro', data:'2026-06-19', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:6, nome:'Moi',            tipo:'Parceiro', data:'2026-06-16', acaoTipo:'Bônus por adesão',  detalhe:'R$ 4.000', reserva:0, proposta:0, venda:0 },
+  { id:7, nome:'Viterbo',        tipo:'Parceiro', data:'2026-06-16', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:8, nome:'House 192',      tipo:'Parceiro', data:'2026-06-04', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:9, nome:'Ricardo Prigol', tipo:'Parceiro', data:'2026-06-29', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:10, nome:'Vista Prime',   tipo:'Parceiro', data:'',           acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:11, nome:'Ceolin',        tipo:'Parceiro', data:'',           acaoTipo:'Tentando agendar',  detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:12, nome:'54 Imóveis',    tipo:'Parceiro', data:'2026-06-22', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:13, nome:'Meztra',        tipo:'Direto',   data:'',           acaoTipo:'Canal próprio',     detalhe:'Visitas e leads gerados pela própria Meztra', reserva:0, proposta:0, venda:0 },
+];
+
+function migrateFunilRow(row){
+  let out = row;
+  if(out.acaoTipo === undefined){
+    const legacy = out.acao || '';
+    let acaoTipo = 'Outro', detalhe = '';
+    if(/verba/i.test(legacy)) acaoTipo = 'Verba tráfego';
+    else if(/comiss/i.test(legacy)) acaoTipo = 'Comissão 6%';
+    else if(/tentando/i.test(legacy)) acaoTipo = 'Tentando agendar';
+    else if(/agendado/i.test(legacy)) acaoTipo = 'Agendado';
+    else if(/bateu/i.test(legacy)){
+      acaoTipo = 'Bônus por adesão';
+      const m = legacy.match(/(\d+)\s*k/i);
+      detalhe = m ? `R$ ${Number(m[1])*1000}`.replace(/\B(?=(\d{3})+(?!\d))/g,'.') : legacy;
+    } else if(legacy){
+      detalhe = legacy;
+    }
+    out = Object.assign({}, out, {acaoTipo, detalhe});
+  }
+  if(out.tipo === undefined){
+    out = Object.assign({}, out, {tipo: /meztra/i.test(out.nome||'') ? 'Direto' : 'Parceiro'});
+  }
+  return out;
+}
+
+const PROJECT_ORDER = ['Copas','Vivaldi','Garden Inn','Nox Haus','Skyline','Viva Conect','Amici','Raro','Brooklyn','Noronha','Vila Fratello','Alpen','Pulse','Agata','Linea','Bold'];
+
+const DEFAULT_ESTOQUE = [
+  { date:'2026-05-15', stocks:{ 'Copas':13,'Vivaldi':25,'Garden Inn':26,'Nox Haus':77,'Skyline':29,'Viva Conect':14,'Amici':24,'Raro':14,'Brooklyn':10,'Noronha':12,'Vila Fratello':5,'Alpen':11,'Pulse':32,'Agata':21,'Linea':32,'Bold':26 } },
+  { date:'2026-06-01', stocks:{ 'Copas':11,'Vivaldi':21,'Garden Inn':28,'Nox Haus':79,'Skyline':29,'Viva Conect':13,'Amici':24,'Raro':12,'Brooklyn':9, 'Noronha':12,'Vila Fratello':5,'Alpen':11,'Pulse':32,'Agata':21,'Linea':32,'Bold':26 } },
+  { date:'2026-06-15', stocks:{ 'Copas':11,'Vivaldi':21,'Garden Inn':26,'Nox Haus':79,'Skyline':29,'Viva Conect':14,'Amici':24,'Raro':12,'Brooklyn':9, 'Noronha':12,'Vila Fratello':5,'Alpen':10,'Pulse':32,'Agata':20,'Linea':34,'Bold':26 } },
+];
+
+const DEFAULT_AVULSOS = [
+  { id:1,  tipo:'Avulso', unidade:'301',        edificio:'Corsa',                 valor:225000,  aluguel:795,  status:'Vendido' },
+  { id:2,  tipo:'Avulso', unidade:'402',        edificio:'Corsa',                 valor:210000,  aluguel:0,    status:'Vendido' },
+  { id:3,  tipo:'Avulso', unidade:'401',        edificio:'Corsa',                 valor:265000,  aluguel:899,  status:'Disponível' },
+  { id:4,  tipo:'Avulso', unidade:'502',        edificio:'Corsa',                 valor:228000,  aluguel:800,  status:'Disponível' },
+  { id:5,  tipo:'Avulso', unidade:'602',        edificio:'Corsa',                 valor:232000,  aluguel:718,  status:'Disponível' },
+  { id:6,  tipo:'Avulso', unidade:'701',        edificio:'Corsa',                 valor:277000,  aluguel:850,  status:'Disponível' },
+  { id:7,  tipo:'Avulso', unidade:'702',        edificio:'Corsa',                 valor:235000,  aluguel:696,  status:'Disponível' },
+  { id:8,  tipo:'Avulso', unidade:'801',        edificio:'Corsa',                 valor:281000,  aluguel:900,  status:'Disponível' },
+  { id:9,  tipo:'Avulso', unidade:'802',        edificio:'Corsa',                 valor:239000,  aluguel:745,  status:'Disponível' },
+  { id:10, tipo:'Avulso', unidade:'1401',       edificio:'Sunshine',              valor:320000,  aluguel:913,  status:'Anunciado' },
+  { id:11, tipo:'Avulso', unidade:'1501',       edificio:'Sunshine',              valor:325000,  aluguel:1173, status:'Disponível' },
+  { id:12, tipo:'Avulso', unidade:'1601',       edificio:'Sunshine',              valor:330000,  aluguel:816,  status:'Disponível' },
+  { id:13, tipo:'Avulso', unidade:'1701',       edificio:'Sunshine',              valor:335000,  aluguel:798,  status:'Disponível' },
+  { id:14, tipo:'Avulso', unidade:'1801',       edificio:'Sunshine',              valor:340000,  aluguel:976,  status:'Disponível' },
+  { id:15, tipo:'Avulso', unidade:'52',         edificio:'Ed. Medianeira',        valor:329000,  aluguel:0,    status:'Disponível' },
+  { id:16, tipo:'Avulso', unidade:'Unidade 01', edificio:'Sobrado Cidade Nova',   valor:949000,  aluguel:0,    status:'Disponível' },
+  { id:17, tipo:'Avulso', unidade:'Casa',       edificio:'Casa Copenhagem',       valor:2600000, aluguel:0,    status:'Disponível' },
+  { id:18, tipo:'Planta', unidade:'Casa',       edificio:'Casa Oslo',             valor:1890000, aluguel:0,    status:'Disponível' },
+  { id:19, tipo:'Planta', unidade:'Casa',       edificio:'Casa Zurique',          valor:1900000, aluguel:0,    status:'Disponível' },
+  { id:20, tipo:'Planta', unidade:'Casa',       edificio:'Casa João Shell',       valor:1560000, aluguel:0,    status:'Disponível' },
+  { id:21, tipo:'Planta', unidade:'Casa',       edificio:'Casa Dubai',            valor:4800000, aluguel:0,    status:'Disponível' },
+];
+
+function migrateAvulsoRow(row){
+  let r = row;
+  if(r.tipo === undefined) r = Object.assign({}, r, {tipo:'Avulso'});
+  if(r.imobiliaria === undefined) r = Object.assign({}, r, {imobiliaria:''});
+  if(r.obs === undefined) r = Object.assign({}, r, {obs:''});
+  return r;
+}
+
+const DEFAULT_COPAS = [
+  { id:1,  unidade:'501', tipologia:'Final 1', area:'62,64', valor:564000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:2,  unidade:'701', tipologia:'Final 1', area:'62,64', valor:572000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:3,  unidade:'801', tipologia:'Final 1', area:'62,64', valor:576000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:4,  unidade:'402', tipologia:'Final 2', area:'62,58', valor:558000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:5,  unidade:'502', tipologia:'Final 2', area:'—',     valor:460000, suite:'Sim', status:'Vendido',    imobiliaria:'Direto',  data:'', detalhe:'Parente do Gui – sem participação Meztra' },
+  { id:6,  unidade:'702', tipologia:'Final 2', area:'62,64', valor:570000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:7,  unidade:'802', tipologia:'Final 2', area:'62,64', valor:574000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:8,  unidade:'902', tipologia:'Final 2', area:'62,64', valor:582000, suite:'Sim', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:9,  unidade:'403', tipologia:'Final 3', area:'—',     valor:460000, suite:'Não', status:'Vendido',    imobiliaria:'Zanata',  data:'', detalhe:'Vendido pela Zanata' },
+  { id:10, unidade:'503', tipologia:'Final 3', area:'51,74', valor:399900, suite:'Não', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:11, unidade:'603', tipologia:'Final 3', area:'51,74', valor:436000, suite:'Não', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:12, unidade:'703', tipologia:'Final 3', area:'51,74', valor:441000, suite:'Não', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+  { id:13, unidade:'903', tipologia:'Final 3', area:'51,74', valor:451000, suite:'Não', status:'Disponível', imobiliaria:'', data:'', detalhe:'' },
+];
+const STATUS_COPAS_OPTIONS = ['Disponível','Reservado','Vendido'];
+const STATUS_COPAS_CLS = {
+  'Disponível': 'badge-gray',
+  'Reservado':  'badge-terracotta',
+  'Vendido':    'badge-green',
+};
+function migrateCopasRow(row){
+  let r = row;
+  if(r.imobiliaria === undefined) r = Object.assign({}, r, {imobiliaria:''});
+  // downgrade complex statuses to simple ones
+  if(!STATUS_COPAS_OPTIONS.includes(r.status)){
+    if(r.status==='Apresentado')                                      r = Object.assign({}, r, {status:'Disponível'});
+    else if(r.status==='Proposta enviada'||r.status==='Proposta recusada') r = Object.assign({}, r, {status:'Reservado'});
+  }
+  return r;
+}
+
+// ---- Apresentações Copas ----
+const SITUACAO_APRES_OPTIONS = ['Aguardando retorno','Negociando','Reservado','Desistência','Proposta enviada','Proposta recusada','Sem interesse','Sem crédito','Vendido'];
+const SITUACAO_APRES_CLS = {
+  'Aguardando retorno': 'badge-blue',
+  'Negociando':         'badge-blue',
+  'Reservado':          'badge-terracotta',
+  'Desistência':        'badge-gray',
+  'Proposta enviada':   'badge-amber',
+  'Proposta recusada':  'badge-red',
+  'Sem interesse':      'badge-gray',
+  'Sem crédito':        'badge-gray',
+  'Vendido':            'badge-green',
+};
+const DEFAULT_APRESENTACOES_COPAS = [];
+
+const STATUS_AVULSO_CLS = { 'Vendido':'badge-green', 'Anunciado':'badge-terracotta', 'Disponível':'badge-blue' };
+
+const DEFAULT_VISITAS = [];
+const SITUACAO_VISITA_OPTIONS = ['Aguardando retorno','Negociando','Reservado','Desistência','Proposta enviada','Proposta recusada','Sem crédito','Sem interesse','Vendido'];
+const SITUACAO_VISITA_CLS = {
+  'Aguardando retorno':'badge-blue',
+  'Negociando':'badge-amber',
+  'Reservado':'badge-terracotta',
+  'Desistência':'badge-gray',
+  'Proposta enviada':'badge-amber',
+  'Proposta recusada':'badge-red',
+  'Sem crédito':'badge-gray',
+  'Sem interesse':'badge-gray',
+  'Vendido':'badge-green'
+};
+
+let funilData = [];
+let estoqueData = [];   // [{date, stocks:{nome:valor}}]
+let projectList = [];   // ordered list of project names currently tracked
+let avulsosData = [];
+let visitasData = [];
+let copasData = [];
+let apresentacoesCopasData = [];
+
+// ---------------- storage helpers (com fallback e fila serializada) ----------------
+function hasArtifactStorage(){
+  try{ return typeof window!=='undefined' && !!window.storage && typeof window.storage.get==='function'; }
+  catch(e){ return false; }
+}
+function hasLocalStorage(){
+  try{
+    if(typeof window==='undefined' || !window.localStorage) return false;
+    window.localStorage.setItem('__t__','1');
+    window.localStorage.removeItem('__t__');
+    return true;
+  }catch(e){ return false; }
+}
+const STORAGE_MODE = hasArtifactStorage() ? 'artifact' : (hasLocalStorage() ? 'local' : 'memory');
+const memoryStore = {};
+
+// fila serializada: artifact storage não suporta writes simultâneos
+let _saveQueue = Promise.resolve();
+function _delay(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+async function loadKey(key, fallback){
+  try{
+    if(STORAGE_MODE==='artifact'){
+      const res = await window.storage.get(key, false);
+      if(res && res.value) return JSON.parse(res.value);
+      return fallback;
+    }
+    if(STORAGE_MODE==='local'){
+      const raw = window.localStorage.getItem('painel-copas:'+key);
+      return raw ? JSON.parse(raw) : fallback;
+    }
+    return (key in memoryStore) ? memoryStore[key] : fallback;
+  }catch(e){ return fallback; }
+}
+
+function saveKey(key, value){
+  // empilha na fila e retorna a promise, nunca dispara dois writes em paralelo
+  _saveQueue = _saveQueue.then(async () => {
+    for(let attempt = 0; attempt < 3; attempt++){
+      try{
+        if(STORAGE_MODE==='artifact'){
+          await window.storage.set(key, JSON.stringify(value), false);
+        } else if(STORAGE_MODE==='local'){
+          window.localStorage.setItem('painel-copas:'+key, JSON.stringify(value));
+        } else {
+          memoryStore[key] = value;
+        }
+        if(STORAGE_MODE==='artifact') await _delay(80); // pausa entre writes para não sobrecarregar a API
+        return;
+      }catch(e){
+        if(attempt < 2){ await _delay(300 * (attempt + 1)); }
+        else { console.error('Falha ao salvar', key, e); }
+      }
+    }
+  });
+  return _saveQueue;
+}
+
+// ---------------- date / format helpers ----------------
+function todayMid(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+function diasDesde(iso){
+  if(!iso) return null;
+  const d = new Date(iso+'T00:00:00');
+  return Math.round((todayMid()-d)/86400000);
+}
+function fmtDateBR(iso){
+  if(!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function fmtPct(n){
+  return (Math.round(n*10)/10).toFixed(1).replace('.', ',') + '%';
+}
+function fmtBRL(n){
+  return Number(n||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+}
+
+// ---------------- status logic ----------------
+function getStatus(row){
+  if(row.tipo==='Direto') return {label:'Canal próprio', cls:'badge-terracotta'};
+  if(!row.data) return {label:'Pendente', cls:'badge-gray'};
+  const dias = diasDesde(row.data);
+  if(dias < 0) return {label:'Futuro', cls:'badge-terracotta', dias};
+  if(Number(row.reserva)>0 || Number(row.proposta)>0 || Number(row.venda)>0) return {label:'Convertendo', cls:'badge-green', dias};
+  if(dias <= 10) return {label:'Cedo', cls:'badge-blue', dias};
+  if(dias <= 25) return {label:'Observação', cls:'badge-amber', dias};
+  return {label:'Alerta', cls:'badge-red', dias};
+}
+function diasLabel(row){
+  if(!row.data) return '—';
+  const dias = diasDesde(row.data);
+  if(dias < 0) return `em ${Math.abs(dias)} dias`;
+  return `${dias} dias`;
+}
+
+// ---------------- render: KPIs ----------------
+function pctRel(value, base){
+  if(!base) return null;
+  return value/base*100;
+}
+function kpiCard(num, label, pct, extraHTML=''){
+  const pctLine = pct===null
+    ? `<div class="pct" style="color:var(--text-dim);">sem base de comparação</div>`
+    : `<div class="pct">${fmtPct(pct)} em relação ao estágio anterior</div>`;
+  return `<div class="kpi"><div class="num">${num}</div><div class="label">${label}</div>${pctLine}${extraHTML}</div>`;
+}
+
+function renderKPIs(){
+  const totalReserva = funilData.reduce((s,r)=>s+Number(r.reserva||0),0);
+  const totalProposta = funilData.reduce((s,r)=>s+Number(r.proposta||0),0);
+  const totalVendaParceiros = funilData.reduce((s,r)=>s+Number(r.venda||0),0);
+  const totalVisitas = visitasData.length;
+
+  const avulsoRows = avulsosData.filter(r=>r.tipo==='Avulso');
+  const plantaRows = avulsosData.filter(r=>r.tipo==='Planta');
+  const vendidoEstoqueValor = avulsoRows.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoPlantaValor = plantaRows.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoEstoqueQtd = avulsoRows.filter(r=>r.status==='Vendido').length;
+  const vendidoPlantaQtd = plantaRows.filter(r=>r.status==='Vendido').length;
+
+  const vgvCopas = copasData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoCopasUnidades = copasData.filter(r=>r.status==='Vendido');
+  const vendidoCopasValor = vendidoCopasUnidades.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoCopasQtd = vendidoCopasUnidades.length;
+
+  const portfolioTotalValor = avulsosData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vgvTotal = vgvCopas + portfolioTotalValor;
+  const valorVendidoTotal = vendidoCopasValor + vendidoEstoqueValor + vendidoPlantaValor;
+  const pctVendidoGeral = vgvTotal>0 ? valorVendidoTotal/vgvTotal*100 : 0;
+
+  // ---- Visão financeira ----
+  document.getElementById('kpiFinanceiro').innerHTML = [
+    {num: fmtBRL(vgvTotal), label:'VGV total (Copas + avulsos + planta)'},
+    {num: fmtBRL(valorVendidoTotal), label:'Valor vendido (todas as frentes)'},
+    {num: fmtPct(pctVendidoGeral), label:'% vendido sobre o VGV total'},
+  ].map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="label">${k.label}</div></div>`).join('');
+
+  // ---- Helpers de estágio (um estágio por registro) ----
+  const isCopas = r => (r.imovel||'').includes('Copas');
+
+  function getStage(row){
+    const sit = row.situacao || '';
+    if(sit === 'Vendido')                                      return 'venda';
+    if(sit === 'Proposta enviada' || sit === 'Proposta recusada') return 'proposta';
+    if(sit === 'Reservado')                                    return 'reserva';
+    const tipo = row.tipoRegistro || 'Visita';
+    if(tipo === 'Proposta')    return 'proposta';
+    if(tipo === 'Sondagem')    return 'sondagem';
+    if(tipo === 'Apresentação') return 'apresentacao';
+    return 'visita';
+  }
+
+  // ---- Funil Copas ----
+  // Apresentações: total de registros na lista de apresentações
+  const copasApresentacoes = apresentacoesCopasData.length;
+  // Reservadas: apresentações que chegaram em Reservado ou além (1 estágio por registro)
+  const APRES_RESERVA  = new Set(['Reservado','Desistência','Proposta enviada','Proposta recusada','Vendido']);
+  const APRES_PROPOSTA = new Set(['Proposta enviada','Proposta recusada','Vendido']);
+  const copasReservados  = apresentacoesCopasData.filter(r=>APRES_RESERVA.has(r.situacao)).length;
+  const copasPropostas   = apresentacoesCopasData.filter(r=>APRES_PROPOSTA.has(r.situacao)).length;
+  const copasPropostasRec= apresentacoesCopasData.filter(r=>r.situacao==='Proposta recusada').length;
+  // Vendidas: vem da lista de apresentações para manter o funil consistente
+  // (a tabela de unidades é inventário, não funil)
+  const copasVendidos = apresentacoesCopasData.filter(r=>r.situacao==='Vendido').length;
+
+  const pctRecCopas  = copasPropostas>0 ? Math.round(copasPropostasRec/copasPropostas*100) : 0;
+  const recCopasLine = copasPropostas>0
+    ? (copasPropostasRec>0
+        ? `<div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px;">${copasPropostasRec} de ${copasPropostas} recusadas (${pctRecCopas}%)</div>`
+        : `<div style="font-size:12px;color:var(--green);font-weight:600;margin-top:4px;">nenhuma recusada</div>`)
+    : '';
+
+  const pApresentCopas  = copasApresentacoes>0 ? 100 : null;
+  const pReservasCopas  = pctRel(copasReservados, copasApresentacoes);
+  const pPropostasCopas = pctRel(copasPropostas,  copasReservados);
+  const pVendasCopas    = pctRel(copasVendidos,   copasPropostas);
+
+  document.getElementById('kpiFunilCopas').innerHTML =
+    kpiCard(copasApresentacoes, 'Apresentações', pApresentCopas) +
+    kpiCard(copasReservados,    'Reservadas',    pReservasCopas) +
+    kpiCard(copasPropostas,     'Propostas',     pPropostasCopas, recCopasLine) +
+    kpiCard(copasVendidos,      'Vendidas',      pVendasCopas);
+
+  // ---- Funil Avulsos e Planta (cumulativo) ----
+  // Sondagens ficam fora do funil — tratadas no indicador pré-funil
+  const avulsosRows = visitasData.filter(r=> !isCopas(r) && (r.tipoRegistro||'Visita') !== 'Sondagem');
+
+  // Estágios cumulativos: toda proposta é também reserva e visita
+  const AV_RESERVA  = new Set(['Reservado','Desistência','Proposta enviada','Proposta recusada','Vendido']);
+  const AV_PROPOSTA = new Set(['Proposta enviada','Proposta recusada','Vendido']);
+
+  // Visitas = total que entrou no funil (independente do estágio atual)
+  const avulsosVisitas   = avulsosRows.length;
+  // Reservas = quem chegou em reserva ou além
+  // tipo=Proposta sempre conta como reserva (pressupõe comprometimento)
+  const avulsosReservas  = avulsosRows.filter(r=>
+    AV_RESERVA.has(r.situacao) || r.tipoRegistro==='Proposta'
+  ).length;
+  // Propostas = quem chegou em proposta ou além
+  // tipo=Proposta sempre conta como proposta
+  const avulsosPropostas = avulsosRows.filter(r=>
+    AV_PROPOSTA.has(r.situacao) || r.tipoRegistro==='Proposta'
+  ).length;
+  // Vendas = quem fechou
+  const avulsosVendas = avulsosRows.filter(r=> r.situacao==='Vendido').length;
+
+  const propostasRecusadasAvulsos = avulsosRows.filter(r=> r.situacao==='Proposta recusada').length;
+  const pctRecAvulsos = avulsosPropostas>0 ? Math.round(propostasRecusadasAvulsos/avulsosPropostas*100) : 0;
+  const recAvulsosLine = avulsosPropostas>0
+    ? (propostasRecusadasAvulsos>0
+        ? `<div style="font-size:12px;color:var(--red);font-weight:700;margin-top:4px;">${propostasRecusadasAvulsos} de ${avulsosPropostas} recusadas (${pctRecAvulsos}%)</div>`
+        : `<div style="font-size:12px;color:var(--green);font-weight:600;margin-top:4px;">nenhuma recusada</div>`)
+    : '';
+
+  // Conversões: cada estágio em relação ao anterior
+  const pVisitasAvulsos   = avulsosVisitas>0 ? 100 : null;
+  const pReservasAvulsos  = pctRel(avulsosReservas,  avulsosVisitas);
+  const pPropostasAvulsos = pctRel(avulsosPropostas, avulsosReservas);
+  const pVendasAvulsos    = pctRel(avulsosVendas,    avulsosPropostas);
+
+  document.getElementById('kpiFunilAvulsos').innerHTML =
+    kpiCard(avulsosVisitas,   'Visitas realizadas', pVisitasAvulsos) +
+    kpiCard(avulsosReservas,  'Reservas',           pReservasAvulsos) +
+    kpiCard(avulsosPropostas, 'Propostas',          pPropostasAvulsos, recAvulsosLine) +
+    kpiCard(avulsosVendas,    'Vendas',             pVendasAvulsos);
+
+  // ---- Indicadores pré-funil (sondagens e sem crédito) ----
+  const totalSemCredito = visitasData.filter(r=>r.situacao==='Sem crédito').length;
+  const totalSondagens = visitasData.filter(r=>r.tipoRegistro==='Sondagem').length;
+  const sondagensEvoluidas = visitasData.filter(r=> r.tipoRegistro==='Sondagem' && getStage(r)!=='sondagem').length;
+  const pctSondEvoluidas = totalSondagens>0 ? Math.round(sondagensEvoluidas/totalSondagens*100) : 0;
+
+  const extraCards = [];
+  if(totalSondagens>0){
+    const subSond = sondagensEvoluidas>0
+      ? `<div style="font-size:12px;color:var(--green);font-weight:600;margin-top:4px;">${sondagensEvoluidas} de ${totalSondagens} evoluíram (${pctSondEvoluidas}%)</div>`
+      : `<div style="font-size:12px;color:var(--text-dim);margin-top:4px;">nenhuma evoluiu ainda</div>`;
+    extraCards.push(`<div class="kpi" style="border-color:var(--terracotta);"><div class="num" style="font-size:20px;">${totalSondagens}</div><div class="label">Sondagens (pré-funil)</div>${subSond}</div>`);
+  }
+  if(totalSemCredito>0){
+    extraCards.push(`<div class="kpi" style="border-color:var(--gray);"><div class="num" style="font-size:20px;color:var(--gray);">${totalSemCredito}</div><div class="label">Leads sem crédito (desqualificados)</div></div>`);
+  }
+  document.getElementById('kpiFunilExtra').innerHTML = extraCards.join('');
+
+  // ---- Vendas por frente ----
+  document.getElementById('kpiFrentes').innerHTML = [
+    {num:`${vendidoCopasQtd} · ${fmtBRL(vendidoCopasValor)}`, label:'Venda Copas (todas as unidades)'},
+    {num:`${vendidoEstoqueQtd} · ${fmtBRL(vendidoEstoqueValor)}`, label:'Vendas estoque (avulsos)'},
+    {num:`${vendidoPlantaQtd} · ${fmtBRL(vendidoPlantaValor)}`, label:'Venda planta (casas)'},
+  ].map(k=>`<div class="kpi"><div class="num" style="font-size:20px;">${k.num}</div><div class="label">${k.label}</div></div>`).join('');
+}
+
+// ---------------- render: funil ----------------
+function acaoSelectHTML(value){
+  return ACAO_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function tipoFunilSelectHTML(value){
+  return ['Parceiro','Direto'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderFunil(){
+  const sorted = funilData.slice().sort((a,b)=>{
+    if(a.tipo==='Direto' && b.tipo!=='Direto') return -1;
+    if(b.tipo==='Direto' && a.tipo!=='Direto') return 1;
+    const da = a.data ? diasDesde(a.data) : -99999;
+    const db = b.data ? diasDesde(b.data) : -99999;
+    return db - da;
+  });
+
+  document.getElementById('funilBody').innerHTML = sorted.map((row,i)=>{
+    const status = getStatus(row);
+    return `
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input class="name-input" data-field="nome" value="${escapeAttr(row.nome)}"></td>
+      <td><select data-field="tipo">${tipoFunilSelectHTML(row.tipo)}</select></td>
+      <td><input type="date" data-field="data" value="${row.data}"></td>
+      <td>${diasLabel(row)}</td>
+      <td><span class="badge ${status.cls}">${status.label}</span></td>
+      <td><select data-field="acaoTipo">${acaoSelectHTML(row.acaoTipo)}</select></td>
+      <td><input type="text" data-field="detalhe" value="${escapeAttr(row.detalhe)}" placeholder="opcional"></td>
+      <td><input type="number" min="0" data-field="reserva" value="${row.reserva}"></td>
+      <td><input type="number" min="0" data-field="proposta" value="${row.proposta}"></td>
+      <td><input type="number" min="0" data-field="venda" value="${row.venda}"></td>
+      <td><button class="del-btn" data-action="del-funil" title="Remover">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function escapeAttr(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ---------------- estoque computations ----------------
+function getSortedHistory(){
+  return estoqueData.slice().sort((a,b)=> a.date.localeCompare(b.date));
+}
+function seriesFor(nome){
+  return getSortedHistory()
+    .map(h => ({date:h.date, val: h.stocks[nome]}))
+    .filter(p => p.val !== undefined && p.val !== null);
+}
+function computeRanking(){
+  return projectList.map(nome=>{
+    const s = seriesFor(nome);
+    if(s.length===0) return {nome, atual:null, vendido:0, pct:-Infinity};
+    const first = s[0].val, last = s[s.length-1].val;
+    const vendido = first - last;
+    const pct = first>0 ? (vendido/first*100) : 0;
+    return {nome, atual:last, vendido, pct, first, firstDate:s[0].date, lastDate:s[s.length-1].date};
+  }).filter(r=>r.atual!==null)
+    .sort((a,b)=> b.pct - a.pct);
+}
+
+function sparklineSVG(series){
+  if(series.length < 2) return '<svg class="spark" width="80" height="24"></svg>';
+  const vals = series.map(s=>s.val);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const w=80, h=24, pad=3;
+  const range = (max-min) || 1;
+  const pts = series.map((s,i)=>{
+    const x = pad + (i/(series.length-1)) * (w-2*pad);
+    const y = h-pad - ((s.val-min)/range) * (h-2*pad);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const lastX = pad + (w-2*pad);
+  const lastY = h-pad - ((vals[vals.length-1]-min)/range)*(h-2*pad);
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <polyline points="${pts}" fill="none" stroke="#C8662F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="2.4" fill="#C8662F"/>
+  </svg>`;
+}
+
+function renderEstoque(){
+  const ranking = computeRanking();
+  document.getElementById('estoqueBody').innerHTML = ranking.map(r=>{
+    const series = seriesFor(r.nome);
+    const highlight = r.nome === 'Copas';
+    return `
+    <tr class="${highlight?'highlight':''}">
+      <td>${highlight ? '<b>'+r.nome+'</b>' : r.nome}</td>
+      <td>${sparklineSVG(series)}</td>
+      <td>${r.atual}</td>
+      <td>${r.vendido > 0 ? r.vendido : (r.vendido < 0 ? r.vendido : 0)}</td>
+      <td>${fmtPct(r.pct)}</td>
+    </tr>`;
+  }).join('');
+
+  const hist = getSortedHistory();
+  if(hist.length){
+    document.getElementById('estoqueNote').textContent =
+      `${hist.length} atualizações registradas · última em ${fmtDateBR(hist[hist.length-1].date)}`;
+    document.getElementById('lastUpdated').textContent =
+      `Estoque atualizado em ${fmtDateBR(hist[hist.length-1].date)} · ${projectList.length} empreendimentos acompanhados`;
+  }
+
+  // summary line
+  if(hist.length>=2){
+    const first = hist[0], last = hist[hist.length-1];
+    const totalFirst = Object.values(first.stocks).reduce((s,v)=>s+v,0);
+    const totalLast = projectList.reduce((s,nome)=> s + (last.stocks[nome]!==undefined? last.stocks[nome]:0), 0);
+    const totalDelta = totalLast - totalFirst;
+    const copas = ranking.find(r=>r.nome==='Copas');
+    const copasRank = ranking.findIndex(r=>r.nome==='Copas')+1;
+    document.getElementById('summaryLine').innerHTML =
+      `Mercado total: <b>${totalFirst} → ${totalLast}</b> (<span class="${totalDelta<=0?'pos':'neg'}">${totalDelta>0?'+':''}${totalDelta} un</span>) desde ${fmtDateBR(first.date)}`
+      + (copas ? ` · Copas: <b>${copas.first} → ${copas.atual}</b> (<span class="pos">${fmtPct(copas.pct)}</span>) · <b>${copasRank}º melhor desempenho</b> entre ${ranking.length} empreendimentos` : '');
+  }
+}
+
+// ---------------- event wiring: funil ----------------
+document.getElementById('funilBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = funilData.find(r=>r.id===id);
+  if(!row) return;
+  if(['reserva','proposta','venda'].includes(field)){
+    row[field] = Number(e.target.value || 0);
+  } else {
+    row[field] = e.target.value;
+  }
+  await saveKey(STORAGE_KEYS.funil, funilData);
+  renderFunil();
+  renderKPIs();
+});
+
+document.getElementById('funilBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-funil'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    funilData = funilData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.funil, funilData);
+    renderFunil();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addFunilRow').addEventListener('click', async ()=>{
+  const nextId = funilData.length ? Math.max(...funilData.map(r=>r.id))+1 : 1;
+  funilData.push({id:nextId, nome:'Nova imobiliária', tipo:'Parceiro', data:'', acaoTipo:'Agendado', detalhe:'', reserva:0, proposta:0, venda:0});
+  await saveKey(STORAGE_KEYS.funil, funilData);
+  renderFunil();
+  renderKPIs();
+});
+
+// ---------------- event wiring: estoque ----------------
+document.getElementById('toggleNewUpdate').addEventListener('click', ()=>{
+  document.getElementById('newProjectPanel').classList.remove('open');
+  const panel = document.getElementById('newUpdatePanel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')) buildNewUpdateForm();
+});
+document.getElementById('toggleNewProject').addEventListener('click', ()=>{
+  document.getElementById('newUpdatePanel').classList.remove('open');
+  document.getElementById('newProjectPanel').classList.toggle('open');
+});
+
+function buildNewUpdateForm(){
+  const hist = getSortedHistory();
+  const last = hist.length ? hist[hist.length-1] : {stocks:{}};
+  const grid = document.getElementById('newUpdateGrid');
+  grid.innerHTML = projectList.map(nome=>{
+    const prev = last.stocks[nome] !== undefined ? last.stocks[nome] : '';
+    return `<div class="panel-field"><label>${nome}</label><input type="number" min="0" data-proj="${escapeAttr(nome)}" value="${prev}"></div>`;
+  }).join('');
+
+  // default new date = 14 days after last recorded date, or today
+  const dateInput = document.getElementById('newUpdateDate');
+  if(hist.length){
+    const d = new Date(hist[hist.length-1].date+'T00:00:00');
+    d.setDate(d.getDate()+14);
+    dateInput.value = d.toISOString().slice(0,10);
+  } else {
+    dateInput.value = new Date().toISOString().slice(0,10);
+  }
+}
+
+document.getElementById('saveNewUpdate').addEventListener('click', async ()=>{
+  const date = document.getElementById('newUpdateDate').value;
+  if(!date){ alert('Informe a data da atualização.'); return; }
+  const inputs = document.querySelectorAll('#newUpdateGrid input');
+  const stocks = {};
+  inputs.forEach(inp=>{ stocks[inp.dataset.proj] = Number(inp.value || 0); });
+  estoqueData = estoqueData.filter(h=>h.date!==date);
+  estoqueData.push({date, stocks});
+  await saveKey(STORAGE_KEYS.estoque, estoqueData);
+  document.getElementById('newUpdatePanel').classList.remove('open');
+  renderEstoque();
+  renderKPIs();
+});
+
+document.getElementById('saveNewProject').addEventListener('click', async ()=>{
+  const name = document.getElementById('newProjectName').value.trim();
+  const stock = Number(document.getElementById('newProjectStock').value || 0);
+  if(!name){ alert('Informe o nome do empreendimento.'); return; }
+  if(!projectList.includes(name)) projectList.push(name);
+  const hist = getSortedHistory();
+  if(hist.length){
+    hist[hist.length-1].stocks[name] = stock;
+    estoqueData = hist;
+  } else {
+    estoqueData = [{date:new Date().toISOString().slice(0,10), stocks:{[name]:stock}}];
+  }
+  await saveKey(STORAGE_KEYS.estoque, estoqueData);
+  document.getElementById('newProjectName').value = '';
+  document.getElementById('newProjectStock').value = '';
+  document.getElementById('newProjectPanel').classList.remove('open');
+  renderEstoque();
+  renderKPIs();
+});
+
+// ---------------- render: copas units ----------------
+function copasStatusSelectHTML(value){
+  return STATUS_COPAS_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function suiteSelectHTML(value){
+  return ['Sim','Não'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function copasImobiliariaSuggestHTML(value){
+  const known = funilData.map(r=>r.nome).concat(['Direto']);
+  const isKnown = known.includes(value);
+  const selectVal = isKnown ? value : 'Outro';
+  const opts = known.concat(['Outro']);
+  let html = `<div style="display:flex;flex-direction:column;gap:4px;min-width:120px;">`;
+  html += `<select data-field="imobiliariaPick">`+opts.map(o=>`<option value="${escapeAttr(o)}"${o===selectVal?' selected':''}>${o}</option>`).join('')+`</select>`;
+  if(selectVal==='Outro') html += `<input data-field="imobiliaria" value="${escapeAttr(value)}" placeholder="Nome">`;
+  html += `</div>`;
+  return html;
+}
+
+function renderCopas(){
+  document.getElementById('copasBody').innerHTML = copasData.map((row,i)=>{
+    const cls = STATUS_COPAS_CLS[row.status] || 'badge-gray';
+    return `
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input data-field="unidade" value="${escapeAttr(row.unidade)}" style="width:60px;"></td>
+      <td><input data-field="tipologia" value="${escapeAttr(row.tipologia)}" style="width:80px;"></td>
+      <td><input data-field="area" value="${escapeAttr(row.area)}" style="width:54px;text-align:right;"></td>
+      <td><input type="number" min="0" data-field="valor" value="${row.valor}" style="width:96px;text-align:right;"></td>
+      <td><select data-field="suite">${suiteSelectHTML(row.suite)}</select></td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <select data-field="status">${copasStatusSelectHTML(row.status)}</select>
+          <span class="badge ${cls}">●</span>
+        </div>
+      </td>
+      <td>${copasImobiliariaSuggestHTML(row.imobiliaria||'')}</td>
+      <td><input data-field="detalhe" value="${escapeAttr(row.detalhe)}" placeholder="opcional" style="min-width:130px;"></td>
+      <td><button class="del-btn" data-action="del-copas" title="Remover">×</button></td>
+    </tr>`;
+  }).join('');
+
+  const total = copasData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoRows = copasData.filter(r=>r.status==='Vendido');
+  const reservadoRows = copasData.filter(r=>r.status==='Reservado');
+  const vendido = vendidoRows.reduce((s,r)=>s+Number(r.valor||0),0);
+  const pct = total>0 ? vendido/total*100 : 0;
+  document.getElementById('copasSummary').innerHTML =
+    `VGV: <b>${fmtBRL(total)}</b> · Disponíveis: <b>${copasData.filter(r=>r.status==='Disponível').length}</b> · Reservadas: <b>${reservadoRows.length}</b> · Vendidas: <b>${vendidoRows.length}</b> (<span class="pos">${fmtPct(pct)} do VGV</span>)`;
+}
+
+document.getElementById('copasBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = copasData.find(r=>r.id===id);
+  if(!row) return;
+  if(field==='imobiliariaPick'){
+    row.imobiliaria = (e.target.value==='Outro') ? '' : e.target.value;
+    tr.children[7].innerHTML = copasImobiliariaSuggestHTML(row.imobiliaria);
+  } else if(field==='imobiliaria'){
+    row.imobiliaria = e.target.value;
+  } else if(field==='status'){
+    row.status = e.target.value;
+    const badge = tr.querySelector('.badge');
+    if(badge) badge.className = 'badge '+(STATUS_COPAS_CLS[row.status]||'badge-gray');
+    renderCopas(); renderKPIs();
+  } else {
+    row[field] = field==='valor' ? Number(e.target.value||0) : e.target.value;
+    renderCopas(); renderKPIs();
+  }
+  await saveKey(STORAGE_KEYS.copas, copasData);
+});
+
+document.getElementById('copasBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-copas'){
+    copasData = copasData.filter(r=>r.id!==Number(e.target.closest('tr').dataset.id));
+    await saveKey(STORAGE_KEYS.copas, copasData);
+    renderCopas(); renderKPIs();
+  }
+});
+
+document.getElementById('addCopasRow').addEventListener('click', async ()=>{
+  const nextId = copasData.length ? Math.max(...copasData.map(r=>r.id))+1 : 1;
+  copasData.push({id:nextId, unidade:'', tipologia:'', area:'', valor:0, suite:'Sim', status:'Disponível', imobiliaria:'', detalhe:''});
+  await saveKey(STORAGE_KEYS.copas, copasData);
+  renderCopas(); renderKPIs();
+});
+
+// ---------------- render: apresentações Copas ----------------
+function situacaoApresSelectHTML(value){
+  return SITUACAO_APRES_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderApresentacoesCopas(){
+  const sorted = apresentacoesCopasData.slice().sort((a,b)=>b.id-a.id);
+  document.getElementById('apresentacoesBody').innerHTML = sorted.map((row,i)=>{
+    const cls = SITUACAO_APRES_CLS[row.situacao] || 'badge-gray';
+    return `
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input type="date" data-field="data" value="${row.data}"></td>
+      <td style="font-size:12px;color:var(--text-dim);white-space:nowrap;">${diasVisitaLabel(row.data)}</td>
+      <td>${copasImobiliariaSuggestHTML(row.imobiliaria||'')}</td>
+      <td><select data-field="situacao">${situacaoApresSelectHTML(row.situacao)}</select> <span class="badge ${cls}" style="margin-left:4px;">●</span></td>
+      <td><textarea data-field="obs" placeholder="opcional" rows="2">${escapeAttr(row.obs)}</textarea></td>
+      <td><button class="del-btn" data-action="del-apres" title="Remover">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('apresentacoesBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = apresentacoesCopasData.find(r=>r.id===id);
+  if(!row) return;
+  if(field==='imobiliariaPick'){
+    row.imobiliaria = (e.target.value==='Outro') ? '' : e.target.value;
+    tr.children[3].innerHTML = copasImobiliariaSuggestHTML(row.imobiliaria);
+  } else if(field==='imobiliaria'){
+    row.imobiliaria = e.target.value;
+  } else if(field==='situacao'){
+    row.situacao = e.target.value;
+    const badge = tr.querySelector('.badge');
+    if(badge) badge.className = 'badge '+(SITUACAO_APRES_CLS[row.situacao]||'badge-gray');
+    renderKPIs();
+  } else if(field==='data'){
+    row.data = e.target.value;
+    tr.children[2].textContent = diasVisitaLabel(row.data);
+  } else {
+    row[field] = e.target.value;
+  }
+  await saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+});
+
+document.getElementById('apresentacoesBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-apres'){
+    apresentacoesCopasData = apresentacoesCopasData.filter(r=>r.id!==Number(e.target.closest('tr').dataset.id));
+    await saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+    renderApresentacoesCopas(); renderKPIs();
+  }
+});
+
+document.getElementById('addApresentacaoRow').addEventListener('click', async ()=>{
+  const nextId = apresentacoesCopasData.length ? Math.max(...apresentacoesCopasData.map(r=>r.id))+1 : 1;
+  const newRow = {id:nextId, data:new Date().toISOString().slice(0,10), imobiliaria:'', situacao:'Aguardando retorno', obs:''};
+  apresentacoesCopasData.push(newRow);
+  await saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+  const tbody = document.getElementById('apresentacoesBody');
+  const cls = SITUACAO_APRES_CLS[newRow.situacao]||'badge-gray';
+  const tmp = document.createElement('tbody');
+  tmp.innerHTML = `
+    <tr data-id="${newRow.id}">
+      <td>1</td>
+      <td><input type="date" data-field="data" value="${newRow.data}"></td>
+      <td style="font-size:12px;color:var(--text-dim);white-space:nowrap;">hoje</td>
+      <td>${copasImobiliariaSuggestHTML('')}</td>
+      <td><select data-field="situacao">${situacaoApresSelectHTML(newRow.situacao)}</select> <span class="badge ${cls}" style="margin-left:4px;">●</span></td>
+      <td><textarea data-field="obs" placeholder="opcional" rows="2"></textarea></td>
+      <td><button class="del-btn" data-action="del-apres" title="Remover">×</button></td>
+    </tr>`;
+  const newTr = tmp.firstElementChild;
+  tbody.insertBefore(newTr, tbody.firstChild);
+  [...tbody.querySelectorAll('tr')].forEach((tr,i)=>tr.children[0].textContent=i+1);
+  if(typeof newTr.scrollIntoView==='function') newTr.scrollIntoView({behavior:'smooth',block:'center'});
+  renderKPIs();
+});
+
+document.getElementById('importarVisitasCopas').addEventListener('click', async ()=>{
+  // Pega todos os registros do controle de visitas que são do Copas
+  const copasVisitas = visitasData.filter(r=>(r.imovel||'').includes('Copas'));
+  if(copasVisitas.length === 0){
+    alert('Nenhum registro do Copas encontrado no controle de visitas.');
+    return;
+  }
+  // Gera novos IDs continuando a partir do maior existente
+  let nextId = apresentacoesCopasData.length ? Math.max(...apresentacoesCopasData.map(r=>r.id))+1 : 1;
+  // Mapeia para o formato de apresentações
+  const novasApres = copasVisitas.map(r=>({
+    id: nextId++,
+    data: r.data || '',
+    imobiliaria: r.imobiliaria || '',
+    situacao: SITUACAO_APRES_OPTIONS.includes(r.situacao) ? r.situacao : 'Aguardando retorno',
+    obs: r.obs || '',
+  }));
+  // Adiciona às apresentações
+  apresentacoesCopasData.push(...novasApres);
+  // Remove do controle de visitas
+  const idsRemover = new Set(copasVisitas.map(r=>r.id));
+  visitasData = visitasData.filter(r=>!idsRemover.has(r.id));
+  // Salva ambos
+  await saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+  await saveKey(STORAGE_KEYS.visitas, visitasData);
+  // Re-renderiza
+  renderApresentacoesCopas();
+  renderVisitas();
+  renderKPIs();
+  alert(`${novasApres.length} registro${novasApres.length!==1?'s':''} importado${novasApres.length!==1?'s':''} com sucesso.`);
+});
+
+// ---------------- render: avulsos ----------------
+function statusSelectHTML(value){
+  return Object.keys(STATUS_AVULSO_CLS).map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function tipoSelectHTML(value){
+  return ['Avulso','Planta'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderAvulsos(){
+  document.getElementById('avulsosBody').innerHTML = avulsosData.map((row,i)=>`
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><select data-field="tipo">${tipoSelectHTML(row.tipo)}</select></td>
+      <td><input data-field="unidade" value="${escapeAttr(row.unidade)}" style="width:90px;"></td>
+      <td><input data-field="edificio" value="${escapeAttr(row.edificio)}" style="min-width:120px;"></td>
+      <td><input type="number" min="0" data-field="valor" value="${row.valor}" style="width:96px;text-align:right;"></td>
+      <td><input type="number" min="0" data-field="aluguel" value="${row.aluguel}" style="width:72px;text-align:right;"></td>
+      <td><select data-field="status">${statusSelectHTML(row.status)}</select></td>
+      <td>${copasImobiliariaSuggestHTML(row.imobiliaria||'')}</td>
+      <td><input data-field="obs" value="${escapeAttr(row.obs||'')}" placeholder="opcional" style="min-width:130px;"></td>
+      <td><button class="del-btn" data-action="del-avulso" title="Remover">×</button></td>
+    </tr>`).join('');
+
+  const total = avulsosData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendido = avulsosData.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const pct = total>0 ? vendido/total*100 : 0;
+
+  const avulso = avulsosData.filter(r=>r.tipo==='Avulso');
+  const planta = avulsosData.filter(r=>r.tipo==='Planta');
+  const avulsoTotal = avulso.reduce((s,r)=>s+Number(r.valor||0),0);
+  const avulsoVendido = avulso.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const plantaTotal = planta.reduce((s,r)=>s+Number(r.valor||0),0);
+  const plantaVendido = planta.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+
+  document.getElementById('avulsosSummary').innerHTML =
+    `Carteira total: <b>${fmtBRL(total)}</b> em ${avulsosData.length} imóveis · Vendido: <b>${fmtBRL(vendido)}</b> (<span class="pos">${fmtPct(pct)}</span>)`
+    + `<br>Avulsos: ${fmtBRL(avulsoTotal)} (vendido ${fmtBRL(avulsoVendido)}) · Planta: ${fmtBRL(plantaTotal)} (vendido ${fmtBRL(plantaVendido)})`;
+}
+
+document.getElementById('avulsosBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = avulsosData.find(r=>r.id===id);
+  if(!row) return;
+  if(field==='imobiliariaPick'){
+    row.imobiliaria = (e.target.value==='Outro') ? '' : e.target.value;
+    tr.children[7].innerHTML = copasImobiliariaSuggestHTML(row.imobiliaria);
+  } else if(field==='imobiliaria'){
+    row.imobiliaria = e.target.value;
+  } else {
+    row[field] = (field==='valor'||field==='aluguel') ? Number(e.target.value||0) : e.target.value;
+    renderAvulsos();
+    renderKPIs();
+  }
+  await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+});
+
+document.getElementById('avulsosBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-avulso'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    avulsosData = avulsosData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+    renderAvulsos();
+    renderVisitas();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addAvulsoRow').addEventListener('click', async ()=>{
+  const nextId = avulsosData.length ? Math.max(...avulsosData.map(r=>r.id))+1 : 1;
+  avulsosData.push({id:nextId, tipo:'Avulso', unidade:'', edificio:'', valor:0, aluguel:0, status:'Disponível', imobiliaria:'', obs:''});
+  await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+  renderAvulsos();
+  renderVisitas();
+  renderKPIs();
+});
+
+// ---------------- render: visitas ----------------
+const TIPO_REGISTRO_OPTIONS = ['Visita','Sondagem','Proposta'];
+function tipoRegistroSelectHTML(value){
+  return TIPO_REGISTRO_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function situacaoSelectHTML(value){
+  return SITUACAO_VISITA_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function imovelOptionsHTML(value){
+  const opts = copasData.map(c=>`${c.unidade} · Copas (${c.tipologia})`)
+    .concat(avulsosData.map(a=>`${a.unidade} · ${a.edificio}`));
+  return opts.map(label=>`<option value="${escapeAttr(label)}"${label===value?' selected':''}>${label}</option>`).join('');
+}
+function imobiliariaCellHTML(value){
+  const known = funilData.map(r=>r.nome);
+  const isKnown = value!=='' && known.includes(value);
+  const selectVal = isKnown ? value : 'Outros';
+  const opts = known.concat(['Outros']);
+  let html = `<div style="display:flex;flex-direction:column;gap:5px;min-width:150px;">`;
+  html += `<select data-field="imobiliariaPick">` + opts.map(o=>`<option value="${escapeAttr(o)}"${o===selectVal?' selected':''}>${o}</option>`).join('') + `</select>`;
+  if(selectVal==='Outros'){
+    html += `<input data-field="imobiliaria" value="${escapeAttr(value)}" placeholder="Nome da imobiliária">`;
+  }
+  html += `</div>`;
+  return html;
+}
+function diasVisitaLabel(data){
+  if(!data) return '—';
+  const d = diasDesde(data);
+  if(d<0) return `em ${Math.abs(d)}d`;
+  if(d===0) return 'hoje';
+  return `${d}d`;
+}
+function migrarTipoRegistro(row){
+  if(row.tipoRegistro !== undefined) return row;
+  return Object.assign({}, row, { tipoRegistro: 'Visita' });
+}
+
+function buildVisitaRowHTML(row, num){
+  const cls = SITUACAO_VISITA_CLS[row.situacao] || 'badge-gray';
+  return `
+  <tr data-id="${row.id}">
+    <td>${num}</td>
+    <td><input type="date" data-field="data" value="${row.data}"></td>
+    <td style="font-size:12px;color:var(--text-dim);white-space:nowrap;">${diasVisitaLabel(row.data)}</td>
+    <td><select data-field="tipoRegistro">${tipoRegistroSelectHTML(row.tipoRegistro||'Visita')}</select></td>
+    <td><select data-field="imovel">${imovelOptionsHTML(row.imovel)}</select></td>
+    <td>${imobiliariaCellHTML(row.imobiliaria)}</td>
+    <td><select data-field="situacao">${situacaoSelectHTML(row.situacao)}</select> <span class="badge ${cls}" style="margin-left:4px;">●</span></td>
+    <td><textarea data-field="obs" placeholder="opcional" title="${escapeAttr(row.obs)}" rows="2">${escapeAttr(row.obs)}</textarea></td>
+    <td><button class="del-btn" data-action="del-visita" title="Remover">×</button></td>
+  </tr>`;
+}
+
+function renderVisitas(){
+  // ordena por id decrescente: mais recente no topo, sem saltar ao editar
+  const sorted = visitasData.slice().sort((a,b)=> b.id - a.id);
+  document.getElementById('visitasBody').innerHTML = sorted.map((row,i)=> buildVisitaRowHTML(row, i+1)).join('');
+}
+
+document.getElementById('visitasBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = visitasData.find(r=>r.id===id);
+  if(!row) return;
+
+  if(field==='imobiliariaPick'){
+    row.imobiliaria = (e.target.value==='Outros') ? '' : e.target.value;
+    tr.children[5].innerHTML = imobiliariaCellHTML(row.imobiliaria);
+  } else if(field==='imobiliaria'){
+    row.imobiliaria = e.target.value;
+  } else if(field==='situacao'){
+    row.situacao = e.target.value;
+    const badge = tr.querySelector('.badge');
+    if(badge) badge.className = 'badge ' + (SITUACAO_VISITA_CLS[row.situacao]||'badge-gray');
+    renderKPIs();
+  } else if(field==='tipoRegistro'){
+    row.tipoRegistro = e.target.value;
+    renderKPIs();
+  } else if(field==='data'){
+    row.data = e.target.value;
+    tr.children[2].textContent = diasVisitaLabel(row.data);
+  } else {
+    row[field] = e.target.value;
+  }
+  await saveKey(STORAGE_KEYS.visitas, visitasData);
+});
+
+document.getElementById('visitasBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-visita'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    visitasData = visitasData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.visitas, visitasData);
+    renderVisitas();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addVisitaRow').addEventListener('click', async ()=>{
+  const nextId = visitasData.length ? Math.max(...visitasData.map(r=>r.id))+1 : 1;
+  const defaultImovel = copasData.length
+    ? `${copasData[0].unidade} · Copas (${copasData[0].tipologia})`
+    : (avulsosData.length ? `${avulsosData[0].unidade} · ${avulsosData[0].edificio}` : '');
+  const newRow = {id:nextId, tipoRegistro:'Visita', data:new Date().toISOString().slice(0,10), imovel:defaultImovel, imobiliaria:'', situacao:'Aguardando retorno', obs:''};
+  visitasData.push(newRow);
+  await saveKey(STORAGE_KEYS.visitas, visitasData);
+  // insere no topo do tbody sem re-render total (evita piscar e garante que a linha nova esteja visível)
+  const tbody = document.getElementById('visitasBody');
+  const tempDiv = document.createElement('tbody');
+  tempDiv.innerHTML = buildVisitaRowHTML(newRow, 1);
+  const newTr = tempDiv.firstElementChild;
+  tbody.insertBefore(newTr, tbody.firstChild);
+  // renumera visualmente
+  [...tbody.querySelectorAll('tr')].forEach((tr,i)=> tr.children[0].textContent = i+1);
+  // scroll para a linha nova
+  if(typeof newTr.scrollIntoView === 'function') newTr.scrollIntoView({behavior:'smooth', block:'center'});
+  renderKPIs();
+});
+
+// ---------------- tabs ----------------
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ---------------- boot ----------------
+async function boot(){
+  try{
+    funilData = (await loadKey(STORAGE_KEYS.funil, DEFAULT_FUNIL)).map(migrateFunilRow);
+    estoqueData = await loadKey(STORAGE_KEYS.estoque, DEFAULT_ESTOQUE);
+    avulsosData = (await loadKey(STORAGE_KEYS.avulsos, DEFAULT_AVULSOS)).map(migrateAvulsoRow);
+    visitasData = (await loadKey(STORAGE_KEYS.visitas, DEFAULT_VISITAS)).map(migrarTipoRegistro);
+    copasData = (await loadKey(STORAGE_KEYS.copas, DEFAULT_COPAS)).map(migrateCopasRow);
+    apresentacoesCopasData = await loadKey(STORAGE_KEYS.apresentacoesCopas, DEFAULT_APRESENTACOES_COPAS);
+  }catch(e){
+    console.error('Falha ao carregar dados salvos, usando os valores padrão', e);
+    funilData = DEFAULT_FUNIL.map(migrateFunilRow);
+    estoqueData = DEFAULT_ESTOQUE;
+    avulsosData = DEFAULT_AVULSOS.map(migrateAvulsoRow);
+    visitasData = DEFAULT_VISITAS.map(migrarTipoRegistro);
+    copasData = DEFAULT_COPAS.map(migrateCopasRow);
+    apresentacoesCopasData = DEFAULT_APRESENTACOES_COPAS;
+  }
+
+  // Garante que a Meztra exista no funil mesmo em sessões com dados já salvos antes dessa atualização
+  if(!funilData.some(r => /^meztra$/i.test((r.nome||'').trim()))){
+    const nextId = funilData.length ? Math.max(...funilData.map(r=>r.id))+1 : 1;
+    funilData.push({id:nextId, nome:'Meztra', tipo:'Direto', data:'', acaoTipo:'Canal próprio', detalhe:'Visitas e leads gerados pela própria Meztra', reserva:0, proposta:0, venda:0});
+  }
+
+  // Seed automático: se a lista de apresentações estiver vazia, cria registros a partir das
+  // unidades do Copas já marcadas como Vendido ou Reservado, para o funil começar correto
+  if(apresentacoesCopasData.length === 0){
+    const unidadesComStatus = copasData.filter(r=>r.status==='Vendido'||r.status==='Reservado');
+    if(unidadesComStatus.length > 0){
+      let nextId = 1;
+      unidadesComStatus.forEach(unit=>{
+        apresentacoesCopasData.push({
+          id: nextId++,
+          data: unit.data || '',
+          imobiliaria: unit.imobiliaria || '',
+          situacao: unit.status === 'Vendido' ? 'Vendido' : 'Reservado',
+          obs: `Unidade ${unit.unidade}${unit.detalhe ? ' – '+unit.detalhe : ''}`,
+        });
+      });
+      saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+    }
+  }
+
+  // build project list from default order + anything new found in stored history
+  const found = new Set(PROJECT_ORDER);
+  estoqueData.forEach(h=> Object.keys(h.stocks).forEach(n=>found.add(n)));
+  projectList = PROJECT_ORDER.filter(n=>found.has(n)).concat([...found].filter(n=>!PROJECT_ORDER.includes(n)));
+
+  renderFunil();
+  renderEstoque();
+  renderCopas();
+  renderApresentacoesCopas();
+  renderAvulsos();
+  renderVisitas();
+  renderKPIs();
+
+  // persiste em segundo plano
+  saveKey(STORAGE_KEYS.funil, funilData);
+  saveKey(STORAGE_KEYS.estoque, estoqueData);
+  saveKey(STORAGE_KEYS.avulsos, avulsosData);
+  saveKey(STORAGE_KEYS.visitas, visitasData);
+  saveKey(STORAGE_KEYS.copas, copasData);
+  saveKey(STORAGE_KEYS.apresentacoesCopas, apresentacoesCopasData);
+}
+boot();
+</script>
+</body>
+</html>

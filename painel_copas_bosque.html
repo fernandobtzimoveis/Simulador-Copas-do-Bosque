@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Comercial · Copas do Bosque</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#131110;
+    --surface:#1C1A17;
+    --surface-2:#242019;
+    --border:#36312A;
+    --text:#F2EEE7;
+    --text-dim:#A89F92;
+    --terracotta:#C8662F;
+    --terracotta-soft:rgba(200,102,47,0.16);
+    --green:#7FA66B;
+    --green-soft:rgba(127,166,107,0.16);
+    --amber:#C9A227;
+    --amber-soft:rgba(201,162,39,0.16);
+    --red:#C0463A;
+    --red-soft:rgba(192,70,58,0.16);
+    --blue:#7C92A6;
+    --blue-soft:rgba(124,146,166,0.16);
+    --gray:#7A746A;
+    --gray-soft:rgba(122,116,106,0.16);
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 20px 80px;}
+
+  /* ---------- header ---------- */
+  .tick{display:inline-block;width:22px;height:6px;background:var(--terracotta);border-radius:2px;vertical-align:middle;margin-right:10px;}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);font-weight:600;display:flex;align-items:center;margin-bottom:14px;}
+  .title{font-family:'Archivo Black',sans-serif;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0 0 6px;letter-spacing:-0.01em;}
+  .subtitle{color:var(--text-dim);font-size:14px;margin:0 0 28px;}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;}
+  .kpis-3{grid-template-columns:repeat(3,1fr);}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;}
+  .kpi .num{font-family:'Archivo Black',sans-serif;font-size:26px;color:var(--terracotta);line-height:1;}
+  .kpi .label{font-size:12px;color:var(--text-dim);margin-top:6px;}
+  .kpi .pct{font-size:12px;color:var(--green);font-weight:700;margin-top:2px;}
+
+  .kpi-group-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);font-weight:700;margin:22px 0 10px;}
+  .kpi-group-label:first-of-type{margin-top:6px;}
+
+  /* ---------- sections ---------- */
+  .section{margin-bottom:54px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+  .section-title{display:flex;align-items:center;font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:-0.01em;}
+  .section-note{font-size:12.5px;color:var(--text-dim);}
+
+  .table-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;min-width:760px;}
+  th{
+    text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--text-dim);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle;white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  tr.highlight td{background:var(--terracotta-soft);}
+  tr.highlight td:first-child{box-shadow:inset 3px 0 0 var(--terracotta);}
+  tbody tr:hover td{background:var(--surface-2);}
+  tr.highlight:hover td{background:var(--terracotta-soft);}
+
+  .badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11.5px;font-weight:600;letter-spacing:.02em;}
+  .badge-green{background:var(--green-soft);color:var(--green);}
+  .badge-red{background:var(--red-soft);color:var(--red);}
+  .badge-amber{background:var(--amber-soft);color:var(--amber);}
+  .badge-blue{background:var(--blue-soft);color:var(--blue);}
+  .badge-terracotta{background:var(--terracotta-soft);color:var(--terracotta);}
+  .badge-gray{background:var(--gray-soft);color:var(--gray);}
+
+  input, select{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:6px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:13px;width:100%;
+  }
+  textarea{
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    border-radius:6px;padding:6px 8px;font-family:'Inter',sans-serif;font-size:13px;
+    width:100%;min-width:200px;resize:vertical;line-height:1.4;
+  }
+  input[type=number]{width:58px;text-align:right;}
+  input[type=date]{width:128px;}
+  input.name-input{min-width:120px;font-weight:600;}
+  input.acao-input{min-width:130px;}
+  input:focus, select:focus, textarea:focus, button:focus-visible{outline:2px solid var(--terracotta);outline-offset:1px;}
+
+  .btn{
+    background:var(--terracotta);color:#1A1410;border:none;border-radius:7px;
+    padding:9px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;
+    transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.1);}
+  .btn-ghost{
+    background:transparent;color:var(--text-dim);border:1px solid var(--border);
+    border-radius:7px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+    transition:border-color .15s ease,color .15s ease;
+  }
+  .btn-ghost:hover{border-color:var(--terracotta);color:var(--text);}
+  .del-btn{
+    background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;line-height:1;
+    padding:2px 6px;border-radius:5px;transition:color .15s ease,background .15s ease;
+  }
+  .del-btn:hover{color:var(--red);background:var(--red-soft);}
+
+  .toolbar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+
+  .panel{
+    background:var(--surface-2);border:1px dashed var(--border);border-radius:var(--radius);
+    padding:16px;margin-top:14px;display:none;
+  }
+  .panel.open{display:block;}
+  .panel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:14px;}
+  .panel-field label{display:block;font-size:11.5px;color:var(--text-dim);margin-bottom:4px;}
+  .panel-field input{width:100%;}
+  .panel-row{display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap;}
+
+  .spark{display:block;}
+  .summary-line{font-size:13px;color:var(--text-dim);margin-top:12px;line-height:1.6;}
+  .summary-line b{color:var(--text);font-weight:700;}
+  .summary-line .pos{color:var(--green);font-weight:700;}
+  .summary-line .neg{color:var(--terracotta);font-weight:700;}
+
+  @media(max-width:640px){
+    .kpis, .kpis-3{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow"><span class="tick"></span>MEZTRA · ACELERAÇÃO COMERCIAL</div>
+  <h1 class="title">Painel Copas do Bosque</h1>
+  <p class="subtitle" id="lastUpdated">Carregando...</p>
+
+  <div class="kpi-group-label">Visão financeira</div>
+  <div class="kpis" id="kpiFinanceiro"></div>
+
+  <div class="kpi-group-label">Funil comercial (visitas → reservas → propostas → vendas, parceiros + Meztra)</div>
+  <div class="kpis" id="kpiFunil"></div>
+
+  <div class="kpi-group-label">Vendas por frente</div>
+  <div class="kpis kpis-3" id="kpiFrentes"></div>
+
+  <!-- ===================== UNIDADES COPAS DO BOSQUE ===================== -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="tick"></span>Unidades · Copas do Bosque</div>
+      <div class="section-note" id="copasNote">Fonte: tabela de vendas oficial</div>
+    </div>
+    <div class="table-scroll">
+      <table id="copasTable">
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Unidade</th>
+            <th>Tipologia</th>
+            <th>Área (m²)</th>
+            <th>Valor</th>
+            <th>Suíte</th>
+            <th>Status</th>
+            <th>Detalhe</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="copasBody"></tbody>
+      </table>
+    </div>
+    <p class="summary-line" id="copasSummary"></p>
+    <div class="toolbar">
+      <button class="btn" id="addCopasRow">+ Nova unidade</button>
+    </div>
+  </div>
+
+  <!-- ===================== FUNIL DE IMOBILIÁRIAS ===================== -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="tick"></span>Funil de imobiliárias parceiras</div>
+      <div class="section-note">Status calculado pelo tempo desde a apresentação e pelo resultado já gerado</div>
+    </div>
+    <div class="table-scroll">
+      <table id="funilTable">
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Imobiliária</th>
+            <th>Tipo</th>
+            <th>Apresentação</th>
+            <th>Dias</th>
+            <th>Status</th>
+            <th>Ação comercial</th>
+            <th>Detalhe</th>
+            <th>Reserva</th>
+            <th>Proposta</th>
+            <th>Venda</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="funilBody"></tbody>
+      </table>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="addFunilRow">+ Nova imobiliária</button>
+    </div>
+  </div>
+
+  <!-- ===================== ESTOQUE CONCORRENTE ===================== -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="tick"></span>Estoque concorrente, acompanhamento quinzenal</div>
+      <div class="section-note" id="estoqueNote"></div>
+    </div>
+    <div class="table-scroll">
+      <table id="estoqueTable">
+        <thead>
+          <tr>
+            <th>Empreendimento</th>
+            <th>Tendência</th>
+            <th>Estoque atual</th>
+            <th>Vendido (un)</th>
+            <th>% vendido</th>
+          </tr>
+        </thead>
+        <tbody id="estoqueBody"></tbody>
+      </table>
+    </div>
+    <p class="summary-line" id="summaryLine"></p>
+    <div class="toolbar">
+      <button class="btn" id="toggleNewUpdate">+ Registrar nova atualização</button>
+      <button class="btn-ghost" id="toggleNewProject">+ Novo empreendimento</button>
+    </div>
+
+    <div class="panel" id="newUpdatePanel">
+      <div class="panel-row">
+        <div class="panel-field">
+          <label>Data da atualização</label>
+          <input type="date" id="newUpdateDate">
+        </div>
+      </div>
+      <div class="panel-grid" id="newUpdateGrid"></div>
+      <button class="btn" id="saveNewUpdate">Salvar atualização</button>
+    </div>
+
+    <div class="panel" id="newProjectPanel">
+      <div class="panel-row">
+        <div class="panel-field">
+          <label>Nome do empreendimento</label>
+          <input type="text" id="newProjectName" placeholder="Ex: Bosque Real">
+        </div>
+        <div class="panel-field">
+          <label>Estoque atual</label>
+          <input type="number" id="newProjectStock" min="0">
+        </div>
+        <button class="btn" id="saveNewProject">Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PORTFÓLIO DE AVULSOS E PLANTA ===================== -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="tick"></span>Portfólio · avulsos e planta</div>
+      <div class="section-note">Imóveis alugados para venda e casas vendidas na planta</div>
+    </div>
+    <div class="table-scroll">
+      <table id="avulsosTable">
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Tipo</th>
+            <th>Unidade</th>
+            <th>Edifício</th>
+            <th>Valor</th>
+            <th>Locado por</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="avulsosBody"></tbody>
+      </table>
+    </div>
+    <p class="summary-line" id="avulsosSummary"></p>
+    <div class="toolbar">
+      <button class="btn" id="addAvulsoRow">+ Novo imóvel</button>
+    </div>
+  </div>
+
+  <!-- ===================== CONTROLE DE VISITAS ===================== -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-title"><span class="tick"></span>Controle de visitas</div>
+      <div class="section-note">Data, imóvel, imobiliária e situação pós-visita</div>
+    </div>
+    <div class="table-scroll">
+      <table id="visitasTable">
+        <thead>
+          <tr>
+            <th>Nº</th>
+            <th>Data</th>
+            <th>Imóvel</th>
+            <th>Imobiliária / corretor</th>
+            <th>Situação pós-visita</th>
+            <th>Observação</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="visitasBody"></tbody>
+      </table>
+    </div>
+    <div class="toolbar">
+      <button class="btn" id="addVisitaRow">+ Nova visita</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEYS = { funil: 'funil-imobiliarias', estoque: 'estoque-history', avulsos: 'avulsos-portfolio', visitas: 'visitas-imoveis', copas: 'copas-unidades' };
+
+const ACAO_OPTIONS = ['Verba tráfego','Comissão 6%','Bônus por adesão','Agendado','Tentando agendar','Canal próprio','Outro'];
+
+const DEFAULT_FUNIL = [
+  { id:1, nome:'Zanata',         tipo:'Parceiro', data:'2026-05-06', acaoTipo:'Verba tráfego',     detalhe:'',         reserva:3, proposta:1, venda:1 },
+  { id:2, nome:'Alex',           tipo:'Parceiro', data:'2026-05-11', acaoTipo:'Bônus por adesão',  detalhe:'R$ 5.000', reserva:0, proposta:0, venda:0 },
+  { id:3, nome:'Melisnk',        tipo:'Parceiro', data:'2026-05-13', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:4, nome:'Verdi',          tipo:'Parceiro', data:'2026-06-11', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:5, nome:'Ariotti',        tipo:'Parceiro', data:'2026-06-19', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:6, nome:'Moi',            tipo:'Parceiro', data:'2026-06-16', acaoTipo:'Bônus por adesão',  detalhe:'R$ 4.000', reserva:0, proposta:0, venda:0 },
+  { id:7, nome:'Viterbo',        tipo:'Parceiro', data:'2026-06-16', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:8, nome:'House 192',      tipo:'Parceiro', data:'2026-06-04', acaoTipo:'Comissão 6%',       detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:9, nome:'Ricardo Prigol', tipo:'Parceiro', data:'2026-06-29', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:10, nome:'Vista Prime',   tipo:'Parceiro', data:'',           acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:11, nome:'Ceolin',        tipo:'Parceiro', data:'',           acaoTipo:'Tentando agendar',  detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:12, nome:'54 Imóveis',    tipo:'Parceiro', data:'2026-06-22', acaoTipo:'Agendado',          detalhe:'',         reserva:0, proposta:0, venda:0 },
+  { id:13, nome:'Meztra',        tipo:'Direto',   data:'',           acaoTipo:'Canal próprio',     detalhe:'Visitas e leads gerados pela própria Meztra', reserva:0, proposta:0, venda:0 },
+];
+
+function migrateFunilRow(row){
+  let out = row;
+  if(out.acaoTipo === undefined){
+    const legacy = out.acao || '';
+    let acaoTipo = 'Outro', detalhe = '';
+    if(/verba/i.test(legacy)) acaoTipo = 'Verba tráfego';
+    else if(/comiss/i.test(legacy)) acaoTipo = 'Comissão 6%';
+    else if(/tentando/i.test(legacy)) acaoTipo = 'Tentando agendar';
+    else if(/agendado/i.test(legacy)) acaoTipo = 'Agendado';
+    else if(/bateu/i.test(legacy)){
+      acaoTipo = 'Bônus por adesão';
+      const m = legacy.match(/(\d+)\s*k/i);
+      detalhe = m ? `R$ ${Number(m[1])*1000}`.replace(/\B(?=(\d{3})+(?!\d))/g,'.') : legacy;
+    } else if(legacy){
+      detalhe = legacy;
+    }
+    out = Object.assign({}, out, {acaoTipo, detalhe});
+  }
+  if(out.tipo === undefined){
+    out = Object.assign({}, out, {tipo: /meztra/i.test(out.nome||'') ? 'Direto' : 'Parceiro'});
+  }
+  return out;
+}
+
+const PROJECT_ORDER = ['Copas','Vivaldi','Garden Inn','Nox Haus','Skyline','Viva Conect','Amici','Raro','Brooklyn','Noronha','Vila Fratello','Alpen','Pulse','Agata','Linea','Bold'];
+
+const DEFAULT_ESTOQUE = [
+  { date:'2026-05-15', stocks:{ 'Copas':13,'Vivaldi':25,'Garden Inn':26,'Nox Haus':77,'Skyline':29,'Viva Conect':14,'Amici':24,'Raro':14,'Brooklyn':10,'Noronha':12,'Vila Fratello':5,'Alpen':11,'Pulse':32,'Agata':21,'Linea':32,'Bold':26 } },
+  { date:'2026-06-01', stocks:{ 'Copas':11,'Vivaldi':21,'Garden Inn':28,'Nox Haus':79,'Skyline':29,'Viva Conect':13,'Amici':24,'Raro':12,'Brooklyn':9, 'Noronha':12,'Vila Fratello':5,'Alpen':11,'Pulse':32,'Agata':21,'Linea':32,'Bold':26 } },
+  { date:'2026-06-15', stocks:{ 'Copas':11,'Vivaldi':21,'Garden Inn':26,'Nox Haus':79,'Skyline':29,'Viva Conect':14,'Amici':24,'Raro':12,'Brooklyn':9, 'Noronha':12,'Vila Fratello':5,'Alpen':10,'Pulse':32,'Agata':20,'Linea':34,'Bold':26 } },
+];
+
+const DEFAULT_AVULSOS = [
+  { id:1,  tipo:'Avulso', unidade:'301',        edificio:'Corsa',                 valor:225000,  aluguel:795,  status:'Vendido' },
+  { id:2,  tipo:'Avulso', unidade:'402',        edificio:'Corsa',                 valor:210000,  aluguel:0,    status:'Vendido' },
+  { id:3,  tipo:'Avulso', unidade:'401',        edificio:'Corsa',                 valor:265000,  aluguel:899,  status:'Disponível' },
+  { id:4,  tipo:'Avulso', unidade:'502',        edificio:'Corsa',                 valor:228000,  aluguel:800,  status:'Disponível' },
+  { id:5,  tipo:'Avulso', unidade:'602',        edificio:'Corsa',                 valor:232000,  aluguel:718,  status:'Disponível' },
+  { id:6,  tipo:'Avulso', unidade:'701',        edificio:'Corsa',                 valor:277000,  aluguel:850,  status:'Disponível' },
+  { id:7,  tipo:'Avulso', unidade:'702',        edificio:'Corsa',                 valor:235000,  aluguel:696,  status:'Disponível' },
+  { id:8,  tipo:'Avulso', unidade:'801',        edificio:'Corsa',                 valor:281000,  aluguel:900,  status:'Disponível' },
+  { id:9,  tipo:'Avulso', unidade:'802',        edificio:'Corsa',                 valor:239000,  aluguel:745,  status:'Disponível' },
+  { id:10, tipo:'Avulso', unidade:'1401',       edificio:'Sunshine',              valor:320000,  aluguel:913,  status:'Anunciado' },
+  { id:11, tipo:'Avulso', unidade:'1501',       edificio:'Sunshine',              valor:325000,  aluguel:1173, status:'Disponível' },
+  { id:12, tipo:'Avulso', unidade:'1601',       edificio:'Sunshine',              valor:330000,  aluguel:816,  status:'Disponível' },
+  { id:13, tipo:'Avulso', unidade:'1701',       edificio:'Sunshine',              valor:335000,  aluguel:798,  status:'Disponível' },
+  { id:14, tipo:'Avulso', unidade:'1801',       edificio:'Sunshine',              valor:340000,  aluguel:976,  status:'Disponível' },
+  { id:15, tipo:'Avulso', unidade:'52',         edificio:'Ed. Medianeira',        valor:329000,  aluguel:0,    status:'Disponível' },
+  { id:16, tipo:'Avulso', unidade:'Unidade 01', edificio:'Sobrado Cidade Nova',   valor:949000,  aluguel:0,    status:'Disponível' },
+  { id:17, tipo:'Avulso', unidade:'Casa',       edificio:'Casa Copenhagem',       valor:2600000, aluguel:0,    status:'Disponível' },
+  { id:18, tipo:'Planta', unidade:'Casa',       edificio:'Casa Oslo',             valor:1890000, aluguel:0,    status:'Disponível' },
+  { id:19, tipo:'Planta', unidade:'Casa',       edificio:'Casa Zurique',          valor:1900000, aluguel:0,    status:'Disponível' },
+  { id:20, tipo:'Planta', unidade:'Casa',       edificio:'Casa João Shell',       valor:1560000, aluguel:0,    status:'Disponível' },
+  { id:21, tipo:'Planta', unidade:'Casa',       edificio:'Casa Dubai',            valor:4800000, aluguel:0,    status:'Disponível' },
+];
+
+function migrateAvulsoRow(row){
+  if(row.tipo !== undefined) return row;
+  return Object.assign({}, row, {tipo:'Avulso'});
+}
+
+const DEFAULT_COPAS = [
+  { id:1,  unidade:'501', tipologia:'Final 1', area:'62,64', valor:564000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:2,  unidade:'701', tipologia:'Final 1', area:'62,64', valor:572000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:3,  unidade:'801', tipologia:'Final 1', area:'62,64', valor:576000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:4,  unidade:'402', tipologia:'Final 2', area:'62,58', valor:558000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:5,  unidade:'502', tipologia:'Final 2', area:'—',     valor:460000, suite:'Sim', status:'Vendido',   detalhe:'Parente do Gui, dono da construtora (sem participação Meztra)' },
+  { id:6,  unidade:'702', tipologia:'Final 2', area:'62,64', valor:570000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:7,  unidade:'802', tipologia:'Final 2', area:'62,64', valor:574000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:8,  unidade:'902', tipologia:'Final 2', area:'62,64', valor:582000, suite:'Sim', status:'Disponível', detalhe:'' },
+  { id:9,  unidade:'403', tipologia:'Final 3', area:'—',     valor:460000, suite:'Não', status:'Vendido',   detalhe:'Vendido pela Zanata' },
+  { id:10, unidade:'503', tipologia:'Final 3', area:'51,74', valor:399900, suite:'Não', status:'Disponível', detalhe:'' },
+  { id:11, unidade:'603', tipologia:'Final 3', area:'51,74', valor:436000, suite:'Não', status:'Disponível', detalhe:'' },
+  { id:12, unidade:'703', tipologia:'Final 3', area:'51,74', valor:441000, suite:'Não', status:'Disponível', detalhe:'' },
+  { id:13, unidade:'903', tipologia:'Final 3', area:'51,74', valor:451000, suite:'Não', status:'Disponível', detalhe:'' },
+];
+const STATUS_COPAS_CLS = { 'Disponível':'badge-blue', 'Reservado':'badge-amber', 'Vendido':'badge-green' };
+
+const STATUS_AVULSO_CLS = { 'Vendido':'badge-green', 'Anunciado':'badge-terracotta', 'Disponível':'badge-blue' };
+
+const DEFAULT_VISITAS = [];
+const SITUACAO_VISITA_OPTIONS = ['Aguardando retorno','Negociando','Proposta enviada','Sem interesse','Vendido'];
+const SITUACAO_VISITA_CLS = { 'Aguardando retorno':'badge-blue', 'Negociando':'badge-amber', 'Proposta enviada':'badge-amber', 'Sem interesse':'badge-red', 'Vendido':'badge-green' };
+
+let funilData = [];
+let estoqueData = [];   // [{date, stocks:{nome:valor}}]
+let projectList = [];   // ordered list of project names currently tracked
+let avulsosData = [];
+let visitasData = [];
+let copasData = [];
+
+// ---------------- storage helpers (com fallback para funcionar fora do chat) ----------------
+function hasArtifactStorage(){
+  try{ return typeof window!=='undefined' && !!window.storage && typeof window.storage.get==='function'; }
+  catch(e){ return false; }
+}
+function hasLocalStorage(){
+  try{
+    if(typeof window==='undefined' || !window.localStorage) return false;
+    window.localStorage.setItem('__t__','1');
+    window.localStorage.removeItem('__t__');
+    return true;
+  }catch(e){ return false; }
+}
+const STORAGE_MODE = hasArtifactStorage() ? 'artifact' : (hasLocalStorage() ? 'local' : 'memory');
+const memoryStore = {};
+
+async function loadKey(key, fallback){
+  try{
+    if(STORAGE_MODE==='artifact'){
+      const res = await window.storage.get(key, false);
+      if(res && res.value) return JSON.parse(res.value);
+      return fallback;
+    }
+    if(STORAGE_MODE==='local'){
+      const raw = window.localStorage.getItem('painel-copas:'+key);
+      return raw ? JSON.parse(raw) : fallback;
+    }
+    return (key in memoryStore) ? memoryStore[key] : fallback;
+  }catch(e){ return fallback; }
+}
+async function saveKey(key, value){
+  try{
+    if(STORAGE_MODE==='artifact'){
+      await window.storage.set(key, JSON.stringify(value), false);
+    } else if(STORAGE_MODE==='local'){
+      window.localStorage.setItem('painel-copas:'+key, JSON.stringify(value));
+    } else {
+      memoryStore[key] = value;
+    }
+  }catch(e){ console.error('Falha ao salvar', key, e); }
+}
+
+// ---------------- date / format helpers ----------------
+function todayMid(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+function diasDesde(iso){
+  if(!iso) return null;
+  const d = new Date(iso+'T00:00:00');
+  return Math.round((todayMid()-d)/86400000);
+}
+function fmtDateBR(iso){
+  if(!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+function fmtPct(n){
+  return (Math.round(n*10)/10).toFixed(1).replace('.', ',') + '%';
+}
+function fmtBRL(n){
+  return Number(n||0).toLocaleString('pt-BR', {style:'currency', currency:'BRL', maximumFractionDigits:0});
+}
+
+// ---------------- status logic ----------------
+function getStatus(row){
+  if(row.tipo==='Direto') return {label:'Canal próprio', cls:'badge-terracotta'};
+  if(!row.data) return {label:'Pendente', cls:'badge-gray'};
+  const dias = diasDesde(row.data);
+  if(dias < 0) return {label:'Futuro', cls:'badge-terracotta', dias};
+  if(Number(row.reserva)>0 || Number(row.proposta)>0 || Number(row.venda)>0) return {label:'Convertendo', cls:'badge-green', dias};
+  if(dias <= 10) return {label:'Cedo', cls:'badge-blue', dias};
+  if(dias <= 25) return {label:'Observação', cls:'badge-amber', dias};
+  return {label:'Alerta', cls:'badge-red', dias};
+}
+function diasLabel(row){
+  if(!row.data) return '—';
+  const dias = diasDesde(row.data);
+  if(dias < 0) return `em ${Math.abs(dias)} dias`;
+  return `${dias} dias`;
+}
+
+// ---------------- render: KPIs ----------------
+function pctRel(value, base){
+  if(!base) return null;
+  return value/base*100;
+}
+
+function renderKPIs(){
+  const totalReserva = funilData.reduce((s,r)=>s+Number(r.reserva||0),0);
+  const totalProposta = funilData.reduce((s,r)=>s+Number(r.proposta||0),0);
+  const totalVendaParceiros = funilData.reduce((s,r)=>s+Number(r.venda||0),0);
+  const totalVisitas = visitasData.length;
+
+  const avulsoRows = avulsosData.filter(r=>r.tipo==='Avulso');
+  const plantaRows = avulsosData.filter(r=>r.tipo==='Planta');
+  const vendidoEstoqueValor = avulsoRows.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoPlantaValor = plantaRows.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoEstoqueQtd = avulsoRows.filter(r=>r.status==='Vendido').length;
+  const vendidoPlantaQtd = plantaRows.filter(r=>r.status==='Vendido').length;
+
+  const vgvCopas = copasData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoCopasUnidades = copasData.filter(r=>r.status==='Vendido');
+  const vendidoCopasValor = vendidoCopasUnidades.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoCopasQtd = vendidoCopasUnidades.length;
+
+  const portfolioTotalValor = avulsosData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vgvTotal = vgvCopas + portfolioTotalValor;
+  const valorVendidoTotal = vendidoCopasValor + vendidoEstoqueValor + vendidoPlantaValor;
+  const pctVendidoGeral = vgvTotal>0 ? valorVendidoTotal/vgvTotal*100 : 0;
+
+  // ---- Visão financeira ----
+  document.getElementById('kpiFinanceiro').innerHTML = [
+    {num: fmtBRL(vgvTotal), label:'VGV total (Copas + avulsos + planta)'},
+    {num: fmtBRL(valorVendidoTotal), label:'Valor vendido (todas as frentes)'},
+    {num: fmtPct(pctVendidoGeral), label:'% vendido sobre o VGV total'},
+  ].map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="label">${k.label}</div></div>`).join('');
+
+  // ---- Funil comercial ----
+  const pVisitas = totalVisitas>0 ? 100 : null;
+  const pReservas = pctRel(totalReserva, totalVisitas);
+  const pPropostas = pctRel(totalProposta, totalReserva);
+  const pVendas = pctRel(totalVendaParceiros, totalProposta);
+  document.getElementById('kpiFunil').innerHTML = [
+    {num:totalVisitas, label:'Visitas registradas', pct:pVisitas},
+    {num:totalReserva, label:'Reservas', pct:pReservas},
+    {num:totalProposta, label:'Propostas', pct:pPropostas},
+    {num:totalVendaParceiros, label:'Vendas (parceiros + Meztra)', pct:pVendas},
+  ].map(k=>`<div class="kpi"><div class="num">${k.num}</div><div class="label">${k.label}</div>${k.pct!==null?`<div class="pct">${fmtPct(k.pct)} em relação ao estágio anterior</div>`:'<div class="pct" style="color:var(--text-dim);">sem base de comparação</div>'}</div>`).join('');
+
+  // ---- Vendas por frente ----
+  document.getElementById('kpiFrentes').innerHTML = [
+    {num:`${vendidoCopasQtd} · ${fmtBRL(vendidoCopasValor)}`, label:'Venda Copas (todas as unidades)'},
+    {num:`${vendidoEstoqueQtd} · ${fmtBRL(vendidoEstoqueValor)}`, label:'Vendas estoque (avulsos)'},
+    {num:`${vendidoPlantaQtd} · ${fmtBRL(vendidoPlantaValor)}`, label:'Venda planta (casas)'},
+  ].map(k=>`<div class="kpi"><div class="num" style="font-size:20px;">${k.num}</div><div class="label">${k.label}</div></div>`).join('');
+}
+
+// ---------------- render: funil ----------------
+function acaoSelectHTML(value){
+  return ACAO_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function tipoFunilSelectHTML(value){
+  return ['Parceiro','Direto'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderFunil(){
+  const sorted = funilData.slice().sort((a,b)=>{
+    if(a.tipo==='Direto' && b.tipo!=='Direto') return -1;
+    if(b.tipo==='Direto' && a.tipo!=='Direto') return 1;
+    const da = a.data ? diasDesde(a.data) : -99999;
+    const db = b.data ? diasDesde(b.data) : -99999;
+    return db - da;
+  });
+
+  document.getElementById('funilBody').innerHTML = sorted.map((row,i)=>{
+    const status = getStatus(row);
+    return `
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input class="name-input" data-field="nome" value="${escapeAttr(row.nome)}"></td>
+      <td><select data-field="tipo">${tipoFunilSelectHTML(row.tipo)}</select></td>
+      <td><input type="date" data-field="data" value="${row.data}"></td>
+      <td>${diasLabel(row)}</td>
+      <td><span class="badge ${status.cls}">${status.label}</span></td>
+      <td><select data-field="acaoTipo">${acaoSelectHTML(row.acaoTipo)}</select></td>
+      <td><input type="text" data-field="detalhe" value="${escapeAttr(row.detalhe)}" placeholder="opcional"></td>
+      <td><input type="number" min="0" data-field="reserva" value="${row.reserva}"></td>
+      <td><input type="number" min="0" data-field="proposta" value="${row.proposta}"></td>
+      <td><input type="number" min="0" data-field="venda" value="${row.venda}"></td>
+      <td><button class="del-btn" data-action="del-funil" title="Remover">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function escapeAttr(s){
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ---------------- estoque computations ----------------
+function getSortedHistory(){
+  return estoqueData.slice().sort((a,b)=> a.date.localeCompare(b.date));
+}
+function seriesFor(nome){
+  return getSortedHistory()
+    .map(h => ({date:h.date, val: h.stocks[nome]}))
+    .filter(p => p.val !== undefined && p.val !== null);
+}
+function computeRanking(){
+  return projectList.map(nome=>{
+    const s = seriesFor(nome);
+    if(s.length===0) return {nome, atual:null, vendido:0, pct:-Infinity};
+    const first = s[0].val, last = s[s.length-1].val;
+    const vendido = first - last;
+    const pct = first>0 ? (vendido/first*100) : 0;
+    return {nome, atual:last, vendido, pct, first, firstDate:s[0].date, lastDate:s[s.length-1].date};
+  }).filter(r=>r.atual!==null)
+    .sort((a,b)=> b.pct - a.pct);
+}
+
+function sparklineSVG(series){
+  if(series.length < 2) return '<svg class="spark" width="80" height="24"></svg>';
+  const vals = series.map(s=>s.val);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const w=80, h=24, pad=3;
+  const range = (max-min) || 1;
+  const pts = series.map((s,i)=>{
+    const x = pad + (i/(series.length-1)) * (w-2*pad);
+    const y = h-pad - ((s.val-min)/range) * (h-2*pad);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const lastX = pad + (w-2*pad);
+  const lastY = h-pad - ((vals[vals.length-1]-min)/range)*(h-2*pad);
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <polyline points="${pts}" fill="none" stroke="#C8662F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="2.4" fill="#C8662F"/>
+  </svg>`;
+}
+
+function renderEstoque(){
+  const ranking = computeRanking();
+  document.getElementById('estoqueBody').innerHTML = ranking.map(r=>{
+    const series = seriesFor(r.nome);
+    const highlight = r.nome === 'Copas';
+    return `
+    <tr class="${highlight?'highlight':''}">
+      <td>${highlight ? '<b>'+r.nome+'</b>' : r.nome}</td>
+      <td>${sparklineSVG(series)}</td>
+      <td>${r.atual}</td>
+      <td>${r.vendido > 0 ? r.vendido : (r.vendido < 0 ? r.vendido : 0)}</td>
+      <td>${fmtPct(r.pct)}</td>
+    </tr>`;
+  }).join('');
+
+  const hist = getSortedHistory();
+  if(hist.length){
+    document.getElementById('estoqueNote').textContent =
+      `${hist.length} atualizações registradas · última em ${fmtDateBR(hist[hist.length-1].date)}`;
+    document.getElementById('lastUpdated').textContent =
+      `Estoque atualizado em ${fmtDateBR(hist[hist.length-1].date)} · ${projectList.length} empreendimentos acompanhados`;
+  }
+
+  // summary line
+  if(hist.length>=2){
+    const first = hist[0], last = hist[hist.length-1];
+    const totalFirst = Object.values(first.stocks).reduce((s,v)=>s+v,0);
+    const totalLast = projectList.reduce((s,nome)=> s + (last.stocks[nome]!==undefined? last.stocks[nome]:0), 0);
+    const totalDelta = totalLast - totalFirst;
+    const copas = ranking.find(r=>r.nome==='Copas');
+    const copasRank = ranking.findIndex(r=>r.nome==='Copas')+1;
+    document.getElementById('summaryLine').innerHTML =
+      `Mercado total: <b>${totalFirst} → ${totalLast}</b> (<span class="${totalDelta<=0?'pos':'neg'}">${totalDelta>0?'+':''}${totalDelta} un</span>) desde ${fmtDateBR(first.date)}`
+      + (copas ? ` · Copas: <b>${copas.first} → ${copas.atual}</b> (<span class="pos">${fmtPct(copas.pct)}</span>) · <b>${copasRank}º melhor desempenho</b> entre ${ranking.length} empreendimentos` : '');
+  }
+}
+
+// ---------------- event wiring: funil ----------------
+document.getElementById('funilBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = funilData.find(r=>r.id===id);
+  if(!row) return;
+  if(['reserva','proposta','venda'].includes(field)){
+    row[field] = Number(e.target.value || 0);
+  } else {
+    row[field] = e.target.value;
+  }
+  await saveKey(STORAGE_KEYS.funil, funilData);
+  renderFunil();
+  renderKPIs();
+});
+
+document.getElementById('funilBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-funil'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    funilData = funilData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.funil, funilData);
+    renderFunil();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addFunilRow').addEventListener('click', async ()=>{
+  const nextId = funilData.length ? Math.max(...funilData.map(r=>r.id))+1 : 1;
+  funilData.push({id:nextId, nome:'Nova imobiliária', tipo:'Parceiro', data:'', acaoTipo:'Agendado', detalhe:'', reserva:0, proposta:0, venda:0});
+  await saveKey(STORAGE_KEYS.funil, funilData);
+  renderFunil();
+  renderKPIs();
+});
+
+// ---------------- event wiring: estoque ----------------
+document.getElementById('toggleNewUpdate').addEventListener('click', ()=>{
+  document.getElementById('newProjectPanel').classList.remove('open');
+  const panel = document.getElementById('newUpdatePanel');
+  panel.classList.toggle('open');
+  if(panel.classList.contains('open')) buildNewUpdateForm();
+});
+document.getElementById('toggleNewProject').addEventListener('click', ()=>{
+  document.getElementById('newUpdatePanel').classList.remove('open');
+  document.getElementById('newProjectPanel').classList.toggle('open');
+});
+
+function buildNewUpdateForm(){
+  const hist = getSortedHistory();
+  const last = hist.length ? hist[hist.length-1] : {stocks:{}};
+  const grid = document.getElementById('newUpdateGrid');
+  grid.innerHTML = projectList.map(nome=>{
+    const prev = last.stocks[nome] !== undefined ? last.stocks[nome] : '';
+    return `<div class="panel-field"><label>${nome}</label><input type="number" min="0" data-proj="${escapeAttr(nome)}" value="${prev}"></div>`;
+  }).join('');
+
+  // default new date = 14 days after last recorded date, or today
+  const dateInput = document.getElementById('newUpdateDate');
+  if(hist.length){
+    const d = new Date(hist[hist.length-1].date+'T00:00:00');
+    d.setDate(d.getDate()+14);
+    dateInput.value = d.toISOString().slice(0,10);
+  } else {
+    dateInput.value = new Date().toISOString().slice(0,10);
+  }
+}
+
+document.getElementById('saveNewUpdate').addEventListener('click', async ()=>{
+  const date = document.getElementById('newUpdateDate').value;
+  if(!date){ alert('Informe a data da atualização.'); return; }
+  const inputs = document.querySelectorAll('#newUpdateGrid input');
+  const stocks = {};
+  inputs.forEach(inp=>{ stocks[inp.dataset.proj] = Number(inp.value || 0); });
+  estoqueData = estoqueData.filter(h=>h.date!==date);
+  estoqueData.push({date, stocks});
+  await saveKey(STORAGE_KEYS.estoque, estoqueData);
+  document.getElementById('newUpdatePanel').classList.remove('open');
+  renderEstoque();
+  renderKPIs();
+});
+
+document.getElementById('saveNewProject').addEventListener('click', async ()=>{
+  const name = document.getElementById('newProjectName').value.trim();
+  const stock = Number(document.getElementById('newProjectStock').value || 0);
+  if(!name){ alert('Informe o nome do empreendimento.'); return; }
+  if(!projectList.includes(name)) projectList.push(name);
+  const hist = getSortedHistory();
+  if(hist.length){
+    hist[hist.length-1].stocks[name] = stock;
+    estoqueData = hist;
+  } else {
+    estoqueData = [{date:new Date().toISOString().slice(0,10), stocks:{[name]:stock}}];
+  }
+  await saveKey(STORAGE_KEYS.estoque, estoqueData);
+  document.getElementById('newProjectName').value = '';
+  document.getElementById('newProjectStock').value = '';
+  document.getElementById('newProjectPanel').classList.remove('open');
+  renderEstoque();
+  renderKPIs();
+});
+
+// ---------------- render: copas units ----------------
+function copasStatusSelectHTML(value){
+  return Object.keys(STATUS_COPAS_CLS).map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function suiteSelectHTML(value){
+  return ['Sim','Não'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderCopas(){
+  document.getElementById('copasBody').innerHTML = copasData.map((row,i)=>`
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input data-field="unidade" value="${escapeAttr(row.unidade)}" style="width:70px;"></td>
+      <td><input data-field="tipologia" value="${escapeAttr(row.tipologia)}" style="width:90px;"></td>
+      <td><input data-field="area" value="${escapeAttr(row.area)}" style="width:60px;text-align:right;"></td>
+      <td><input type="number" min="0" data-field="valor" value="${row.valor}" style="width:100px;text-align:right;"></td>
+      <td><select data-field="suite">${suiteSelectHTML(row.suite)}</select></td>
+      <td><select data-field="status">${copasStatusSelectHTML(row.status)}</select></td>
+      <td><input data-field="detalhe" value="${escapeAttr(row.detalhe)}" placeholder="opcional" style="min-width:160px;"></td>
+      <td><button class="del-btn" data-action="del-copas" title="Remover">×</button></td>
+    </tr>`).join('');
+
+  const total = copasData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendidoRows = copasData.filter(r=>r.status==='Vendido');
+  const vendido = vendidoRows.reduce((s,r)=>s+Number(r.valor||0),0);
+  const pct = total>0 ? vendido/total*100 : 0;
+  document.getElementById('copasSummary').innerHTML =
+    `VGV: <b>${fmtBRL(total)}</b> em ${copasData.length} unidades · Vendido: <b>${fmtBRL(vendido)}</b> (${vendidoRows.length} unidades, <span class="pos">${fmtPct(pct)}</span>)`;
+}
+
+document.getElementById('copasBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = copasData.find(r=>r.id===id);
+  if(!row) return;
+  row[field] = field==='valor' ? Number(e.target.value||0) : e.target.value;
+  await saveKey(STORAGE_KEYS.copas, copasData);
+  renderCopas();
+  renderVisitas();
+  renderKPIs();
+});
+
+document.getElementById('copasBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-copas'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    copasData = copasData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.copas, copasData);
+    renderCopas();
+    renderVisitas();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addCopasRow').addEventListener('click', async ()=>{
+  const nextId = copasData.length ? Math.max(...copasData.map(r=>r.id))+1 : 1;
+  copasData.push({id:nextId, unidade:'', tipologia:'', area:'', valor:0, suite:'Sim', status:'Disponível', detalhe:''});
+  await saveKey(STORAGE_KEYS.copas, copasData);
+  renderCopas();
+  renderVisitas();
+  renderKPIs();
+});
+
+// ---------------- render: avulsos ----------------
+function statusSelectHTML(value){
+  return Object.keys(STATUS_AVULSO_CLS).map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function tipoSelectHTML(value){
+  return ['Avulso','Planta'].map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+
+function renderAvulsos(){
+  document.getElementById('avulsosBody').innerHTML = avulsosData.map((row,i)=>`
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><select data-field="tipo">${tipoSelectHTML(row.tipo)}</select></td>
+      <td><input data-field="unidade" value="${escapeAttr(row.unidade)}" style="width:90px;"></td>
+      <td><input data-field="edificio" value="${escapeAttr(row.edificio)}" style="min-width:130px;"></td>
+      <td><input type="number" min="0" data-field="valor" value="${row.valor}" style="width:100px;text-align:right;"></td>
+      <td><input type="number" min="0" data-field="aluguel" value="${row.aluguel}" style="width:80px;text-align:right;"></td>
+      <td><select data-field="status">${statusSelectHTML(row.status)}</select></td>
+      <td><button class="del-btn" data-action="del-avulso" title="Remover">×</button></td>
+    </tr>`).join('');
+
+  const total = avulsosData.reduce((s,r)=>s+Number(r.valor||0),0);
+  const vendido = avulsosData.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const pct = total>0 ? vendido/total*100 : 0;
+
+  const avulso = avulsosData.filter(r=>r.tipo==='Avulso');
+  const planta = avulsosData.filter(r=>r.tipo==='Planta');
+  const avulsoTotal = avulso.reduce((s,r)=>s+Number(r.valor||0),0);
+  const avulsoVendido = avulso.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+  const plantaTotal = planta.reduce((s,r)=>s+Number(r.valor||0),0);
+  const plantaVendido = planta.filter(r=>r.status==='Vendido').reduce((s,r)=>s+Number(r.valor||0),0);
+
+  document.getElementById('avulsosSummary').innerHTML =
+    `Carteira total: <b>${fmtBRL(total)}</b> em ${avulsosData.length} imóveis · Vendido: <b>${fmtBRL(vendido)}</b> (<span class="pos">${fmtPct(pct)}</span>)`
+    + `<br>Avulsos: ${fmtBRL(avulsoTotal)} (vendido ${fmtBRL(avulsoVendido)}) · Planta: ${fmtBRL(plantaTotal)} (vendido ${fmtBRL(plantaVendido)})`;
+}
+
+document.getElementById('avulsosBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = avulsosData.find(r=>r.id===id);
+  if(!row) return;
+  row[field] = (field==='valor'||field==='aluguel') ? Number(e.target.value||0) : e.target.value;
+  await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+  renderAvulsos();
+  renderVisitas();
+  renderKPIs();
+});
+
+document.getElementById('avulsosBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-avulso'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    avulsosData = avulsosData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+    renderAvulsos();
+    renderVisitas();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addAvulsoRow').addEventListener('click', async ()=>{
+  const nextId = avulsosData.length ? Math.max(...avulsosData.map(r=>r.id))+1 : 1;
+  avulsosData.push({id:nextId, tipo:'Avulso', unidade:'', edificio:'', valor:0, aluguel:0, status:'Disponível'});
+  await saveKey(STORAGE_KEYS.avulsos, avulsosData);
+  renderAvulsos();
+  renderVisitas();
+  renderKPIs();
+});
+
+// ---------------- render: visitas ----------------
+function situacaoSelectHTML(value){
+  return SITUACAO_VISITA_OPTIONS.map(opt=>`<option value="${opt}"${opt===value?' selected':''}>${opt}</option>`).join('');
+}
+function imovelOptionsHTML(value){
+  const opts = copasData.map(c=>`${c.unidade} · Copas (${c.tipologia})`)
+    .concat(avulsosData.map(a=>`${a.unidade} · ${a.edificio}`));
+  return opts.map(label=>`<option value="${escapeAttr(label)}"${label===value?' selected':''}>${label}</option>`).join('');
+}
+function imobiliariaCellHTML(value){
+  const known = funilData.map(r=>r.nome);
+  const isKnown = value!=='' && known.includes(value);
+  const selectVal = isKnown ? value : 'Outros';
+  const opts = known.concat(['Outros']);
+  let html = `<div style="display:flex;flex-direction:column;gap:5px;min-width:150px;">`;
+  html += `<select data-field="imobiliariaPick">` + opts.map(o=>`<option value="${escapeAttr(o)}"${o===selectVal?' selected':''}>${o}</option>`).join('') + `</select>`;
+  if(selectVal==='Outros'){
+    html += `<input data-field="imobiliaria" value="${escapeAttr(value)}" placeholder="Nome da imobiliária">`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function renderVisitas(){
+  const sorted = visitasData.slice().sort((a,b)=> (b.data||'').localeCompare(a.data||''));
+  document.getElementById('visitasBody').innerHTML = sorted.map((row,i)=>{
+    const cls = SITUACAO_VISITA_CLS[row.situacao] || 'badge-gray';
+    return `
+    <tr data-id="${row.id}">
+      <td>${i+1}</td>
+      <td><input type="date" data-field="data" value="${row.data}"></td>
+      <td><select data-field="imovel">${imovelOptionsHTML(row.imovel)}</select></td>
+      <td>${imobiliariaCellHTML(row.imobiliaria)}</td>
+      <td><select data-field="situacao">${situacaoSelectHTML(row.situacao)}</select> <span class="badge ${cls}" style="margin-left:4px;">●</span></td>
+      <td><textarea data-field="obs" placeholder="opcional" title="${escapeAttr(row.obs)}" rows="2">${escapeAttr(row.obs)}</textarea></td>
+      <td><button class="del-btn" data-action="del-visita" title="Remover">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+document.getElementById('visitasBody').addEventListener('change', async (e)=>{
+  const field = e.target.dataset.field;
+  if(!field) return;
+  const tr = e.target.closest('tr');
+  const id = Number(tr.dataset.id);
+  const row = visitasData.find(r=>r.id===id);
+  if(!row) return;
+  if(field==='imobiliariaPick'){
+    row.imobiliaria = (e.target.value==='Outros') ? '' : e.target.value;
+  } else {
+    row[field] = e.target.value;
+  }
+  await saveKey(STORAGE_KEYS.visitas, visitasData);
+  renderVisitas();
+  renderKPIs();
+});
+
+document.getElementById('visitasBody').addEventListener('click', async (e)=>{
+  if(e.target.dataset.action === 'del-visita'){
+    const tr = e.target.closest('tr');
+    const id = Number(tr.dataset.id);
+    visitasData = visitasData.filter(r=>r.id!==id);
+    await saveKey(STORAGE_KEYS.visitas, visitasData);
+    renderVisitas();
+    renderKPIs();
+  }
+});
+
+document.getElementById('addVisitaRow').addEventListener('click', async ()=>{
+  const nextId = visitasData.length ? Math.max(...visitasData.map(r=>r.id))+1 : 1;
+  const defaultImovel = copasData.length ? `${copasData[0].unidade} · Copas (${copasData[0].tipologia})`
+    : (avulsosData.length ? `${avulsosData[0].unidade} · ${avulsosData[0].edificio}` : '');
+  visitasData.push({id:nextId, data:new Date().toISOString().slice(0,10), imovel:defaultImovel, imobiliaria:'', situacao:'Aguardando retorno', obs:''});
+  await saveKey(STORAGE_KEYS.visitas, visitasData);
+  renderVisitas();
+  renderKPIs();
+});
+
+// ---------------- boot ----------------
+async function boot(){
+  try{
+    funilData = (await loadKey(STORAGE_KEYS.funil, DEFAULT_FUNIL)).map(migrateFunilRow);
+    estoqueData = await loadKey(STORAGE_KEYS.estoque, DEFAULT_ESTOQUE);
+    avulsosData = (await loadKey(STORAGE_KEYS.avulsos, DEFAULT_AVULSOS)).map(migrateAvulsoRow);
+    visitasData = await loadKey(STORAGE_KEYS.visitas, DEFAULT_VISITAS);
+    copasData = await loadKey(STORAGE_KEYS.copas, DEFAULT_COPAS);
+  }catch(e){
+    console.error('Falha ao carregar dados salvos, usando os valores padrão', e);
+    funilData = DEFAULT_FUNIL.map(migrateFunilRow);
+    estoqueData = DEFAULT_ESTOQUE;
+    avulsosData = DEFAULT_AVULSOS.map(migrateAvulsoRow);
+    visitasData = DEFAULT_VISITAS;
+    copasData = DEFAULT_COPAS;
+  }
+
+  // garante que a Meztra exista no funil mesmo em sessões com dados já salvos antes dessa atualização
+  if(!funilData.some(r => /^meztra$/i.test((r.nome||'').trim()))){
+    const nextId = funilData.length ? Math.max(...funilData.map(r=>r.id))+1 : 1;
+    funilData.push({id:nextId, nome:'Meztra', tipo:'Direto', data:'', acaoTipo:'Canal próprio', detalhe:'Visitas e leads gerados pela própria Meztra', reserva:0, proposta:0, venda:0});
+  }
+
+  // build project list from default order + anything new found in stored history
+  const found = new Set(PROJECT_ORDER);
+  estoqueData.forEach(h=> Object.keys(h.stocks).forEach(n=>found.add(n)));
+  projectList = PROJECT_ORDER.filter(n=>found.has(n)).concat([...found].filter(n=>!PROJECT_ORDER.includes(n)));
+
+  renderFunil();
+  renderEstoque();
+  renderCopas();
+  renderAvulsos();
+  renderVisitas();
+  renderKPIs();
+
+  // persiste em segundo plano (cobre a primeira visita e qualquer migração de formato),
+  // sem bloquear a renderização caso o salvamento falhe por qualquer motivo
+  saveKey(STORAGE_KEYS.funil, funilData);
+  saveKey(STORAGE_KEYS.estoque, estoqueData);
+  saveKey(STORAGE_KEYS.avulsos, avulsosData);
+  saveKey(STORAGE_KEYS.visitas, visitasData);
+  saveKey(STORAGE_KEYS.copas, copasData);
+}
+boot();
+</script>
+</body>
+</html>

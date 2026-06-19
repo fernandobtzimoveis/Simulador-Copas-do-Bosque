@@ -260,13 +260,13 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
         <div class="inp-hint" id="val-hint">Informe o valor do apartamento</div>
       </div>
       <div class="inp-group">
-        <div class="inp-lbl">Valorização estimada</div>
+        <div class="inp-lbl">Valorização real (a.a.)</div>
         <div class="inp-wrap">
-          <input type="text" id="aa-d" value="12" inputmode="numeric" autocomplete="off" style="width:55px;text-align:right">
-          <input type="hidden" id="aa-h" value="12">
+          <input type="text" id="aa-d" value="7" inputmode="numeric" autocomplete="off" style="width:55px;text-align:right">
+          <input type="hidden" id="aa-h" value="7">
           <span class="sfx">% a.a.</span>
         </div>
-        <div class="inp-hint"><span class="cenario-tag moderado" id="aa-tag">Cenário moderado</span></div>
+        <div class="inp-hint"><span class="cenario-tag moderado" id="aa-tag">Cenário moderado</span> <span style="font-size:10px;color:var(--gray-lt);margin-left:4px">considerando IPCA projetado (Focus/BCB)</span></div>
       </div>
     </div>
   </div>
@@ -801,8 +801,8 @@ function calc() {
   // Cenário tag
   const tag=gi("aa-tag");
   if(tag) {
-    if(aa<0.10){tag.textContent="Cenário pessimista";tag.className="cenario-tag pessimista";}
-    else if(aa<=0.15){tag.textContent="Cenário moderado";tag.className="cenario-tag moderado";}
+    if(aa<0.05){tag.textContent="Cenário pessimista";tag.className="cenario-tag pessimista";}
+    else if(aa<=0.09){tag.textContent="Cenário moderado";tag.className="cenario-tag moderado";}
     else{tag.textContent="Cenário otimista";tag.className="cenario-tag otimista";}
   }
 
@@ -890,7 +890,7 @@ function calc() {
   }
 
   // Valor mês 40
-  const vE=val*Math.pow(1+aa,40/12);
+  const vE=val*Math.pow(1+aa,40/12)*(1+infl40); // aa é REAL (já líquido de inflação); recompõe nominal para a venda
   S("val-hint","Valor estimado na entrega: "+R(vE));
 
   // ── Sugestões ──

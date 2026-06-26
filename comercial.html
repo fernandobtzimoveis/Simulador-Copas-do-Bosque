@@ -1081,20 +1081,89 @@ function updateComparativo(d) {
 function enviarWhats() {
   const val=parseInt(gi("val-h").value)||0;
   const nome=gi("nome")?gi("nome").value.trim():"";
-  const saudacao=nome?"Olá "+nome+"! ":"Olá! ";
-  const g=id=>gi(id)?gi(id).textContent:"—";
-  // Pegar ganho Selic do comparativo (alimentado direto pelo calc)
-  const ganhoSelic=gi("c-s-luc")?gi("c-s-luc").textContent:"—";
-  const msg=saudacao+"preparei uma simulação de investimento no *Copas do Bosque* para você.\n\n"
-    +"Imóvel: *R$ "+val.toLocaleString("pt-BR")+"* · Entrega em *"+MESES+" meses* (jan/2029)\n"
-    +"Valor estimado na entrega: *"+g("val-hint").split(": ")[1]+"*\n\n"
-    +"*Financiando pela Caixa (recomendado):*\n"
-    +"Lucro estimado: *"+g("f-luc")+"*\n"
-    +"Com apenas *"+g("f-tot")+"* investimento próprio — o banco cobre o restante\n\n"
-    +"*Pagando direto à construtora:*\n"
-    +"Lucro estimado: *"+g("d-luc")+"*\n"
-    +"Isso é *"+g("d-vs").split("×")[0].replace("🏆 ","").trim()+"× mais* do que renderia na Selic\n\n"
-    +"Para comparação: aplicando na Selic você teria apenas *"+ganhoSelic+"* no mesmo período.\n\n"
+  const saudacao=nome?"Olá, "+nome+"! Tudo bem?\n":"Olá! Tudo bem?\n";
+
+  // Recalcula tudo direto das fórmulas (independe do DOM)
+  const aa=(parseFloat(gi("aa-h").value)||7)/100;
+  const incc=0.005, igpm=0.007, MESES_w=mesesRestantes();
+  const infl40=(1+Math.pow(1+0.0491,8/12)-1)*(1+0.04)*(1+0.0364)*(1+Math.pow(1+0.035,8/12)-1)-1;
+  const vE=val*Math.pow(1+aa,40/12)*(1+infl40);
+
+  // Financiado (padrão 15%/40 ou parcela editada)
+  const entF=val*0.10;
+  const custosF_w=545+val*0.003+1000+val*0.75*0.00021*30+val*0.000034*30;
+  const parcFinEl=gi("f-parc-edit");
+  const parcFminCalc=Math.round(val*0.15/40);
+  const parcFin=parcFinEl&&parcFinEl.value?parseInt(parcFinEl.value.replace(/\./g,"").replace(/[^0-9]/g,""))||parcFminCalc:parcFminCalc;
+  const construtoraPct=parcFin*40/val;
+  const bancoPctW=Math.max(0.20, 0.90-construtoraPct);
+  const cefW=Math.round(val*bancoPctW);
+  const incC=(1-0.15)/30; let sC=cefW*0.15,totMF=0,totAc=0;
+  const fFw=new Array(41).fill(0); fFw[0]=-(entF+custosF_w);
+  for(let m=1;m<=40;m++){
+    const corrF=m<=30?Math.pow(1+incc,m):Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
+    const pF=parcFin*corrF; totMF+=pF; fFw[m]-=pF;
+    if(m<=30){const j=sC*0.008; totAc+=j; fFw[m]-=j; sC=cefW*Math.min(0.15+incC*m,1);}
+  }
+  fFw[40]+=vE-cefW;
+  const totF_w=entF+custosF_w+totMF+totAc;
+  const lucF_w=fFw.reduce((a,b)=>a+b,0);
+
+  // Direto
+  const custosD_w=val*0.02+val*0.006+val*0.007;
+  const entPct=_entPctGlobal>0?_entPctGlobal:0.10;
+  const entD_w=Math.round(val*entPct);
+  const dispTotal=Math.max(0,val*(1-entPct-0.30));
+  const parcDefaultW=Math.round(dispTotal*0.50/40);
+  const parcMesW=_parcMesGlobal===-1?parcDefaultW:_parcMesGlobal;
+  const totalMensaisW=parcMesW*40;
+  const saldoRefW=Math.max(0,val*0.60-totalMensaisW);
+  const valorRefW=_valorRefGlobal===-1?Math.round(saldoRefW/5):_valorRefGlobal;
+  const saldoEntregaPctW=Math.max(0,1-entPct-(parcMesW*40+valorRefW*5)/val);
+  const saldoEntregaValW=Math.round(val*saldoEntregaPctW);
+  const entrega30RealW=saldoEntregaValW*Math.pow(1+incc,MESES_w);
+  const rfMesesW=[6,12,18,24,30];
+  const fDw=new Array(41).fill(0); fDw[0]=-(entD_w+custosD_w);
+  for(let m=1;m<=40;m++){
+    const corr=m<=MESES_w?Math.pow(1+incc,m):Math.pow(1+incc,MESES_w)*Math.pow(1+igpm,m-MESES_w);
+    fDw[m]-=parcMesW*corr;
+    if(rfMesesW.includes(m)) fDw[m]-=valorRefW*Math.pow(1+incc,m);
+  }
+  fDw[MESES_w]-=entrega30RealW;
+  fDw[40]+=vE;
+  const lucD_w=fDw.reduce((a,b)=>a+b,0);
+
+  // Selic — mesmo fluxo do direto
+  let sB_w=0, totA_w=entD_w+custosD_w;
+  let sEnt_w=entD_w+custosD_w; for(let k=1;k<=40;k++) sEnt_w*=(1+selicMes(k)); sB_w+=sEnt_w;
+  for(let m=1;m<=40;m++){
+    const corr=m<=MESES_w?Math.pow(1+incc,m):Math.pow(1+incc,MESES_w)*Math.pow(1+igpm,m-MESES_w);
+    let pgto=parcMesW*corr;
+    if(rfMesesW.includes(m)) pgto+=valorRefW*Math.pow(1+incc,m);
+    if(m===MESES_w) pgto+=entrega30RealW;
+    totA_w+=pgto;
+    let s=pgto; for(let k=m+1;k<=40;k++) s*=(1+selicMes(k)); sB_w+=s;
+  }
+  const ganhoB_w=sB_w-totA_w, ir_w=ganhoB_w*0.15, sL_w=sB_w-ir_w, ganhoL_w=sL_w-totA_w;
+
+  // Maior % vs Selic entre os dois cenários (sempre o que gera mais benefício pro comprador)
+  const pctF=Math.round((lucF_w/ganhoL_w-1)*100);
+  const pctD=Math.round((lucD_w/ganhoL_w-1)*100);
+  const pctMax=Math.max(pctF,pctD);
+
+  const msg=saudacao
+    +"Preparei uma simulação personalizada de investimento no Copas do Bosque.\n\n"
+    +"Imóvel: "+Rsmart(val)+"\n"
+    +"Entrega prevista em "+MESES_w+" meses (jan/2029)\n"
+    +"Valor estimado do imóvel na entrega: "+Rsmart(vE)+"\n\n"
+    +"Confira duas possibilidades:\n\n"
+    +"*Financiando pela Caixa (recomendado)*\n"
+    +"Capital próprio: "+Rsmart(totF_w)+"\n"
+    +"Valorização patrimonial estimada: "+Rsmart(lucF_w)+"\n\n"
+    +"*Pagamento direto com a construtora*\n"
+    +"Valorização patrimonial estimada: "+Rsmart(lucD_w)+"\n\n"
+    +"Para comparação, uma aplicação na Selic teria um rendimento estimado de "+Rsmart(ganhoL_w)+" no mesmo período.\n\n"
+    +"Isso representa uma valorização patrimonial estimada cerca de "+pctMax+"% superior ao rendimento estimado da Selic.\n\n"
     +"Quer conversar sobre essa oportunidade?";
   window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
 }

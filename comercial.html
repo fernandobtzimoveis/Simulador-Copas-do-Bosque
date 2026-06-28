@@ -615,6 +615,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
 const gi  = id => document.getElementById(id);
 const R   = n  => "R$ " + Math.round(n).toLocaleString("pt-BR");
 const Rsmart = n => n>=5000 ? "R$ "+Math.round(n/1000).toLocaleString("pt-BR")+" mil" : "R$ "+Math.round(n).toLocaleString("pt-BR");
+const Rfloor = n => "R$ " + Math.floor(n).toLocaleString("pt-BR"); // arredonda para baixo
 const Pp  = n  => (n*100).toFixed(1).replace(".",",") + "% a.a.";
 const S   = (id,v) => { const e=gi(id); if(e) e.textContent=v; };
 const show = id => { const e=gi(id); if(e) e.classList.remove("cascade-hidden"); };
@@ -906,7 +907,7 @@ function calc() {
   S("d-e30-lbl",Math.round(saldoEntregaPct*100)+"% saldo na entrega ");
   S("d-e30",    R(entrega30));
   S("d-custos", R(custosD));
-  S("d-tot",    R(ent+custosD+totalMensais+totalRefBase+entrega30));
+  S("d-tot",    Rfloor(totDReal));
   S("d-luc",    R(lucD));
   S("d-pct",    "· +"+Math.round(lucD/totDReal*100)+"%");
   S("d-sub",    "Venda estimada "+R(vE)+" · Investido "+R(totDReal));
@@ -967,7 +968,7 @@ function calc() {
   S("f-cus1", R(itbiF+regF));
   S("f-cus2", R(mipDfi));
   S("f-cus-total", R(itbiF+regF+mipDfi));
-  S("f-tot",  R(totF));
+  S("f-tot",  Rfloor(totF));
   S("f-luc",  R(lucF));
   S("f-pct",  "· +"+Math.round(lucF/totF*100)+"%");
   S("f-sub",  "Venda estimada "+R(vE)+" · Do bolso "+R(totF)+" + banco "+R(cef));
@@ -1046,12 +1047,12 @@ function calc() {
     tirD:Pp(tirDa), realD:Pp(tirDr), entD:R(ent)+" · 4× "+R(ent/4),
     parcD:gi("d-parc-edit")?gi("d-parc-edit").value:"—",
     refD:gi("d-ref-edit")?gi("d-ref-edit").value:"—",
-    e30D:R(entrega30), cusD:R(custosD), totD:R(ent+custosD+totalMensais+totalRefBase+entrega30),
+    e30D:R(entrega30), cusD:R(custosD), totD:Rfloor(totDReal),
     lucF:R(lucF), pctF:"· +"+Math.round(lucF/totF*100)+"%", vsF:msgVsSelic(vezesFinanc, lucF),
     tirF:Pp(tirFa), realF:Pp(tirFr), entF:R(val*0.10)+" · 4× "+R(val*0.10/4),
     menF:"~"+R(parcFin)+"/mês ("+Math.round(construtoraPct*100)+"%)", ac1F:"aprox. "+R(ac1)+"/mês", ac2F:"até aprox. "+R(ac30)+"/mês",
-    cefF:R(cef), cusF:"ITBI+Reg: "+R(itbiF+regF)+" · Seguros: "+R(mipDfi), totF:R(totF),
-    totS:R(ent+custosD+totalMensais+totalRefBase+entrega30),
+    cefF:R(cef), cusF:"ITBI+Reg: "+R(itbiF+regF)+" · Seguros: "+R(mipDfi), totF:Rfloor(totF),
+    totS:Rfloor(totDReal),
     brutoS:R(saldoB), irS:"− "+R(ir), lucS:R(ganhoL),
     tirS:Pp(tirSa), realS:Pp(tirSr)
   });

@@ -946,13 +946,13 @@ function calc() {
   const cef = Math.round(val * bancoPct);
 
   let totMF=0,totAc=0,ac1=0,ac30=0;
-  const incC=(1-0.15)/30; let sC=cef*0.15;
+  const incC=(1-0.30)/30; let sC=cef*0.30;
   const fluxoF=new Array(41).fill(0);
   fluxoF[0]=-(entF+custosF_total);
   for(let m=1;m<=40;m++){
     const corrF=m<=30?Math.pow(1+incc,m):Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
     const pF=parcFin*corrF; totMF+=pF; fluxoF[m]-=pF;
-    if(m<=30){const j=sC*0.008;if(m===1)ac1=j;if(m===30)ac30=j;totAc+=j;fluxoF[m]-=j;sC=cef*Math.min(0.15+incC*m,1);}
+    if(m<=30){const j=sC*0.008;if(m===1)ac1=j;if(m===30)ac30=j;totAc+=j;fluxoF[m]-=j;sC=cef*Math.min(0.30+incC*m,1);}
   }
   fluxoF[40]+=vE-cef;
   const totF=entF+custosF_total+totMF+totAc;
@@ -1099,12 +1099,12 @@ function enviarWhats() {
   const construtoraPct=parcFin*40/val;
   const bancoPctW=Math.max(0.20, 0.90-construtoraPct);
   const cefW=Math.round(val*bancoPctW);
-  const incC=(1-0.15)/30; let sC=cefW*0.15,totMF=0,totAc=0;
+  const incC=(1-0.30)/30; let sC=cefW*0.30,totMF=0,totAc=0;
   const fFw=new Array(41).fill(0); fFw[0]=-(entF+custosF_w);
   for(let m=1;m<=40;m++){
     const corrF=m<=30?Math.pow(1+incc,m):Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
     const pF=parcFin*corrF; totMF+=pF; fFw[m]-=pF;
-    if(m<=30){const j=sC*0.008; totAc+=j; fFw[m]-=j; sC=cefW*Math.min(0.15+incC*m,1);}
+    if(m<=30){const j=sC*0.008; totAc+=j; fFw[m]-=j; sC=cefW*Math.min(0.30+incC*m,1);}
   }
   fFw[40]+=vE-cefW;
   const totF_w=entF+custosF_w+totMF+totAc;
@@ -1188,12 +1188,12 @@ function enviarWhatsFin() {
   const cefCalc=Math.round(val*bancoPctCalc);
   const custosF_total=545+val*0.003+1000+val*0.75*0.00021*30+val*0.000034*30;
 
-  const incC=(1-0.15)/30; let sC=cefCalc*0.15,totMF=0,totAc=0;
+  const incC=(1-0.30)/30; let sC=cefCalc*0.30,totMF=0,totAc=0;
   const fFw=new Array(41).fill(0); fFw[0]=-(entF+custosF_total);
   for(let m=1;m<=40;m++){
     const corrF=m<=30?Math.pow(1+incc,m):Math.pow(1+incc,30)*Math.pow(1+igpm,m-30);
     const pF=parcFin*corrF; totMF+=pF; fFw[m]-=pF;
-    if(m<=30){const j=sC*0.008; totAc+=j; fFw[m]-=j; sC=cefCalc*Math.min(0.15+incC*m,1);}
+    if(m<=30){const j=sC*0.008; totAc+=j; fFw[m]-=j; sC=cefCalc*Math.min(0.30+incC*m,1);}
   }
   fFw[40]+=vE-cefCalc;
   const lucF=Math.round(fFw.reduce((a,b)=>a+b,0));

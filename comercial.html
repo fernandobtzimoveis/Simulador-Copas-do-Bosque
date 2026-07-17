@@ -363,13 +363,12 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
           <div style="font-size:10px;color:var(--green-dk);margin-top:4px;opacity:.8">* Valor máximo ao final da obra: <span id="f-ac2">—</span></div>
         </div>
         <div class="cr"><span class="cr-l" id="f-banco-pct">75% — banco financia e quita na entrega</span><span class="cr-v g" id="f-cef">—</span></div>
-        <div class="cr custo"><span class="cr-l">ITBI fração ideal + Registro SFH + Avaliação</span><span class="cr-v" id="f-cus1">—</span></div>
-        <div class="cr custo"><span class="cr-l">Seguros MIP + DFI (30 meses de obra)</span><span class="cr-v" id="f-cus2">—</span></div>
+        <div class="cr custo"><span class="cr-l">ITBI + Registro + Avaliação + Seguros (MIP/DFI)</span><span class="cr-v" id="f-cus-total">—</span></div>
         <div class="cs-total">
           <span class="tl">Total investimento próprio</span>
           <span class="tv g" id="f-tot">—</span>
         </div>
-        <div class="cs-nota">* Inclui ITBI sobre fração ideal do terreno (R$ 54.545 = R$ 1.200.000 ÷ 22 unidades)</div>
+        <div class="cs-nota">* ITBI sobre fração ideal do terreno (R$ 54.545 = R$ 1.200.000 ÷ 22 unidades) + Registro SFH/Avaliação + Seguros MIP/DFI ao longo dos 30 meses de obra</div>
         <div class="cs-lucro">
           <div class="ll">Lucro estimado na venda</div>
           <div><span class="lv" id="f-luc">—</span><span class="lpct" id="f-pct">—</span></div>
@@ -460,7 +459,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
 
         <!-- CUSTOS -->
         <div class="cr custo" id="row-custos">
-          <span class="cr-l">ITBI (2%) + Registro (0,6%) + Escritura (0,7%)</span>
+          <span class="cr-l">ITBI (1%) + Registro (0,6%) + Escritura (0,7%)</span>
           <span class="cr-v" id="d-custos">—</span>
         </div>
 
@@ -534,7 +533,7 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
             <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700"><span id="c-f-ac1">—</span><span id="c-f-ac2">—</span></div>
           </div>
           <div class="r"><span class="r-l">75% banco quita entrega</span><span class="r-v g" id="c-f-cef">—</span></div>
-          <div class="r" style="background:var(--amber-lt)"><span class="r-l" style="color:var(--amber)">Custos</span><span class="r-v" style="color:var(--amber);font-size:10px" id="c-f-cus">—</span></div>
+          <div class="r" style="background:var(--amber-lt)"><span class="r-l" style="color:var(--amber)">Custos (ITBI+Reg+Seg)</span><span class="r-v" style="color:var(--amber)" id="c-f-cus">—</span></div>
           <div class="opt-total">
             <span class="t-lbl">Total investimento próprio</span>
             <span class="t-val g" id="c-f-tot">—</span>
@@ -852,7 +851,7 @@ function calc() {
   const entrega30=saldoEntregaVal; // base para exibição
 
   // Custos
-  const custosD=val*0.02+val*0.006+val*0.007;
+  const custosD=val*0.01+val*0.006+val*0.007;
   const custosF_total=545+val*0.003+1000+val*0.75*0.00021*30+val*0.000034*30;
   const itbiF=545, regF=Math.round(val*0.003+1000), mipDfi=Math.round(val*0.75*0.00021*30+val*0.000034*30);
 
@@ -965,8 +964,6 @@ function calc() {
   S("f-ac1",  "aprox. "+R(ac1)+"/mês");
   S("f-ac2",  "até aprox. "+R(ac30)+"/mês");
   S("f-cef",  R(cef));
-  S("f-cus1", R(itbiF+regF));
-  S("f-cus2", R(mipDfi));
   S("f-cus-total", R(itbiF+regF+mipDfi));
   S("f-tot",  Rfloor(totF));
   S("f-luc",  R(lucF));
@@ -1051,7 +1048,7 @@ function calc() {
     lucF:R(lucF), pctF:"· +"+Math.round(lucF/totF*100)+"%", vsF:msgVsSelic(vezesFinanc, lucF),
     tirF:Pp(tirFa), realF:Pp(tirFr), entF:R(val*0.10)+" · 4× "+R(val*0.10/4),
     menF:"~"+R(parcFin)+"/mês ("+Math.round(construtoraPct*100)+"%)", ac1F:"aprox. "+R(ac1)+"/mês", ac2F:"até aprox. "+R(ac30)+"/mês",
-    cefF:R(cef), cusF:"ITBI+Reg: "+R(itbiF+regF)+" · Seguros: "+R(mipDfi), totF:Rfloor(totF),
+    cefF:R(cef), cusF:R(itbiF+regF+mipDfi), totF:Rfloor(totF),
     totS:Rfloor(totDReal),
     brutoS:R(saldoB), irS:"− "+R(ir), lucS:R(ganhoL),
     tirS:Pp(tirSa), realS:Pp(tirSr)
@@ -1111,7 +1108,7 @@ function enviarWhats() {
   const lucF_w=fFw.reduce((a,b)=>a+b,0);
 
   // Direto
-  const custosD_w=val*0.02+val*0.006+val*0.007;
+  const custosD_w=val*0.01+val*0.006+val*0.007;
   const entPct=_entPctGlobal>0?_entPctGlobal:0.10;
   const entD_w=Math.round(val*entPct);
   const dispTotal=Math.max(0,val*(1-entPct-0.30));
@@ -1200,7 +1197,7 @@ function enviarWhatsFin() {
   const bancoLabel=Math.round(bancoPctCalc*100);
   const parcF=parcFin;
 
-  const acomp1=Math.round(cefCalc*0.15*0.008);
+  const acomp1=Math.round(cefCalc*0.30*0.008);
   const acomp2=Math.round(cefCalc*0.008);
   const msg=saudacao+"fiz uma simulação para você ter uma ideia de como funciona a compra de uma unidade financiada pela Caixa.\n\n"
     +"*Valor do imóvel:* "+Rsmart(val)+"\n\n"
@@ -1235,7 +1232,7 @@ function enviarWhatsDireto() {
   const saldoEntregaValW=Math.round(val*saldoEntregaPctW);
   const saldoEntrega=Rsmart(saldoEntregaValW);
 
-  const custosD=val*0.02+val*0.006+val*0.007;
+  const custosD=val*0.01+val*0.006+val*0.007;
   const entrega30RealW=saldoEntregaValW*Math.pow(1+incc,MESES_w);
   const rfMesesW=[6,12,18,24,30];
   const fDw=new Array(41).fill(0); fDw[0]=-(ent+custosD);

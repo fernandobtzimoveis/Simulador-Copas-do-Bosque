@@ -1121,15 +1121,6 @@ function enviarWhats() {
   const saldoEntregaValW=Math.round(val*saldoEntregaPctW);
   const entrega30RealW=saldoEntregaValW*Math.pow(1+incc,MESES_w);
   const rfMesesW=[6,12,18,24,30];
-  const fDw=new Array(41).fill(0); fDw[0]=-(entD_w+custosD_w);
-  for(let m=1;m<=40;m++){
-    const corr=m<=MESES_w?Math.pow(1+incc,m):Math.pow(1+incc,MESES_w)*Math.pow(1+igpm,m-MESES_w);
-    fDw[m]-=parcMesW*corr;
-    if(rfMesesW.includes(m)) fDw[m]-=valorRefW*Math.pow(1+incc,m);
-  }
-  fDw[MESES_w]-=entrega30RealW;
-  fDw[40]+=vE;
-  const lucD_w=fDw.reduce((a,b)=>a+b,0);
 
   // Selic — mesmo fluxo do direto
   let sB_w=0, totA_w=entD_w+custosD_w;
@@ -1144,25 +1135,17 @@ function enviarWhats() {
   }
   const ganhoB_w=sB_w-totA_w, ir_w=ganhoB_w*0.15, sL_w=sB_w-ir_w, ganhoL_w=sL_w-totA_w;
 
-  // Maior % vs Selic entre os dois cenários (sempre o que gera mais benefício pro comprador)
   const pctF=Math.round((lucF_w/ganhoL_w-1)*100);
-  const pctD=Math.round((lucD_w/ganhoL_w-1)*100);
-  const pctMax=Math.max(pctF,pctD);
+  const fraseSelic = pctF>=0
+    ? "É um resultado bem acima da projeção da Selic para o mesmo período."
+    : "Mesmo em um cenário mais conservador, é uma forma de diversificar patrimônio saindo da renda fixa.";
 
   const msg=saudacao
     +"Preparei uma simulação personalizada de investimento no Copas do Bosque.\n\n"
-    +"Imóvel: "+Rsmart(val)+"\n"
-    +"Entrega prevista em "+MESES_w+" meses (jan/2029)\n"
-    +"Valor estimado do imóvel na entrega: "+Rsmart(vE)+"\n\n"
-    +"Confira duas possibilidades:\n\n"
-    +"*Financiando pela Caixa (recomendado)*\n"
-    +"Capital próprio: "+Rsmart(totF_w)+"\n"
-    +"Valorização patrimonial estimada: "+Rsmart(lucF_w)+"\n\n"
-    +"*Pagamento direto com a construtora*\n"
-    +"Valorização patrimonial estimada: "+Rsmart(lucD_w)+"\n\n"
-    +"Para comparação, uma aplicação na Selic teria um rendimento estimado de "+Rsmart(ganhoL_w)+" no mesmo período.\n\n"
-    +"Isso representa uma valorização patrimonial estimada cerca de "+pctMax+"% superior ao rendimento estimado da Selic.\n\n"
-    +"Quer conversar sobre essa oportunidade?";
+    +"Um imóvel de "+Rsmart(val)+" pode chegar a aproximadamente "+Rsmart(vE)+" na entrega, em janeiro de 2029.\n\n"
+    +"Com financiamento pela Caixa, a projeção indica cerca de "+Rsmart(lucF_w)+" em valorização patrimonial, utilizando "+Rsmart(totF_w)+" de capital próprio.\n\n"
+    +fraseSelic+"\n\n"
+    +"Quer que eu te envie os detalhes dessa estratégia?";
   window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
 }
 

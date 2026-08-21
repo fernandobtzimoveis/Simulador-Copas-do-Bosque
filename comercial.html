@@ -426,6 +426,8 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
             <span style="display:flex;align-items:center;gap:6px">
               <span class="epfx">R$</span>
               <input id="d-parc-edit" type="text" inputmode="numeric" onchange="onParcEdit(this)" placeholder="Digite a parcela">
+              <span style="font-size:13px;color:var(--gray)">=</span>
+              <span class="cr-v" id="d-parc-tot" style="font-size:15px">—</span>
             </span>
             <span id="d-parc-sug" style="font-size:11px;color:var(--gray-lt)"></span>
           </span>
@@ -442,6 +444,8 @@ footer{max-width:1000px;margin:0 auto;padding:0 24px 40px}
             <span style="display:flex;align-items:center;gap:6px">
               <span class="epfx">R$</span>
               <input id="d-ref-edit" type="text" inputmode="numeric" onchange="onRefEdit(this)" class="ref-inp" placeholder="Calculado auto">
+              <span style="font-size:13px;color:var(--gray)">=</span>
+              <span class="cr-v" id="d-ref-tot" style="font-size:15px">—</span>
             </span>
             <span id="d-ref-sug" style="font-size:11px;color:var(--gray-lt)"></span>
           </span>
@@ -878,6 +882,10 @@ function calc() {
   const spEl=gi("d-parc-sug"), srEl2=gi("d-ref-sug");
   if(spEl) spEl.textContent=sugP>0?"sugestão: R$ "+sugP.toLocaleString("pt-BR"):"";
   if(srEl2) srEl2.textContent=sugR>0?"sugestão: R$ "+sugR.toLocaleString("pt-BR"):"";
+
+  // Totais das 40 parcelas e dos 5 reforços, com % sobre o valor do imóvel
+  S("d-parc-tot", R(totalMensais)+" · "+Math.round(totalMensais/val*100)+"%");
+  S("d-ref-tot",  R(totalRefBase)+" · "+Math.round(totalRefBase/val*100)+"%");
 
   // Hint disponível
   const ph=gi("parc-disponivel");
